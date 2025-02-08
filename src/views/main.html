@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png"> -->
+    <!-- <link rel="icon" type="image/png" sizes="16x16" href="/favicon.svg"> -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/style.css?v=2.0">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com/">
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
+    <link rel="dns-prefetch" href="//www.google-analytics.com">
+    <link rel="dns-prefetch" href="//adservice.google.com">
+    <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+    <link rel="dns-prefetch" href="//tpc.googlesyndication.com">
+    <link href="/css/styles.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2" defer></script>
+    {% block meta %}
+
+    {% endblock meta %}
+    <title>Document</title>
+</head>
+<body>
+    <!-- {% include 'partial/header.html' %} -->
+    {% block body %}
+    
+    {% endblock body %}
+    <!-- {% include 'partial/footer.html' %} -->
+    <script src="/script/unit.js"></script>
+    <script src="/script/alpine.js"></script>
+     <script async src="https://www.googletagmanager.com/gtag/js?id=G-8HPZZ0N8XW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-8HPZZ0N8XW');
+    </script> 
+</body>
+</html>

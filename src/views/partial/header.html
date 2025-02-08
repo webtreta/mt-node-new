@@ -1,0 +1,123 @@
+<!-- Header Template -->
+<div x-data="headerData()" x-init="init()">
+  <div class="md:fixed md:top-0 w-full max-sm:h-0 sm:h-0 md:h-auto max-sm:py-2 md:backdrop-blur-xl md:z-50">
+    <header class="flex items-center w-full justify-between px-6 lg:px-10 py-2">
+      <div class="flex flex-row items-center max-sm:w-full justify-between gap-x-4 md:col-span-4">
+        <a href="/" class="block md:mx-auto mx-0">
+          <img src="/images/logo.webp" width="120" height="120" class="md:mt-3 mx-auto sm:mt-0 sm:ml-3 w-[120px] md:w-[120px] sm:w-[150px] lg:w-[160px] text-center" alt="logo" />
+        </a>
+        <div class="md:hidden flex items-center gap-3">
+          <x-language-dropdown />
+          <button @click="toggleMenu" class="text-white">
+            <!-- Hamburger icon for mobile -->
+          </button>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden mt-3 md:flex space-x-4 lg:space-x-6">
+        <a href="/" :class="isActive('/')">Home</a>
+        <a href="/download/{{ platform }}" :class="isActive('/download/{{ platform }}')">Download</a>
+        <a href="/token" :class="isActive('/token')">MT Token</a>
+        <a href="/pricing" :class="isActive('/pricing')">Pricing</a>
+        <div class="relative inline-block text-left">
+          <button @mouseenter="isOpen = true" @mouseleave="isOpen = false" class="flex px-4 items-center font-medium text-[#938FAA] rounded-lg shadow-sm outline-none">
+            Tools
+            <svg x-show="isOpen" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-1" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v12a1 1 0 01-2 0V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Profile and Login/Logout Actions -->
+      <div class="hidden md:flex items-center justify-end space-x-8 mt-4 md:mt-0" x-ref="menuRef">
+        <x-language-dropdown />
+        <div x-show="isToken" class="flex items-center">
+          <img :src="base64Image || '/images/profile-image.png'" alt="Profile" class="w-9 h-9 object-cover" />
+          <button @click="toggleProfileMenu" class="p-1 hover:bg-gray-800 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#938FAA]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9l6 6 6-6" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Profile Dropdown -->
+        <div x-show="isProfileMenuOpen" class="absolute mt-56 w-48 bg-[#0A0419] rounded-lg shadow-lg border border-gray-800 z-50">
+          <div class="py-2">
+            <a href="/dashboard" class="flex items-center px-4 py-2 text-yellow-500 hover:bg-gray-800">
+              <img src="/images/user-icon.svg" class="w-5 h-5 mr-2" alt="" /> Dashboard
+            </a>
+            <a href="/dashboard/account-settings" class="flex items-center px-4 py-2 text-[#938FAA] hover:bg-gray-800">
+              <img src="/images/setting-icon.svg" class="w-5 h-5 mr-2" alt="" /> Account Settings
+            </a>
+            <button @click="handleLogout" class="flex items-center w-full px-4 py-2 text-[#938FAA] hover:bg-gray-800">
+              <img src="/images/log-out-icon.svg" class="w-5 h-5 mr-2" alt="" /> Log Out
+            </button>
+          </div>
+        </div>
+        <a href="/signin" x-show="!isToken" class="inline-flex items-center font-semibold text-base w-max border border-[#71EE9E] text-[#71EE9E] rounded-xl px-4 py-2">Login</a>
+      </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div :class="{'translate-y-0': menuOpen, '-translate-y-56': !menuOpen}" class="md:hidden relative mx-auto rounded-b-lg top-24 left-0 w-[90%] border-x-2 border-b-2 px-3 border-[#938FAA] bg-[#05030e] z-30 transform transition-transform duration-300 ease-in-out">
+      <div class="py-4 px-6">
+        <div class="flex flex-col gap-4">
+          <a href="/" :class="isActive('/')">Home</a>
+          <a href="/download/{{ platform }}" :class="isActive('/download/{{ platform }}')">Download</a>
+          <a href="/token" :class="isActive('/token')">MT Token</a>
+          <a href="/pricing" :class="isActive('/pricing')">Pricing</a>
+          <a href="/signin" :class="isActive('/signin')">Login</a>
+          <div x-show="isOpen" class="mt-2 text-center rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 w-full">
+            <a href="/tools/keyboard-tester" class="text-sm font-bold py-2 border-b border-white">Keyboard Tester</a>
+            <a href="/tools/mouse-tester" class="text-sm font-bold py-2 border-b border-white">Mouse Tester</a>
+            <!-- Add other tools here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function headerData() {
+    return {
+      isToken: false,
+      base64Image: '',
+      menuOpen: false,
+      isProfileMenuOpen: false,
+      currentPath: window.location.pathname,
+      isOpen: false,
+
+      init() {
+        const userData = localStorage.getItem('userdata');
+        const tempToken = localStorage.getItem('token');
+        if (userData && tempToken) {
+          const parsedData = JSON.parse(userData);
+          this.base64Image = 'data:image/png;base64,' + parsedData.picture;
+          this.isToken = true;
+        }
+      },
+
+      toggleMenu() {
+        this.menuOpen = !this.menuOpen;
+      },
+
+      toggleProfileMenu() {
+        this.isProfileMenuOpen = !this.isProfileMenuOpen;
+      },
+
+      handleLogout() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userdata');
+        this.isToken = false;
+        window.location.href = '/'; // Redirect to home
+      },
+
+      isActive(path) {
+        return this.currentPath === path ? 'text-white' : 'text-[#938FAA]';
+      }
+    };
+  }
+</script>
