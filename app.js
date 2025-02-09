@@ -144,6 +144,9 @@ app.get('/download/brave', (req, res) => {
 app.get('/download/opera', (req, res) => {
     res.render('opera-download.html');
 })
+app.get('/pricing', (req, res) => {
+  res.render('pricing.html', { plans });
+});
 app.get('*', (req, res) => {
     res.render('error.html');
 });

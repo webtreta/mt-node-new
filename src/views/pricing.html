@@ -1,0 +1,140 @@
+{% extends 'main.html' %}
+
+{% block meta %}
+<!-- Add any meta tags here -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10.3.0/swiper-bundle.min.css">
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pricing - MT Auto Clicker</title>
+<meta name="description"
+  content="Choose your perfect automation plan. MT Auto Clicker offers Free and Pro options with cross-platform support." />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Pricing - MT Auto Clicker" />
+<meta property="og:description"
+  content="Choose your perfect automation plan. MT Auto Clicker offers Free and Pro options with cross-platform support." />
+<meta property="og:url" content="https://www.mtautoclicker.com/pricing/" />
+<meta property="og:site_name" content="MT Auto Clicker" />
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:title" content="Pricing - MT Auto Clicker" />
+<meta name="twitter:description"
+  content="Choose your perfect automation plan. MT Auto Clicker offers Free and Pro options with cross-platform support." />
+<meta name="twitter:url" content="https://www.mtautoclicker.com/pricing/" />
+<meta name="twitter:image" content="https://www.mtautoclicker.com/img/social.jpg" />
+<link rel="canonical" href="https://www.mtautoclicker.com/pricing/" />
+<link rel="stylesheet" href="/css/pricing.css">
+<meta name="robots" content="index,follow" />
+{% endblock meta %}
+
+{% block body %}
+<div class="pricing-container text-white ">
+  <h1 class="  mb-3 text-4xl font-bold leading-snug sm:text-[42px] lg:text-[60px] text-center text-white">
+    <span class="md:text-[60px] text-[42px] font-medium text-center mb-8">  Plans & Pricing </span>
+  </h1>
+  <p class="subheading text-[#938FAA] text-center">All Prices listed below are in USD</p>
+
+  <div class="swiper-container overflow-hidden">
+    <div class="swiper-wrapper">
+      {% for plan in plans %}
+      <div class="swiper-slide bg-[#0A0419] border border-white {% if plan.isBestValue %}border-2 border-green-400{% endif %}">
+        {% if plan.isBestValue %}
+          <span class="absolute top-0 -right-0.5 bg-[#05030E] text-green-400 text-sm px-3 py-1 rounded-2xl border-2 border-green-400">
+            Best Value
+          </span>
+        {% endif %}
+        <div class="">
+          <h2 class="text-2xl font-medium mb-4">{{ plan.name }}</h2>
+          <p class="text-[#938FAA] text-center text-lg line-through">{{ plan.originalPrice }}</p>
+          <p class=" text-[#71EE9E] text-center text-sm my-2">{{ plan.discount }}</p>
+          <p class=" text-4xl text-center  ">{{ plan.price }}</p>
+          {% if plan.tempPrice >0%}
+          <button type="button"
+            class="py-3 my-8 text-center bg-[#71EE9E] text-black  rounded-lg text-xl w-full  px-8 ">
+            <!-- <img src="/img/generate-icon.svg" alt="Generate Icon" class="h-5 w-5 mx-2"> -->
+            Buy
+          </button>
+          {% else %}
+          <button id="download" @click="download" type="button"
+            class="my-2 text-center border w-full py-2 rounded-lg my-8 border-[#71EE9E] text-[#71EE9E]   font-semibold text-xl  px-8 ">
+            <!-- <img src="/img/generate-icon.svg" alt="Generate Icon" class="h-5 w-5 mx-2"> -->
+            Download
+          </button>
+          {% endif %}
+          <!-- Feature section rendering using a nested loop -->
+          <div class="features flex flex-col justify-start items-start space-y-3  ">
+            {% for feature in plan.features %}
+            <div class="feature-section flex flex-col justify-start  items-start">
+              <span class="feature-title text-left text-[#71EE9E] text-lg">{{ feature.title }}</span>
+              <ul class="flex flex-col justify-start items-start ">
+                {% for subtitle in feature.subtitles %}
+                <li class="flex flex-col justify-start  items-start space-y-2">
+                  <button class="subtitle-button text-left" onclick="toggleDropdown(event)">
+                    <span class="text-[#938FAA]">{{ subtitle.text }}</span>
+                    <span class="icon" style="display: inline-block; margin-left: 8px;">
+                      <!-- Chevron icon logic -->
+                      {% if subtitle.items %}
+                      <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="chevron-icon text-[#71EE9E]">
+                        <path id="chevron-{{ loop.index }}" fill="currentColor" d="M4 6l4 4 4-4z"></path>
+                        {% else %}
+                        <path id="chevron-{{ loop.index }}" fill="currentColor" d="M4 6l4 4 4-4z"></path>
+                        {% endif %}
+                      </svg>
+                    </span>
+                  </button>
+                  {% if subtitle.items %}
+                  <ul class="subtitle-items" class="flex flex-col justify-start items-start" style="display: none;">
+                    {% for item in subtitle.items %}
+                    <li class="flex items-center gap-2 pl-4 ">
+                      <svg width="16" height="16" fill="#71EE9E" xmlns="http://www.w3.org/2000/svg" class="check-icon">
+                        <path fill="#71EE9E"
+                          d="M12.293 3.293a1 1 0 0 1 1.414 1.414L6 12.414l-4-4a1 1 0 0 1 1.414-1.414L6 9.586l6.293-6.293z">
+                        </path>
+                      </svg>
+                      <span class="text-sm text-[#938FAA]">{{ item }}</span>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                  {% endif %}
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <!-- Pagination (optional) -->
+    <div class="swiper-pagination"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@10.3.0/swiper-bundle.min.js"></script>
+<script src="/script/pricing.js"></script>
+<script>
+  function toggleDropdown(event) {
+    const subtitleButton = event.currentTarget;
+    const subtitleItems = subtitleButton.nextElementSibling;
+
+    // Toggle the display of subtitle items
+    if (subtitleItems && subtitleItems.classList.contains('subtitle-items')) {
+      subtitleItems.style.display = subtitleItems.style.display === "block" ? "none" : "block";
+
+      // Change the chevron icon (up or down)
+      const icon = subtitleButton.querySelector('.icon');
+      const chevronPath = icon.querySelector('path');
+
+      if (subtitleItems.style.display === "block") {
+        chevronPath.setAttribute("d", "M4 10l4-4 4 4z"); // Chevron Up
+      } else {
+        chevronPath.setAttribute("d", "M4 6l4 4 4-4z"); // Chevron Down
+      }
+    }
+  }
+</script>
+<script src="/script/download.js"></script>
+{% endblock body %}
