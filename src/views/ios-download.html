@@ -31,12 +31,12 @@
 
 <div x-data="{
     hovered: {
-      windows: true,
+      windows: false,
       mac: false,
       android: false,
       chrome: false,
       firefox: false,
-      ios: false,
+      ios: true,
       linux: false,
       microsoft: false,
       safari: false,
@@ -116,13 +116,13 @@
       <div class="flex gap-5 justify-start md:justify-center min-w-max px-4">
         <template x-for="(platform, index) in platforms" :key="platform.key">
           <a :href="platform.path" 
-             :class="platform.key === 'windows' ? 'bg-white' : 'bg-[#1B1636] hover:bg-white'"
+             :class="platform.key === 'ios' ? 'bg-white' : 'bg-[#1B1636] hover:bg-white'"
              class="px-5 py-3 md:px-8 md:py-3 h-full rounded-xl transition-colors duration-200"
              @mouseenter="hovered[platform.key] = true"
              @mouseleave="hovered[platform.key] = false">
             <img 
               :src="'/images/' + platform.imgPrefix + '-' + 
-                    (hovered[platform.key] || platform.key === 'windows' || 
+                    (hovered[platform.key] || platform.key === 'ios' || 
                     ['chrome', 'microsoft', 'firefox', 'brave', 'opera'].includes(platform.key) 
                     ? 'color' : 'white') + '.svg'"
               class="w-16 h-20"
@@ -138,8 +138,8 @@
       <div class="bg-[#0A0419] md:ml-4 w-[99%] border-[3px] rounded-xl border-[#1D1634] p-5 md:px-10 shadow hover:shadow-lg transition duration-300 drop-shadow-[0_7px_29px_rgba(0,0,0,0.3)]">
         <div class="flex max-sm:flex-col justify-between">
           <div class="flex flex-col gap-4 mt-10 text-white">
-            <h2 class="text-xl md:text-2xl lg:text-3xl">Download Mt Auto Clicker for Windows</h2>
-            <p>Supported Platform: <span class="mx-4">Windows</span></p>
+            <h2 class="text-xl md:text-2xl lg:text-3xl">Download Mt Auto Clicker for IOS</h2>
+            <p>Supported Platform: <span class="mx-4">IOS</span></p>
             <div class="flex gap-1">
               <p>User Rating:</p>
               {% for _ in range(4) %}
@@ -178,7 +178,7 @@
               </span>
             </button>
             <img 
-              src="/images/windows-store-img.svg" 
+              src="/images/ios-store-img.svg" 
               class="md:w-56 md:h-24 w-56" 
               alt="windows store image" 
               loading="lazy"/>

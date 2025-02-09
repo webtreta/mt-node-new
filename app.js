@@ -117,9 +117,33 @@ app.get('/', (req, res) => {
     res.status(500).send('Error loading data');
   }
 });
-app.get('/download', (req, res) => {
-    res.render('windows-download.html');})
-
+app.get('/download/windows', (req, res) => {
+    res.render('windows-download.html');
+})
+app.get('/download/mac', (req, res) => {
+    res.render('mac-download.html');
+})
+app.get('/download/android', (req, res) => {
+    res.render('android-download.html');
+})
+app.get('/download/ios', (req, res) => {
+    res.render('ios-download.html');
+})
+app.get('/download/chrome', (req, res) => {
+    res.render('chrome-download.html');
+})
+app.get('/download/edge', (req, res) => {
+    res.render('edge-download.html');
+})
+app.get('/download/firefox', (req, res) => {
+    res.render('firefox-download.html');
+})
+app.get('/download/brave', (req, res) => {
+    res.render('brave-download.html');
+})
+app.get('/download/opera', (req, res) => {
+    res.render('opera-download.html');
+})
 app.get('*', (req, res) => {
     res.render('error.html');
 });
