@@ -117,6 +117,8 @@ app.get('/', (req, res) => {
     res.status(500).send('Error loading data');
   }
 });
+app.get('/download', (req, res) => {
+    res.render('windows-download.html');})
 
 app.get('*', (req, res) => {
     res.render('error.html');
