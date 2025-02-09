@@ -1,0 +1,32 @@
+[
+  {
+    "category": "ChromeStore",
+    "description": "MT Auto Clicker Magic Checkout is truly a magical solution. Our conversion rate has increased by 35% & our COD, RTO has drastically decreased.",
+    "author": "Rohit harshe",
+    "image": "/images/Rohit-Harshe.png"
+  },
+  {
+    "category": "AppleStore",
+    "description": "We chose MT Auto Clicker because MT Auto Clicker is easy to setup, there are different options for my customers & millions of businesses already trust MT Auto Clicker.",
+    "author": "Geoffrey Keat",
+    "image": "/images/Geoffrey-Keat.webp"
+  },
+  {
+    "category": "WindowsStore",
+    "description": "MT Auto Clicker simplifies cross-border bank transfers with the MoneySaver Exporter Account, reducing FIRC generation time from up to 5 days to seconds.",
+    "author": "Jes Kirkwood",
+    "image": "/images/Jes-Kirkwood.webp"
+  },
+  {
+    "category": "PYTHON",
+    "description": "MT Auto Clicker's revolving Line of Credit simplifies financial management, aiding inventory planning during cash flow gaps.",
+    "author": "Kelly Kirwan",
+    "image": "/images/Kelly-Kirwan.webp"
+  },
+  {
+    "category": "MicrosoftStore",
+    "description": "MT Auto Clicker's revolving Line of Credit simplifies financial management, aiding inventory planning during cash flow gaps.",
+    "author": "Sofia Smith",
+    "image": "/images/Sofia-Smith.webp"
+  }
+]

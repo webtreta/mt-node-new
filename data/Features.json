@@ -1,0 +1,108 @@
+[
+    {
+      "id": 1,
+      "icon": "🌐",
+      "title": "Single Target Clicking",
+      "description":
+        "Automate clicks on a single spot with customizable click intervals as low as 1 millisecond. Ideal for precision tasks.",
+      "href": "/page1",
+      "img": "/images/features-images/Single-Target-Clicking.webp"
+    },
+    {
+      "id": 2,
+      "icon": "📘",
+      "title": "Multi Target Clicking",
+      "description":
+        "Click on multiple targets with ease. Supports up to 1 millisecond clicking intervals and allows unlimited target selection for diverse automation tasks.",
+      "href": "/page2",
+      "img": "/images/features-images/Multi-Target-Clicking.webp"
+    },
+    {
+      "id": 3,
+      "icon": "💻",
+      "title": "Auto Form Fill Up",
+      "description":
+        "Automatically fill forms with pre-saved information, simplifying repetitive data entry tasks",
+      "href": "/page3",
+      "img": "/images/features-images/auto-form-fill-up.webp"
+    },
+    {
+      "id": 4,
+      "icon": "🚀",
+      "title": "Auto Scroll",
+      "description":
+        "Automate scrolling for Instagram Reels, YouTube Shorts, TikTok, and Facebook. Includes customizable scroll intervals and directional control (up or down).",
+      "href": "/page4",
+      "img": "/images/features-images/auto-scroll.webp"
+    },
+    {
+      "id": 5,
+      "icon": "📜",
+      "title": "Auto Refresh",
+      "description":
+        "Refresh apps, web pages, or software automatically. Includes options for user-defined refresh intervals.",
+      "href": "/page5",
+      "img": "/images/features-images/auto-refresh.webp"
+  
+    },
+    {
+      "id": 6,
+      "icon": "📜",
+      "title": "Auto Swipe",
+      "description":
+        "Automate left or right swipes with user-defined swipe intervals. Suitable for apps, browsers, and software.",
+      "href": "/page5",
+      "img": "/images/features-images/auto-swipe.webp"
+  
+    },
+    {
+      "id": 7,
+      "icon": "📜",
+      "title": "Touch & Hold",
+      "description":
+        "Automate touch and hold gestures for long-press actions with customizable hold duration.",
+      "href": "/page5",
+      "img": "/images/features-images/touch-hold.webp"
+  
+    },
+    {
+      "id": 8,
+      "icon": "📜",
+      "title": "Capture Screenshot/Reord",
+      "description":
+        "Easily capture screenshots (full page, selected area, or current screen) and record videos in formats like MP4, WEBM, and MKV with resolutions from 480p to 4K.",
+      "href": "/page5",
+      "img": "/images/features-images/capture-screenshot.webp"
+  
+    },
+    {
+      "id": 9,
+      "icon": "📜",
+      "title": "Macro Recorder",
+      "description":
+        "Record and replay complex sequences of mouse clicks, keystrokes, and wait commands. Supports both auto and manual recording modes.",
+      "href": "/page5",
+      "img": "/images/features-images/macro-recorder.webp"
+  
+    },
+    {
+      "id": 10,
+      "icon": "📜",
+      "title": "Auto Zoom",
+      "description":
+        "Automate zooming actions for apps, browsers, or software. Supports customizable zoom intervals for precise control.",
+      "href": "/page5",
+      "img": "/images/features-images/auto-zoom.webp"
+  
+    },
+    {
+      "id": 11,
+      "icon": "📜",
+      "title": "Auto Hotkey",
+      "description":
+        "Leverage predefined scripts for automation. Beginner-friendly with no programming skills required.",
+      "href": "/page5",
+      "img": "/images/features-images/auto-hotkey.webp"
+  
+    }
+  ]

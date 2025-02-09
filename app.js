@@ -5,6 +5,7 @@ const minify = require("express-minify");
 const compression = require("compression");
 const FormData = require('form-data');
 const fs = require('fs'); // If you need to add files in FormData
+const path = require('path');
 const plans = require('./data/plans');
 const fetch = require('node-fetch');
 
@@ -100,8 +101,21 @@ app.post('/generate-token', async (req, res) => {
   }
 });
 
+
+
 app.get('/', (req, res) => {
-    res.render('index.html');
+  try {
+    const platform = require(path.join(__dirname, 'data', 'platforms.json'));
+    const testimonials = require(path.join(__dirname, 'data', 'testomonials.json'));
+
+    res.render('index.html', {
+      testimonials,
+      platform
+    });
+  } catch (error) {
+    console.error('Error loading data files:', error);
+    res.status(500).send('Error loading data');
+  }
 });
 
 app.get('*', (req, res) => {

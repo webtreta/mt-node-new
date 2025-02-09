@@ -1,0 +1,12 @@
+[
+    { "name": "CPS Test", "icon": "./CPS Test.svg" },
+    { "name": "Spacebar Clicker", "icon": "./Spacebar Clicker.svg" },
+    { "name": "Mouse Tester", "icon": "./Mouse Tester.svg" },
+    { "name": "Typing Tester", "icon": "./Typing Test.svg" },
+    { "name": "Reaction Time Test", "icon": "./Reaction Time Test.svg" },
+    { "name": "GamePad Tester", "icon": "./gamepad-tester Controller.svg" },
+    { "name": "Keyboard Tester", "icon": "/Keyboard Tester.png" },
+    { "name": "Spacebar Counter", "icon": "./Spacebar Counter.svg" },
+    { "name": "Text To Speech", "icon": "./text-to-speech.png" },
+    { "name": "Speech To Text", "icon": "./speech-to-text.png" }
+  ]

@@ -1,0 +1,14 @@
+[
+  {
+     "name": "windows", 
+     "icon": "/images/window.png"
+ },
+  { "name": "mac", "icon": "/images/apples.png" },
+  { "name": "android", "icon": "/images/android.png" },
+  { "name": "ios", "icon": "/images/ios.png" },
+  { "name": "chrome", "icon": "/images/chromes.png" },
+  { "name": "microsoft", "icon": "/images/edges.png" },
+  { "name": "firefox", "icon": "/images/Vector.png" },
+  { "name": "opera", "icon": "/images/operas.png" },
+  { "name": "brave", "icon": "/images/image.png" }
+]
