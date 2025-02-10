@@ -29,72 +29,22 @@
 
 {% block body %}
 
-<div x-data="{
-    formData: {
-      email: '',
-      password: ''
-    },
-    loading: false,
-    async handleSubmit(e) {
-      e.preventDefault();
-      this.loading = true;
-      try {
-        const response = await fetch('{{ api_url }}/auth/signin', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(this.formData)
-        });
-
-        const resData = await response.json();
-        
-        if (resData.statusCode === 403) {
-          Swal.fire({
-            icon: 'warning',
-            title: 'Account Not Verified',
-            text: 'A verification link has been sent to your email.'
-          });
-          return;
-        }
-        
-        if (resData.statusCode === 500) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Sign-in Failed',
-            text: 'Invalid Credential'
-          });
-          return;
-        }
-
-        if (response.ok) {
-          localStorage.setItem('token', resData.token);
-          localStorage.setItem('uid', resData.id);
-          localStorage.setItem('islogin', true);
-          localStorage.setItem('userdata', JSON.stringify(resData.ourUsers));
-          
-          window.location.href = '/';
-        }
-      } catch (error) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: error.message || 'Something went wrong. Please try again later.'
-        });
-      } finally {
-        this.loading = false;
-      }
-    }
-  }" class="px-2 py-5 sm:p-5">
-  
+<div class="px-2 py-5 sm:p-5">
   <div class="flex flex-col justify-center items-center mx-auto gap-3">
     <h2 class="text-2xl font-bold sm:text-3xl md:text-4xl bg-clip-text text-transparent text-white text-center w-fit mx-auto">
       Login
     </h2>
-
+    
     <div class="my-4 bg-[#0A0419] border-[3px] border-[#1D1634] p-5 rounded-xl sm:w-full sm:max-w-sm lg:w-screen">
-      <form class="space-y-6" @submit.prevent="handleSubmit">
-        <div>
+      <form class="space-y-6" action="/login" method="POST">
+        <div class="text-white">
+          <div>
+            {% if error %}
+              <div class="text-red-500  p-2 rounded-lg text-center">
+                {{ error }}
+              </div>
+            {% endif %}
+          </div>
           <label for="email" class="block text-sm font-medium leading-6 text-900">
             Email address
           </label>
@@ -136,14 +86,13 @@
           <a href="/forgot-password" class="text-[#b270b5] text-sm underline">
             Forgot password?
           </a>
-
           <button
             type="submit"
             :disabled="loading"
             :class="loading ? 'opacity-50 cursor-not-allowed' : ''"
             class="flex w-full justify-center text-black bg-[#71EE9E] my-2 p-[6px] rounded-lg text-base md:text-lg font-medium"
           >
-            <span x-text="loading ? 'Signing in...' : 'Sign in'"></span>
+            <span >Sign in</span>
           </button>
         </div>
 

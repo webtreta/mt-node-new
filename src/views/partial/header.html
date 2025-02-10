@@ -1,6 +1,5 @@
 {# views/partials/header.html #}
-<div class="md:fixed md:top-0 w-full max-sm:h-0 sm:h-0 md:h-auto max-sm:py-2 md:backdrop-blur-xl md:z-50 mb-20"
-  x-data="{
+<div class="md:fixed md:top-0 w-full max-sm:h-0 sm:h-0 md:h-auto max-sm:py-2 md:backdrop-blur-xl md:z-50 mb-20" x-data="{
     menuOpen: false,
     isOpen: false,
     isToken: localStorage.getItem('token') ? true : false,
@@ -48,25 +47,25 @@
         this.platform = this.deviceInfo.platform;
       }
     }
-  }"
-  x-init="init()"
-  @click.away="isProfileMenuOpen = false"
->
+  }" x-init="init()" @click.away="isProfileMenuOpen = false">
   <header class="flex items-center w-full justify-between px-6 lg:px-10 py-2">
     <div class="flex flex-row items-center max-sm:w-full justify-between gap-x-4 md:col-span-4">
       <a href="/" class="block md:mx-auto mx-0">
-        <img src="/images/logo.webp" class="md:mt-3 mx-auto sm:mt-0 sm:ml-3 w-[120px] md:w-[120px] sm:w-[150px] lg:w-[160px] text-center" alt="logo">
+        <img src="/images/logo.webp"
+          class="md:mt-3 mx-auto sm:mt-0 sm:ml-3 w-[120px] md:w-[120px] sm:w-[150px] lg:w-[160px] text-center"
+          alt="logo">
       </a>
       <div class="md:hidden flex items-center gap-3">
         <button @click="menuOpen = !menuOpen" class="text-white">
           <svg width="30" height="30" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_2918_16085)">
-              <path d="M8.75 35H61.25" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M8.75 17.5H43.75M26.25 52.5H61.25" stroke="#71EE9E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M8.75 35H61.25" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M8.75 17.5H43.75M26.25 52.5H61.25" stroke="#71EE9E" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
             </g>
             <defs>
               <clipPath id="clip0_2918_16085">
-                <rect width="70" height="70" fill="white"/>
+                <rect width="70" height="70" fill="white" />
               </clipPath>
             </defs>
           </svg>
@@ -77,32 +76,66 @@
     {# Desktop Navigation #}
     <nav class="hidden mt-3 md:flex space-x-4 lg:space-x-6">
       <a href="/" :class="currentPath === '/' ? 'text-white' : 'text-[#938FAA]'">Home</a>
-<a :href="`/download/${platform}`" :class="currentPath.startsWith(`/download`) ? 'text-white' : 'text-[#938FAA]'">Download</a>
-<a href="/generate-token" :class="currentPath === '/generate-token' ? 'text-white' : 'text-[#938FAA]'">MT Token</a>
-<a href="/pricing" :class="currentPath === '/pricing' ? 'text-white' : 'text-[#938FAA]'">Pricing</a>
+      <a :href="`/download/${platform}`"
+        :class="currentPath.startsWith(`/download`) ? 'text-white' : 'text-[#938FAA]'">Download</a>
+      <a href="/generate-token" :class="currentPath === '/generate-token' ? 'text-white' : 'text-[#938FAA]'">MT
+        Token</a>
+      <a href="/pricing" :class="currentPath === '/pricing' ? 'text-white' : 'text-[#938FAA]'">Pricing</a>
 
-      
-      
+
+
     </nav>
 
     {# User Menu #}
     <!-- <div class=" md:flex items-center justify-end space-x-8 mt-4 md:mt-0"> -->
-      <div >
-        <a href="/signin" class="inline-flex items-center font-semibold text-base w-max border border-[#71EE9E] text-[#71EE9E] rounded-xl px-4 py-2">
-          Login
-          <svg width="19" class="ml-4" height="23" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16.2306 0.96875H8.61336C7.90651 0.969743 7.22883 1.33881 6.72902 1.99497C6.2292 2.65113 5.94807 3.5408 5.94732 4.46875V10.9688H9.21181C10.8667 10.9688 11.8056 9.07355 10.8029 7.75699L10.741 7.67562C10.6041 7.48656 10.529 7.23481 10.5315 6.97405C10.5341 6.71329 10.6141 6.46415 10.7546 6.27975C10.895 6.09535 11.0848 5.99027 11.2834 5.98694C11.4821 5.9836 11.6738 6.08226 11.8178 6.26188L15.6265 11.2619C15.7692 11.4494 15.8494 11.7036 15.8494 11.9688C15.8494 12.2339 15.7692 12.4881 15.6265 12.6756L11.8178 17.6756C11.6738 17.8552 11.4821 17.9539 11.2834 17.9506C11.0848 17.9472 10.895 17.8422 10.7546 17.6578C10.6141 17.4734 10.5341 17.2242 10.5315 16.9634C10.529 16.7027 10.6041 16.4509 10.741 16.2619L10.8029 16.1805C11.8056 14.864 10.8667 12.9688 9.21181 12.9688H5.94732V19.4688C5.94732 21.4719 7.55599 22.9688 8.99422 22.9688H16.2306C16.9375 22.9678 17.6151 22.5987 18.115 21.9425C18.6148 21.2864 18.8959 20.3967 18.8967 19.4688V4.46875C18.8959 3.5408 18.6148 2.65113 18.115 1.99497C17.6151 1.33881 16.9375 0.969743 16.2306 0.96875ZM1.37696 10.9688C1.17494 10.9688 0.98119 11.0741 0.838339 11.2616C0.695488 11.4492 0.615234 11.7035 0.615234 11.9688C0.615234 12.234 0.695488 12.4883 0.838339 12.6759C0.98119 12.8634 1.17494 12.9688 1.37696 12.9688H5.94732V10.9688H1.37696Z" fill="#71EE9E" />
-          </svg>
-        </a>
-      <!-- </div> -->
-    </div>
+      <div class="flex items-center" x-data="{open:false}">
+        {% if base64Image %}
+          <img src="{{ base64Image }}" class="w-9 h-9 object-cover" alt="Profile" />
+        {% else %}
+          <img src="/images/profile-image.png" class="w-12 h-12 object-cover" alt="Profile" />
+        {% endif %}
+        
+        {% if isAuthenticated %}
+          <button
+            @click="open = !open"
+            class="p-1 hover:bg-gray-800 rounded-full"
+          >
+          <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.75a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5zm0 14a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5zM13.75 12a1.75 1.75 0 1 1-3.5 0 1.75 1.75 0 0 1 3.5 0z" fill="#938FAA"></path></g></svg>
+          </button>
+      
+          <!-- Profile Menu -->
+          <div x-show="open" @click.away="open = false" style="display: none;" class="absolute mr-10 right-0 mt-56 w-48 bg-[#0A0419] rounded-lg shadow-lg border border-gray-800 z-50 " id="profile-menu">
+            <div class="py-2 ">
+              <a href="/dashboard" class="flex items-center px-4 py-2 text-[#938FAA] hover:bg-gray-800">
+                <img src="/images/user-icon.svg" class="w-5 h-5 mr-2" alt="User Icon" />
+                Dashboard
+              </a>
+              <a href="/dashboard/account-settings" class="flex items-center px-4 py-2 text-[#938FAA] hover:bg-gray-800">
+                <img src="/images/setting-icon.svg" class="w-5 h-5 mr-2" alt="Settings Icon" />
+                Account Settings
+              </a>
+              <a href="/logout" class="flex items-center px-4 py-2 text-[#938FAA] hover:bg-gray-800">
+                <img src="/images/log-out-icon.svg" class="w-5 h-5 mr-2" alt="Log Out Icon" />
+                Log Out
+              </a>
+            </div>
+          </div>
+        {% else %}
+          <a href="/signin" class="inline-flex items-center font-semibold text-base w-max border border-[#71EE9E] text-[#71EE9E] rounded-xl px-4 py-2">
+            Login
+            <svg width="19" class="ml-4" height="23" viewBox="0 0 19 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16.2306 0.96875H8.61336C7.90651 0.969743 7.22883 1.33881 6.72902 1.99497C6.2292 2.65113 5.94807 3.5408 5.94732 4.46875V10.9688H9.21181C10.8667 10.9688 11.8056 9.07355 10.8029 7.75699L10.741 7.67562C10.6041 7.48656 10.529 7.23481 10.5315 6.97405C10.5341 6.71329 10.6141 6.46415 10.7546 6.27975C10.895 6.09535 11.0848 5.99027 11.2834 5.98694C11.4821 5.9836 11.6738 6.08226 11.8178 6.26188L15.6265 11.2619C15.7692 11.4494 15.8494 11.7036 15.8494 11.9688C15.8494 12.2339 15.7692 12.4881 15.6265 12.6756L11.8178 17.6756C11.6738 17.8552 11.4821 17.9539 11.2834 17.9506C11.0848 17.9472 10.895 17.8422 10.7546 17.6578C10.6141 17.4734 10.5341 17.2242 10.5315 16.9634C10.529 16.7027 10.6041 16.4509 10.741 16.2619L10.8029 16.1805C11.8056 14.864 10.8667 12.9688 9.21181 12.9688H5.94732V19.4688C5.94732 21.4719 7.55599 22.9688 8.99422 22.9688H16.2306C16.9375 22.9678 17.6151 22.5987 18.115 21.9425C18.6148 21.2864 18.8959 20.3967 18.8967 19.4688V4.46875C18.8959 3.5408 18.6148 2.65113 18.115 1.99497C17.6151 1.33881 16.9375 0.969743 16.2306 0.96875ZM1.37696 10.9688C1.17494 10.9688 0.98119 11.0741 0.838339 11.2616C0.695488 11.4492 0.615234 11.7035 0.615234 11.9688C0.615234 12.234 0.695488 12.4883 0.838339 12.6759C0.98119 12.8634 1.17494 12.9688 1.37696 12.9688H5.94732V10.9688H1.37696Z" fill="#71EE9E" />
+            </svg>
+          </a>
+        {% endif %}
+      </div>
+      
   </header>
 
   {# Mobile Menu #}
-  <div x-show="menuOpen" 
-       class="md:hidden relative mx-auto rounded-b-lg top-24 left-0 w-[90%] border-x-2 border-b-2 px-3 border-[#938FAA] bg-[#05030e] z-30"
-       :class="menuOpen ? 'translate-y-0' : '-translate-y-56 opacity-0 pointer-events-none'"
-       style="top: 100%">
+  <div x-show="menuOpen"
+    class="md:hidden relative mx-auto rounded-b-lg top-24 left-0 w-[90%] border-x-2 border-b-2 px-3 border-[#938FAA] bg-[#05030e] z-30"
+    :class="menuOpen ? 'translate-y-0' : '-translate-y-56 opacity-0 pointer-events-none'" style="top: 100%">
     {# Mobile menu content #}
   </div>
 </div>
