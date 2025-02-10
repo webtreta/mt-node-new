@@ -147,6 +147,12 @@ app.get('/download/opera', (req, res) => {
 app.get('/pricing', (req, res) => {
   res.render('pricing.html', { plans });
 });
+app.get('/login', (req, res) => {
+  res.render('login.html');
+});
+app.get('/sign-up', (req, res) => {
+  res.render('sign-up.html');
+});
 app.get('*', (req, res) => {
     res.render('error.html');
 });

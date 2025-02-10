@@ -1,0 +1,169 @@
+{% extends 'main.html' %}
+{% block meta %}
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MT Auto Clicker - Work Smart, Not Hard</title>
+<meta name="description"
+    content="MT Auto Clicker automates repetitive tasks like clicks, scrolls, data entry across apps and websites with customizable, recordable automations to enhance productivity" />
+<meta name="robots" content="follow, index" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="MT Auto Clicker - Work Smart, Not Hard" />
+<meta property="og:description"
+    content="MT Auto Clicker automates repetitive tasks like clicks, scrolls, data entry across apps and websites with customizable, recordable automations to enhance productivity" />
+<meta property="og:url" content="https://www.mtautoclicker.com/" />
+<meta property="og:site_name" content="MT Auto Clicker" />
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:title" content="MT Auto Clicker - Work Smart, Not Hard" />
+<meta name="twitter:description"
+    content="MT Auto Clicker automates repetitive tasks like clicks, scrolls, data entry across apps and websites with customizable, recordable automations to enhance productivity" />
+<meta name="twitter:url" content="https://www.mtautoclicker.com/" />
+<meta name="twitter:image" content="https://www.mtautoclicker.com/img/social.jpg" />
+<link rel="canonical" href="https://www.mtautoclicker.com/" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<meta name="robots" content="index,follow" />
+
+{% endblock meta %}
+
+{% block body %}
+
+<div x-data="{
+    formData: {
+      firstname: '',
+      lastname: '',
+      email: '',
+      password: '',
+      contact_number: '',
+      userrefferalcode: '',
+      role: 'USER'
+    },
+    async handleSubmit(event) {
+      event.preventDefault();
+      
+      try {
+        const response = await fetch('{{ api_url }}/auth/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.formData)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          if (result.message === 'You are Registered succesfully please check your Inbox and verify your mail..  ') {
+            await Swal.fire({
+              icon: 'success',
+              title: 'Registered successfully',
+              text: 'A verification email has been sent. Please verify your account.',
+              showConfirmButton: true
+            });
+            window.location.href = '/signin';
+          } else if (result.message === 'Email is Already Present') {
+            await Swal.fire({
+              icon: 'info',
+              title: 'User already registered',
+              text: 'Please log in with your existing account.',
+              showConfirmButton: true
+            });
+            window.location.href = '/signin';
+          }
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: result.error || 'There was a problem with your registration.',
+            footer: 'Please try again later'
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Network Error',
+          text: 'Unable to connect to the server. Please try again later.',
+          footer: error.message
+        });
+      }
+    }
+  }" class="px-2 py-5 sm:p-5">
+
+    <div class="flex flex-col justify-center items-center mx-auto gap-3">
+        <h2 class="text-2xl md:text-4xl font-bold bg-clip-text text-transparent text-white text-center w-fit mx-auto">
+            Register your account
+        </h2>
+
+        <div
+            class="my-4 bg-[#0A0419] border-[3px] border-[#1D1634] p-5 rounded-xl sm:mx-auto sm:w-full sm:max-w-sm lg:w-screen">
+            <form class="space-y-4 md:space-y-4 text-white" @submit.prevent="handleSubmit">
+                <div>
+                    <label for="firstname" class="block mb-2 text-sm font-medium">
+                        First Name
+                    </label>
+                    <input required type="text" name="firstname" id="firstname"
+                        class="block w-full rounded-md p-2 px-4 bg-[#1A1F37] text-slate-100" placeholder="John"
+                        x-model="formData.firstname" />
+                </div>
+
+                <div>
+                    <label for="lastname" class="block mb-2 text-sm font-medium">
+                        Last Name
+                    </label>
+                    <input type="text" name="lastname" id="lastname"
+                        class="block w-full rounded-md p-2 px-4 bg-[#1A1F37] text-slate-100" placeholder="Doe"
+                        x-model="formData.lastname" />
+                </div>
+
+                <div>
+                    <label for="email" class="block mb-2 text-sm font-medium">
+                        Email
+                    </label>
+                    <input required type="email" name="email" id="email"
+                        class="block w-full rounded-md p-2 px-4 bg-[#1A1F37] text-slate-100"
+                        placeholder="johndoe@example.com" x-model="formData.email" />
+                </div>
+
+                <div>
+                    <label for="password" class="block mb-2 text-sm font-medium">
+                        Password
+                    </label>
+                    <input required type="password" name="password" id="password"
+                        class="block w-full rounded-md p-2 px-4 bg-[#1A1F37] text-slate-100" placeholder="••••••••"
+                        x-model="formData.password" />
+                </div>
+
+                <div>
+                    <label for="contact_number" class="block mb-2 text-sm font-medium">
+                        Contact Number
+                    </label>
+                    <input required type="tel" name="contact_number" id="contact_number" maxlength="14" pattern="\d{10}"
+                        title="Please enter 10 digits"
+                        class="block w-full rounded-md p-2 px-4 bg-[#1A1F37] text-slate-100" placeholder="9284****02"
+                        x-model="formData.contact_number" />
+                </div>
+
+                <div>
+                    <label for="userrefferalcode" class="block mb-2 text-sm font-medium">
+                        Referral Code
+                    </label>
+                    <input type="text" name="userrefferalcode" id="userrefferalcode"
+                        class="block w-full rounded-md p-2 px-4 bg-[#1A1F37] text-slate-100" placeholder="ASJH654"
+                        x-model="formData.userrefferalcode" />
+                </div>
+
+                <button type="submit"
+                    class="flex w-full justify-center bg-[#71EE9E] text-black p-[6px] rounded-lg text-base md:text-lg font-medium">
+                    Create an account
+                </button>
+
+                <a href="/signin" class="text-[#b270b5] underline self-center block text-center">
+                    Login to existing account
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}
