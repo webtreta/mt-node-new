@@ -61,12 +61,25 @@ function isAuthenticated(req, res, next) {
   if (!token) {
     return res.redirect("/login");
   }
-  next();
+  
+  // Use the token to fetch user data (or check if it's cached)
+  fetchUserData(token)
+    .then(userData => {
+      // Store user info in res.locals to be accessible in views
+      res.locals.user = user;
+      console.log(user)
+      res.locals.isAuthenticated = true;
+      next();
+    })
+    .catch(err => {
+      console.error("Failed to fetch user data:", err);
+      return res.redirect("/login");
+    });
 }
 
 app.use((req, res, next) => {
   res.locals.isAuthenticated = !!req.cookies.token; // Converts to true if token exists
-  res.locals.base64Image = req.user ? req.user.picture : null;
+  res.locals.user = req.user ;
   next();
 });
 
@@ -82,24 +95,17 @@ app.post("/login", async (req, res) => {
 
     const data = await response.json();
     if (data.statusCode === 200) {
-      res.cookie("token", data.token, {
-        httpOnly: true, // Secure against XSS attacks
-        secure: true,   // Only send over HTTPS
+      const token = data.token;
+      const userData = { email: data.ourUsers.email, user_id: data.ourUsers.id, first_name: data.ourUsers.firstname, first_name: data.ourUsers.lastname}; // This is where the email and picture would come from
+      console.log(userData)
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // Only secure in production
         sameSite: "Strict",
       });
-      res.cookie("user_id", data.ourUsers.id, {
-        httpOnly: true, // Secure against XSS attacks
-        secure: true,   // Only send over HTTPS
-        sameSite: "Strict",
-      });
-      res.cookie("email", data.ourUsers.email, {
-        httpOnly: true, // Secure against XSS attacks
-        secure: true,   // Only send over HTTPS
-        sameSite: "Strict",
-      });
-      res.cookie("user", JSON.stringify(data.ourUsers), {
-        httpOnly: true, // Secure against XSS attacks
-        secure: true,   // Only send over HTTPS
+      res.cookie("user", JSON.stringify(userData), {  // Store minimal data in cookies
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
         sameSite: "Strict",
       });
       return res.redirect("/");
@@ -184,7 +190,8 @@ app.get('/', (req, res) => {
 
     res.render('index.html', {
       testimonials,
-      platform
+      platform,
+      
     });
   } catch (error) {
     console.error('Error loading data files:', error);
@@ -228,7 +235,15 @@ app.get('/sign-up', (req, res) => {
   res.render('sign-up.html');
 });
 app.get('/generate-token', (req, res) => {
-  res.render('generate-token.html');
+  const userData = req.cookies.user ? JSON.parse(req.cookies.user) : null;
+  const userEmail = userData ? userData.email : '';
+  
+  res.render('generate-token.html', {
+    user: res.locals.user,
+    userEmail: userEmail,
+    token: req.query.token || '',
+    error: req.query.error || ''
+  });
 });
 app.get('*', (req, res) => {
   res.render('error.html');

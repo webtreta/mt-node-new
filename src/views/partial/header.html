@@ -89,13 +89,14 @@
     {# User Menu #}
     <!-- <div class=" md:flex items-center justify-end space-x-8 mt-4 md:mt-0"> -->
       <div class="flex items-center" x-data="{open:false}">
+        
+        
+        {% if isAuthenticated %}
         {% if base64Image %}
           <img src="{{ base64Image }}" class="w-9 h-9 object-cover" alt="Profile" />
         {% else %}
           <img src="/images/profile-image.png" class="w-12 h-12 object-cover" alt="Profile" />
         {% endif %}
-        
-        {% if isAuthenticated %}
           <button
             @click="open = !open"
             class="p-1 hover:bg-gray-800 rounded-full"
