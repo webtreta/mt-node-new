@@ -153,6 +153,9 @@ app.get('/login', (req, res) => {
 app.get('/sign-up', (req, res) => {
   res.render('sign-up.html');
 });
+app.get('/generate-token', (req, res) => {
+  res.render('generate-token.html');
+});
 app.get('*', (req, res) => {
     res.render('error.html');
 });

@@ -1,5 +1,5 @@
 {# views/partials/header.html #}
-<div class="md:fixed md:top-0 w-full max-sm:h-0 sm:h-0 md:h-auto max-sm:py-2 md:backdrop-blur-xl md:z-50"
+<div class="md:fixed md:top-0 w-full max-sm:h-0 sm:h-0 md:h-auto max-sm:py-2 md:backdrop-blur-xl md:z-50 mb-20"
   x-data="{
     menuOpen: false,
     isOpen: false,
@@ -78,7 +78,7 @@
     <nav class="hidden mt-3 md:flex space-x-4 lg:space-x-6">
       <a href="/" :class="currentPath === '/' ? 'text-white' : 'text-[#938FAA]'">Home</a>
 <a :href="`/download/${platform}`" :class="currentPath.startsWith(`/download`) ? 'text-white' : 'text-[#938FAA]'">Download</a>
-<a href="/token" :class="currentPath === '/token' ? 'text-white' : 'text-[#938FAA]'">MT Token</a>
+<a href="/generate-token" :class="currentPath === '/generate-token' ? 'text-white' : 'text-[#938FAA]'">MT Token</a>
 <a href="/pricing" :class="currentPath === '/pricing' ? 'text-white' : 'text-[#938FAA]'">Pricing</a>
 
       
