@@ -134,9 +134,8 @@ app.get("/logout", (req, res) => {
 // Endpoint to create an order
 app.post('/generate-token', async (req, res) => {
   const { email } = req.body;
-
   if (!email) {
-    return res.render('generate-token', { error: 'Email is required' });
+    return res.render('mt-token', { error: 'Email is required' });
   }
 
   try {
@@ -177,7 +176,7 @@ app.post('/generate-token', async (req, res) => {
     //   console.log(errorMessage)
     // }
 
-    return res.redirect(`/mt-tokens?error=${encodeURIComponent(errorMessage)}`);
+    return res.redirect(`/mt-token?error=${encodeURIComponent(errorMessage)}`);
   }
 });
 
@@ -235,10 +234,13 @@ app.get('/sign-up', (req, res) => {
   res.render('sign-up.html');
 });
 app.get('/generate-token', (req, res) => {
+  res.render('generate-token.html');
+});
+app.get('/mt-token', (req, res) => {
   const userData = req.cookies.user ? JSON.parse(req.cookies.user) : null;
   const userEmail = userData ? userData.email : '';
   
-  res.render('generate-token.html', {
+  res.render('mt-token.html', {
     user: res.locals.user,
     userEmail: userEmail,
     token: req.query.token || '',
