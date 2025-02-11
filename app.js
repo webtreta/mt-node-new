@@ -77,66 +77,20 @@ function isAuthenticated(req, res, next) {
     });
 }
 
+
 app.use((req, res, next) => {
-  res.locals.isAuthenticated = !!req.cookies.token; // Converts to true if token exists
-  res.locals.user = req.user ;
+  const token = req.headers.authorization?.split(" ")[1] || null;
+  if (token) {
+      try {
+          const decoded = JSON.parse(atob(token.split(".")[1]));
+          res.locals.user = decoded;
+      } catch (error) {
+          res.locals.user = null;
+      }
+  }
   next();
 });
 
-app.get('/forgot-password', (req, res) => {
-  res.render('forgot-password.html', {
-      api_url: process.env.API_URL 
-  });
-});
-app.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const response = await fetch("https://verification.devicetest.org/auth/signin", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-    if (data.statusCode === 200) {
-      const token = data.token;
-      const userData = { email: data.ourUsers.email, user_id: data.ourUsers.id, first_name: data.ourUsers.firstname, first_name: data.ourUsers.lastname}; // This is where the email and picture would come from
-      console.log(userData)
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production', // Only secure in production
-        sameSite: "Strict",
-      });
-      res.cookie("user", JSON.stringify(userData), {  // Store minimal data in cookies
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: "Strict",
-      });
-      return res.redirect("/");
-    } else {
-      if (data.error === "Invalid CredentialsBad credentials") {
-        return res.render("login", { error: "Invalid Credentials" });
-      } else if (data.message === "Invalid CredentialsNo value present") {
-        return res.render("login", { error: "User Not Found" });
-      } else {
-        return res.render("login", { error: data.message });
-      }
-    }
-  } catch (error) {
-    return res.render("login", { error: "Something went wrong" });
-  }
-});
-
-app.get("/logout", (req, res) => {
-    res.clearCookie("token");
-    res.clearCookie("refreshToken");
-    res.clearCookie("email");
-    res.clearCookie("user_id");
-    res.clearCookie("user");
-    res.redirect("/login");
-});
-// Endpoint to create an order
 app.post('/generate-token', async (req, res) => {
   const { email } = req.body;
   if (!email) {
@@ -184,9 +138,47 @@ app.post('/generate-token', async (req, res) => {
     return res.redirect(`/mt-token?error=${encodeURIComponent(errorMessage)}`);
   }
 });
+app.post("/auth/signin", async (req, res) => {
+  try {
+      const { email, password } = req.body;
 
+      const response = await fetch("https://verification.devicetest.org/auth/signin", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+      });
 
+      const data = await response.json();
 
+      if (data.statusCode === 200) {
+          res.json({
+              token: data.token,
+              email: email,
+              role: data.role,
+              picture: data.ourUsers?.picture || "",
+              user_id: data.ourUsers?.id || "",
+          });
+      } else {
+          res.status(401).json({ message: "Invalid credentials" });
+      }
+  } catch (error) {
+      res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get("/logout", (req, res) => {
+    res.clearCookie("token");
+    res.clearCookie("refreshToken");
+    res.clearCookie("email");
+    res.clearCookie("user_id");
+    res.clearCookie("user");
+    res.redirect("/login");
+});
+app.get('/forgot-password', (req, res) => {
+  res.render('forgot-password.html', {
+      api_url: process.env.API_URL 
+  });
+});
 app.get('/', (req, res) => {
   try {
     const platform = require(path.join(__dirname, 'data', 'platforms.json'));
