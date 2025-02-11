@@ -83,6 +83,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get('/forgot-password', (req, res) => {
+  res.render('forgot-password.html', {
+      api_url: process.env.API_URL 
+  });
+});
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -231,7 +236,9 @@ app.get('/login', (req, res) => {
   res.render('login.html');
 });
 app.get('/sign-up', (req, res) => {
-  res.render('sign-up.html');
+  res.render('sign-up.html',{
+    api_url: process.env.API_URL
+  });
 });
 app.get('/generate-token', (req, res) => {
   res.render('generate-token.html');
