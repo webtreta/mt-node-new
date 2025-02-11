@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png"> -->
+    <!-- <link rel="icon" type="image/png" sizes="16x16" href="/favicon.svg"> -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon.png">
+    <link rel="stylesheet" href="/css/style.css?v=2.0">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com/">
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
+    <link rel="dns-prefetch" href="//www.google-analytics.com">
+    <link rel="dns-prefetch" href="//adservice.google.com">
+    <link rel="dns-prefetch" href="//pagead2.googlesyndication.com">
+    <link rel="dns-prefetch" href="//tpc.googlesyndication.com">
+    <link href="/css/styles.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2" defer></script>
+    {% block meta %}
+
+    {% endblock meta %}
+    <title>Document</title>
+</head>
+{% block content %}
+<div x-data="{
+    isProfileMenuOpen: false,
+    isOpen: false,
+    base64Image: '',
+    currentPath: window.location.pathname,
+    userData: null,
+    
+    init() {
+        // Get user data from cookie
+        const userCookie = document.cookie
+            .split('; ')
+            .find(row => row.startsWith('user='));
+            
+        if (userCookie) {
+            this.userData = JSON.parse(decodeURIComponent(userCookie.split('=')[1]));
+            this.base64Image = this.userData.picture ? 'data:image/png;base64,' + this.userData.picture : '';
+        }
+        
+        // Close profile menu when clicking outside
+        document.addEventListener('mousedown', (event) => {
+            const menu = this.$refs.profileMenu;
+            if (menu && !menu.contains(event.target)) {
+                this.isProfileMenuOpen = false;
+            }
+        });
+    },
+    
+    handleLogout() {
+        document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        document.cookie = 'user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        window.location.href = '/';
+    },
+    
+    toggleSidebar() {
+        this.isOpen = !this.isOpen;
+    }
+}" class="text-slate-100 min-h-screen flex flex-col">
+    
+    <!-- Header -->
+    <div x-ref="profileMenu" class="bg-[#0F0F2D] p-4 text-white flex md:px-10 sm:flex-row justify-between items-center">
+        <button
+            @click="toggleSidebar"
+            class="md:hidden z-50 bg-[#0F0F2D] p-2 rounded-lg"
+        >
+            <template x-if="isOpen">
+                <svg class="text-white w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </template>
+            <template x-if="!isOpen">
+                <svg class="text-white w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </template>
+        </button>
+        
+        <a href="/" class="block">
+            <img src="/images/logo.webp" class="w-[120px] sm:w-[150px] md:w-[180px]" alt="logo" loading="lazy">
+        </a>
+        
+        <div class="flex items-center">
+            <template x-if="base64Image">
+                <img :src="base64Image" alt="Profile" class="w-9 h-9 object-cover">
+            </template>
+            <template x-if="!base64Image">
+                <img src="/images/profile-image.png" alt="Profile" class="w-12 h-12 object-cover">
+            </template>
+            
+            <button
+                @click="isProfileMenuOpen = !isProfileMenuOpen"
+                class="p-1 hover:bg-gray-800 rounded-full max-sm:ml-3"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="text-[#938FAA] w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="1"></circle>
+                    <circle cx="12" cy="5" r="1"></circle>
+                    <circle cx="12" cy="19" r="1"></circle>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Profile Menu -->
+        <template x-if="isProfileMenuOpen">
+            <div class="absolute right-0 border-x-2 border-b-2 border-[#1D1634] mt-64 mx-4 w-48 bg-[#0A0419] rounded-b-lg shadow-lg z-50">
+                <div class="py-2 px-4">
+                    <a href="/dashboard" class="flex items-center px-4 py-2 text-[#938FAA] hover:bg-gray-800">
+                        <img src="/images/user-icon.svg" class="w-5 h-5 mr-2" alt="dashboard-icon">
+                        Dashboard
+                    </a>
+                    <a href="/dashboard/account-settings" class="flex items-center px-4 py-2 text-[#938FAA] hover:bg-gray-800">
+                        <img src="/images/setting-icon.svg" class="w-5 h-5 mr-2" alt="setting-icon">
+                        Account Settings
+                    </a>
+                    <button @click="handleLogout" class="flex items-center w-full px-4 py-2 text-[#938FAA] hover:bg-gray-800">
+                        <img src="/images/log-out-icon.svg" class="w-5 h-5 mr-2" alt="log-out-icon">
+                        Log Out
+                    </button>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="flex flex-1 flex-col md:flex-row">
+        <!-- Desktop Sidebar -->
+        <aside class="max-sm:hidden md:w-72 bg-[#0A0419] h-full mt-4 md:mt-20 mx-4 md:mx-10 p-4 rounded-xl">
+            <nav class="space-y-6">
+                {% for link in [
+                    { href: '/dashboard', icon: 'house', label: 'Dashboard' },
+                    { href: '/dashboard/statistics', icon: 'chart', label: 'Statistics' },
+                    { href: '/dashboard/account-settings', icon: 'settings', label: 'Account Settings' },
+                    { href: '/dashboard/billing', icon: 'credit-card', label: 'Billing' }
+                ] %}
+                <a
+                    href="{{ link.href }}"
+                    class="flex items-center space-x-3 p-3 rounded-lg"
+                    :class="currentPath === '{{ link.href }}' ? 'bg-blue-600 bg-opacity-10 text-blue-500' : 'text-gray-400 hover:bg-blue-600 hover:bg-opacity-10'"
+                >
+                    <div class="w-10 h-10 flex items-center justify-center"
+                         :class="currentPath === '{{ link.href }}' ? 'bg-blue-600 text-white' : 'bg-[#1A1F37] text-[#0075FF]'">
+                    </div>
+                    <span class="text-white">{{ link.label }}</span>
+                </a>
+                {% endfor %}
+            </nav>
+
+            <!-- Help Section -->
+            <div class="mt-20 bg-[#0075FF] rounded-lg p-4">
+                <div class="flex items-center space-x-2 mb-2">
+                    <svg class="text-gray-400 w-6 h-6" ...></svg>
+                    <span class="text-white">Need Help?</span>
+                </div>
+                <p class="text-sm text-gray-400 mb-3">Please check our Docs</p>
+                <button class="w-full bg-[#0F0F2D] text-white py-2 rounded text-sm hover:bg-opacity-80 transition-colors">
+                    DOCUMENTATION
+                </button>
+            </div>
+        </aside>
+
+        <!-- Mobile Sidebar -->
+        <template x-if="isOpen">
+            <div class="md:hidden fixed inset-0 bg-black/50 z-40" @click="toggleSidebar">
+                <aside @click.stop class="w-64 h-full bg-[#0A0419] absolute left-0 top-0 p-4 shadow-lg">
+                    <!-- Mobile Navigation -->
+                    <nav class="space-y-4 pt-12 mt-6">
+                        {% for link in navLinks %}
+                        <a href="{{ link.href }}" 
+                           class="flex items-center space-x-3 p-3 rounded-lg"
+                           :class="currentPath === '{{ link.href }}' ? 'bg-blue-600 bg-opacity-10 text-blue-500' : 'text-gray-400 hover:bg-blue-600 hover:bg-opacity-10'">
+                            <div class="w-10 h-10 flex items-center justify-center rounded-lg"
+                                 :class="currentPath === '{{ link.href }}' ? 'bg-blue-600 text-white' : 'bg-[#1A1F37] text-[#0075FF]'">
+                                {% include 'icons/' + link.icon + '.svg' %}
+                            </div>
+                            <span class="text-white">{{ link.label }}</span>
+                        </a>
+                        {% endfor %}
+                    </nav>
+
+                    <!-- Mobile Help Section -->
+                    <div class="mt-20 bg-[#0075FF] rounded-lg p-4">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <svg class="text-gray-400 w-6 h-6" ...></svg>
+                            <span class="text-white">Need Help?</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mb-3">Please check our Docs</p>
+                        <button class="w-full bg-[#0F0F2D] text-white py-2 rounded text-sm hover:bg-opacity-80 transition-colors">
+                            DOCUMENTATION
+                        </button>
+                    </div>
+                </aside>
+            </div>
+        </template>
+
+        <!-- Main Content -->
+        <main class="flex-1 px-4 md:px-10 py-6">
+            {% block dashboard_content %}{% endblock %}
+        </main>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/recharts/dist/recharts.min.js"></script>
+{% endblock %}
