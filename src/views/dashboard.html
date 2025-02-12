@@ -32,15 +32,7 @@
     userData: null,
     
     init() {
-        // Get user data from cookie
-        const userCookie = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('user='));
-            
-        if (userCookie) {
-            this.userData = JSON.parse(decodeURIComponent(userCookie.split('=')[1]));
-            this.base64Image = this.userData.picture ? 'data:image/png;base64,' + this.userData.picture : '';
-        }
+        this.checkAuth();
         
         // Close profile menu when clicking outside
         document.addEventListener('mousedown', (event) => {
@@ -50,17 +42,31 @@
             }
         });
     },
+
+    checkAuth() {
+      const token = localStorage.getItem('token');
+      const userData = localStorage.getItem('user');
+
+      this.isToken = !!token;
+      if (userData) {
+        const parsedData = JSON.parse(userData);
+        this.base64Image = parsedData.picture ? 'data:image/png;base64,' + parsedData.picture : '';
+      }
+    },
     
     handleLogout() {
-        document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        document.cookie = 'user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        window.location.href = '/';
+        localStorage.removeItem('token');
+      localStorage.removeItem('uid');
+      localStorage.removeItem('islogin');
+      localStorage.removeItem('user');
+      this.isToken = false;
+      window.location.href = '/';
     },
     
     toggleSidebar() {
         this.isOpen = !this.isOpen;
     }
-}" class="text-slate-100 min-h-screen flex flex-col bg-[#05030E]">
+}" x-init="init()" class="text-slate-100 min-h-screen flex flex-col bg-[#05030E]">
     
     <!-- Header -->
     <div x-ref="profileMenu" class="bg-[#0A0419] p-4 text-white flex md:px-10 sm:flex-row justify-between items-center">
@@ -151,7 +157,7 @@
             </nav>
 
             <!-- Help Section -->
-            <div class="mt-20 bg-[#0075FF] rounded-lg p-4">
+            <!-- <div class="mt-20 bg-[#0075FF] rounded-lg p-4">
                 <div class="flex items-center space-x-2 mb-2">
                     <svg class="text-gray-400 w-6 h-6" ...></svg>
                     <span class="text-white">Need Help?</span>
@@ -160,7 +166,7 @@
                 <button class="w-full bg-[#0F0F2D] text-white py-2 rounded text-sm hover:bg-opacity-80 transition-colors">
                     DOCUMENTATION
                 </button>
-            </div>
+            </div> -->
         </aside>
 
         <!-- Mobile Sidebar -->
@@ -169,13 +175,17 @@
                 <aside @click.stop class="w-64 h-full bg-[#0A0419] absolute left-0 top-0 p-4 shadow-lg">
                     <!-- Mobile Navigation -->
                     <nav class="space-y-4 pt-12 mt-6">
-                        {% for link in navLinks %}
+                        {% for link in [
+                            { href: '/dashboard', icon: 'house', label: 'Dashboard' },
+                            { href: '/dashboard/statistics', icon: 'chart', label: 'Statistics' },
+                            { href: '/dashboard/account-settings', icon: 'settings', label: 'Account Settings' },
+                            { href: '/dashboard/billing', icon: 'credit-card', label: 'Billing' }
+                        ] %}
                         <a href="{{ link.href }}" 
                            class="flex items-center space-x-3 p-3 rounded-lg"
                            :class="currentPath === '{{ link.href }}' ? 'bg-blue-600 bg-opacity-10 text-blue-500' : 'text-gray-400 hover:bg-blue-600 hover:bg-opacity-10'">
                             <div class="w-10 h-10 flex items-center justify-center rounded-lg"
                                  :class="currentPath === '{{ link.href }}' ? 'bg-blue-600 text-white' : 'bg-[#1A1F37] text-[#0075FF]'">
-                                {% include 'icons/' + link.icon + '.svg' %}
                             </div>
                             <span class="text-white">{{ link.label }}</span>
                         </a>
@@ -183,7 +193,7 @@
                     </nav>
 
                     <!-- Mobile Help Section -->
-                    <div class="mt-20 bg-[#0075FF] rounded-lg p-4">
+                    <!-- <div class="mt-20 bg-[#0075FF] rounded-lg p-4">
                         <div class="flex items-center space-x-2 mb-2">
                             <svg class="text-gray-400 w-6 h-6" ...></svg>
                             <span class="text-white">Need Help?</span>
@@ -192,7 +202,7 @@
                         <button class="w-full bg-[#0F0F2D] text-white py-2 rounded text-sm hover:bg-opacity-80 transition-colors">
                             DOCUMENTATION
                         </button>
-                    </div>
+                    </div> -->
                 </aside>
             </div>
         </template>
