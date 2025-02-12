@@ -318,6 +318,33 @@ app.get('/sign-up', (req, res) => {
     api_url: process.env.API_URL
   });
 });
+app.get('/about-us', (req, res) => {
+  res.render('about-us.html');
+});
+app.get('/cookie-policy', (req, res) => {
+  res.render('cookie-policy.html');
+});
+app.get('/cookie-policy', (req, res) => {
+  res.render('cookie-policy.html');
+});
+app.get('/dmca-policy', (req, res) => {
+  res.render('dmca-policy.html');
+});
+app.get('/eu-policy', (req, res) => {
+  res.render('eu-policy.html');
+});
+app.get('/gdpr-policy', (req, res) => {
+  res.render('gdpr-policy.html');
+});
+app.get('/privacy-policy', (req, res) => {
+  res.render('privacy-policy.html');
+});
+app.get('/terms', (req, res) => {
+  res.render('terms.html');
+});
+app.get('/legal-notice', (req, res) => {
+  res.render('legal-notice.html');
+});
 app.get('/generate-token', (req, res) => {
   res.render('generate-token.html');
 });
