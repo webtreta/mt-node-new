@@ -60,13 +60,13 @@
     toggleSidebar() {
         this.isOpen = !this.isOpen;
     }
-}" class="text-slate-100 min-h-screen flex flex-col">
+}" class="text-slate-100 min-h-screen flex flex-col bg-[#05030E]">
     
     <!-- Header -->
-    <div x-ref="profileMenu" class="bg-[#0F0F2D] p-4 text-white flex md:px-10 sm:flex-row justify-between items-center">
+    <div x-ref="profileMenu" class="bg-[#0A0419] p-4 text-white flex md:px-10 sm:flex-row justify-between items-center">
         <button
             @click="toggleSidebar"
-            class="md:hidden z-50 bg-[#0F0F2D] p-2 rounded-lg"
+            class="md:hidden z-50 bg-[#0A0419] p-2 rounded-lg"
         >
             <template x-if="isOpen">
                 <svg class="text-white w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -138,11 +138,12 @@
                 ] %}
                 <a
                     href="{{ link.href }}"
-                    class="flex items-center space-x-3 p-3 rounded-lg"
+                    class="flex items-center space-x-3 p-3 rounded-xl"
                     :class="currentPath === '{{ link.href }}' ? 'bg-blue-600 bg-opacity-10 text-blue-500' : 'text-gray-400 hover:bg-blue-600 hover:bg-opacity-10'"
                 >
-                    <div class="w-10 h-10 flex items-center justify-center"
-                         :class="currentPath === '{{ link.href }}' ? 'bg-blue-600 text-white' : 'bg-[#1A1F37] text-[#0075FF]'">
+                <div class="w-10 h-10 flex items-center justify-center  rounded-xl"
+                :class="currentPath === '{{ link.href }}' ? 'bg-blue-600 text-white' : 'bg-[#1A1F37] text-[#0075FF]'">
+                <img src="/images/house.png" class="w-5 h-5" alt="">
                     </div>
                     <span class="text-white">{{ link.label }}</span>
                 </a>

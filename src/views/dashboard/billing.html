@@ -1,0 +1,176 @@
+{% extends "dashboard.html" %}
+
+{% block dashboard_content %}
+<div x-data="billingData()" 
+     x-init="initializeData()" 
+     class="min-h-screen">
+    <div class="flex justify-center items-center px-4">
+        <main class="flex flex-col gap-14 bg-[#0A0419] w-full mx-0 sm:mx-4 my-10 md:p-6 rounded-lg">
+            <!-- Current Subscription -->
+            <div class="bg-[#0F0F2D] rounded-2xl px-6 py-8">
+                <h2 class="text-white text-lg font-semibold">CURRENT SUBSCRIPTION</h2>
+                <div class="flex flex-col py-12 sm:flex-row justify-between items-start">
+                    <div class="text-white text-center sm:text-left">
+                        <template x-if="subscriptionData">
+                            <div class="space-y-10">
+                                <h3 x-text="'MT Auto Clicker Pro(' + subscriptionData.planName + ') Subscription'"></h3>
+                                <p class="text-xl" x-text="subscriptionData.planName === 'yearly' ? '$ 3.99 per year' : subscriptionData.planName === 'lifetime' ? '$ 19.00 lifetime' : ''"></p>
+                                <div class="flex gap-3">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0_2843_22034)">
+                                            <path opacity="0.5" d="M22 10H2V19C2 19.7956 2.31607 20.5587 2.87868 21.1213C3.44129 21.6839 4.20435 22 5 22H19C19.7956 22 20.5587 21.6839 21.1213 21.1213C21.6839 20.5587 22 19.7956 22 19V10ZM7 8C6.73478 8 6.48043 7.89464 6.29289 7.70711C6.10536 7.51957 6 7.26522 6 7V3C6 2.73478 6.10536 2.48043 6.29289 2.29289C6.48043 2.10536 6.73478 2 7 2C7.26522 2 7.51957 2.10536 7.70711 2.29289C7.89464 2.48043 8 2.73478 8 3V7C8 7.26522 7.89464 7.51957 7.70711 7.70711C7.51957 7.89464 7.26522 8 7 8ZM17 8C16.7348 8 16.4804 7.89464 16.2929 7.70711C16.1054 7.51957 16 7.26522 16 7V3C16 2.73478 16.1054 2.48043 16.2929 2.29289C16.4804 2.10536 16.7348 2 17 2C17.2652 2 17.5196 2.10536 17.7071 2.29289C17.8946 2.48043 18 2.73478 18 3V7C18 7.26522 17.8946 7.51957 17.7071 7.70711C17.5196 7.89464 17.2652 8 17 8Z" fill="#0075FF"/>
+                                        </g>
+                                    </svg>
+                                    <p class="text-[#938FAA]" x-text="'Your subscription will be canceled on ' + subscriptionData.expiryDate"></p>
+                                </div>
+                            </div>
+                        </template>
+                        <template x-if="!subscriptionData">
+                            <h3>You are not subscribed</h3>
+                        </template>
+                    </div>
+                    <div class="flex flex-col items-center max-sm:mt-20 mr-20">
+                        <button class="flex items-center gap-2 bg-[#1A1F37] py-3 rounded-full px-6 text-[#938FAA] transition-colors">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.50001 6.74999H3.93251C5.06419 5.01078 6.72762 3.68385 8.67485 2.967C10.6221 2.25015 12.7488 2.18177 14.7381 2.77206C16.7273 3.36234 18.4726 4.57968 19.7136 6.2426C20.9547 7.90553 21.6251 9.92501 21.625 12H23.375C23.3774 9.6598 22.658 7.37581 21.3148 5.45946C19.9716 3.54312 18.0701 2.08769 15.8694 1.29163C13.6688 0.495572 11.2762 0.397632 9.01781 1.01116C6.75947 1.6247 4.74532 2.91984 3.25001 4.71999V1.49999H1.50001V8.49999H8.50001V6.74999Z" fill="#71EE9E"/>
+                            </svg>
+                            <span>Renew Subscription</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="bg-[#0F0F2D] rounded-2xl px-6 py-8">
+                <h2 class="text-white text-lg font-semibold">PAYMENT METHOD</h2>
+                <div class="flex flex-col py-12 sm:flex-row justify-between items-start">
+                    <div class="text-white text-center sm:text-left">
+                        <div class="space-y-10">
+                            <div class="flex gap-3">
+                                <div class="bg-[#0075FF] flex items-center justify-center rounded-lg py-2 px-1">
+                                    <svg width="25" height="8" viewBox="0 0 25 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <!-- Visa logo SVG here -->
+                                    </svg>
+                                </div>
+                                <p class="text-white">Visa **** 0744</p>
+                            </div>
+                            <div class="flex gap-3">
+                                <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12.5 0v25M0 12.5h25" stroke="#71EE9E" stroke-width="2"/>
+                                </svg>
+                                <p class="text-[#938FAA]">Add Payment Method</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Billing Info -->
+            <div class="bg-[#0F0F2D] rounded-2xl px-6 py-8">
+                <h2 class="text-white text-lg font-semibold">Billing Information</h2>
+                <div class="flex flex-col py-12 sm:py-6">
+                    <template x-if="transactionData">
+                        <div class="grid grid-cols-2 w-1/2 gap-y-4 text-white">
+                            <p class="font-medium text-left text-[#938FAA]">Name</p>
+                            <p class="text-left" x-text="transactionData.userDetails.firstname + ' ' + transactionData.userDetails.lastname"></p>
+                            <p class="font-medium text-[#938FAA] text-left">Billing Contact</p>
+                            <p class="text-left" x-text="transactionData.userDetails.contact"></p>
+                            <p class="font-medium text-[#938FAA] text-left">Billing Email</p>
+                            <p class="text-left" x-text="transactionData.userDetails.email"></p>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Invoice History -->
+            <section class="bg-[#0F0F2D] rounded-2xl p-4 sm:p-6 lg:p-8">
+                <h2 class="text-white text-lg font-semibold mb-4">INVOICE HISTORY</h2>
+                <div class="space-y-4">
+                    <template x-for="(transaction, index) in transactionData?.transactions" :key="index">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-lg">
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center md:justify-between md:gap-44 sm:gap-4">
+                                <span class="text-white" x-text="transaction.paymentDate || 'N/A'"></span>
+                                <span class="text-[#938FAA]" x-text="'$' + (transaction.amount || 'N/A')"></span>
+                            </div>
+                            <div class="flex items-center md:justify-between md:gap-20 gap-5 mt-2 sm:mt-0">
+                                <span class="bg-blue-500 px-3 py-1 rounded-md text-sm" x-text="transaction.status || 'N/A'"></span>
+                                <span>MT Auto Clicker Pro(Monthly) Subscription</span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function billingData() {
+    return {
+        userId: '',
+        token: '',
+        isSubscribed: false,
+        subscriptionData: null,
+        transactionData: null,
+
+        async initializeData() {
+            const userData = localStorage.getItem('user');
+            const tempToken = localStorage.getItem('token');
+            
+            if (userData) {
+                const parsedData = JSON.parse(userData);
+                this.userId = parsedData.user_id;
+                this.token = tempToken;
+                await this.getSubscription();
+                await this.getTransactionHistory();
+            }
+        },
+
+        async getSubscription() {
+            try {
+                const response = await fetch(`https://verification.devicetest.org/public/active-plan?userId=${this.userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status}`);
+                }
+
+                this.isSubscribed = true;
+                const resData = await response.json();
+                this.subscriptionData = resData;
+            } catch (error) {
+                console.error('Failed to fetch subscription data:', error);
+            }
+        },
+
+        async getTransactionHistory() {
+            try {
+                const response = await fetch(`https://verification.devicetest.org/public/transaction-history?userId=${this.userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status}`);
+                }
+
+                const resData = await response.json();
+                this.transactionData = resData;
+            } catch (error) {
+                console.error('Failed to fetch transaction history:', error);
+            }
+        }
+    };
+}
+</script>
+{% endblock %}

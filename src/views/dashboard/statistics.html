@@ -1,0 +1,127 @@
+{% extends "dashboard.html" %}
+
+{% block dashboard_content %}
+<div x-data="statisticsData()" x-init="checkAuth()" class="min-h-screen">
+    <div class="flex justify-center items-center px-4">
+        <main class="flex flex-col bg-[#0A0419] w-full mx-0 sm:mx-4 my-10 p-6 rounded-lg">
+            <!-- Welcome Card -->
+            <div class="bg-[#0F0F2D] rounded-lg px-6 py-4 mb-6">
+                <h2 class='text-white text-lg'>Software Usage</h2>
+                <div class="flex flex-col py-12 sm:flex-row justify-between items-center">
+                    <div class="text-white text-center sm:text-left">
+                        <div class="flex flex-col ml-10 md:flex-row items-center justify-between">
+                            <div class="w-56 h-56 relative">
+                                <div x-ref="chartContainer"></div>
+                                <div class="absolute top-1/2 left-[45%] transform -translate-x-1/2 -translate-y-1/2 text-center">
+                                    <div class="text-sm text-gray-400">Total Uses report</div>
+                                    <div class="text-white font-semibold" x-text="totalUses">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center mr-20">
+                        <ul class="grid grid-cols-2 sm:grid-cols-2 gap-6 w-full max-w-4xl">
+                            <template x-for="(entry, index) in usageData" :key="index">
+                                <li class="flex items-center space-x-4 p-4 rounded-lg transition-shadow duration-300">
+                                    <span :style="'color: ' + entry.color" class="text-2xl">•</span>
+                                    <div class="flex items-center justify-between w-full">
+                                        <span class="text-white font-medium mx-2" x-text="entry.name"></span>
+                                        <span class="text-white font-semibold text-right" x-text="entry.value"></span>
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+function statisticsData() {
+    return {
+        userData: null,
+        usageData: [],
+        totalUses: 0,
+        chart: null,
+        
+        init() {
+            this.checkAuth();
+        },
+        checkAuth() {
+            const token = localStorage.getItem('token');
+            const userData = localStorage.getItem('user');
+
+            if (!token || !userData) {
+                window.location.href = "/login"; // Redirect to login if not authenticated
+                return;
+            }
+
+            this.userData = JSON.parse(userData);
+            this.fetchUsageData();
+        },
+        async fetchUsageData() {
+            
+            
+            try {
+                const response = await fetch('https://verification.devicetest.org/public/userReport', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: this.userData.user_id })
+                });
+                
+                if (!response.ok) {
+                    console.error('Request failed:', await response.text());
+                    return;
+                }
+                
+                const result = await response.json();
+                this.usageData = [
+                    { name: 'Single Target Clicking', value: result.data.singleClick, color: '#4CAF50' },
+                    { name: 'Multi Target Clicking', value: result.data.multiClick, color: '#7E57C2' },
+                    { name: 'Auto HotKey', value: result.data.autoHotKey, color: '#FF9800' },
+                    { name: 'Auto Scroll', value: result.data.autoScroll, color: '#FF9808' },
+                    { name: 'Capture ScreenShot', value: result.data.captureSS, color: '#FF8C00' },
+                    { name: 'Record Screen', value: result.data.recordScreen, color: '#8BC34A' },
+                    { name: 'Touch And Hold', value: result.data.touchAndHold, color: '#9C27B0' },
+                    { name: 'Zoom', value: result.data.zoom, color: '#3F51B5' },
+                    { name: 'Auto Refresh', value: result.data.autoRefresh, color: '#FFC107' },
+                    { name: 'Custom Cursor', value: result.data.customCursor, color: '#FF5722' },
+                    { name: 'Auto Fill', value: result.data.autoFill, color: '#009688' },
+                    { name: 'Record Mode', value: result.data.recordMode, color: '#795548' }
+                ];
+                
+                this.totalUses = this.usageData.reduce((sum, item) => sum + item.value, 0);
+                
+                this.$nextTick(() => this.renderChart());
+            } catch (error) {
+                console.error('Error fetching usage data:', error);
+            }
+        },
+        
+        renderChart() {
+            if (!this.usageData.length) return;
+            
+            if (this.chart) {
+                this.chart.destroy();
+            }
+            
+            this.chart = new ApexCharts(this.$refs.chartContainer, {
+                chart: { type: 'donut', height: 250 },
+                series: this.usageData.map(item => item.value),
+                labels: this.usageData.map(item => item.name),
+                colors: this.usageData.map(item => item.color),
+                legend: { show: false },
+                responsive: [{ breakpoint: 480, options: { chart: { width: 200 } } }]
+            });
+            
+            this.chart.render();
+        }
+    };
+}
+</script>
+{% endblock %}

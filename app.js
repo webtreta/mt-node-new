@@ -165,6 +165,72 @@ app.post("/auth/signin", async (req, res) => {
       res.status(500).json({ message: "Server error" });
   }
 });
+app.post("/changePassword", async (req, res) => {
+  try {
+      const { userId, oldPassword, newPassword, confirmPassword } = req.body;
+      console.log(req.body)
+      // Make sure passwords match
+      if (newPassword !== confirmPassword) {
+          return res.status(400).json({ message: "New password and confirm password do not match!" });
+      }
+
+      // Make the API request to change the password
+      const response = await fetch("https://verification.devicetest.org/public/changePassword", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId, oldPassword, newPassword, confirmPassword })
+      });
+
+      const data = await response.json();
+
+      // Check the response from the external service
+      if (data.msg === 'Password Update Succesfully') {
+          return res.status(200).json({ message: 'Password Changed Successfully!' });
+      } else {
+          console.log(data.msg);
+          return res.status(400).json({ message: data.msg });
+      }
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Server error", error });
+  }
+});
+app.post("/updateProfile", async (req, res) => {
+  try {
+      const { userId, picture, token } = req.body;
+      // console.log(picture);
+
+      // Check for required fields
+      if (!userId || !picture || !token) {
+          return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      // Make the API request to change the profile
+      const response = await fetch("https://verification.devicetest.org/adminuser/updateProfile", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({ userId, picture })
+      });
+
+      const data = await response.json();
+      console.log(data);
+
+      // Check the response from the external service
+      if (data.msg === 'Profile Update Succesfully') {  // Adjusted success message
+          return res.status(200).json({ message: 'Profile Update Succesfully!' });
+      } else {
+          console.log(data.msg);
+          return res.status(400).json({ message: data.msg });
+      }
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Server error", error });
+  }
+});
+
 
 app.get("/logout", (req, res) => {
     res.clearCookie("token");
@@ -181,6 +247,21 @@ app.get('/forgot-password', (req, res) => {
 });
 app.get('/dashboard', (req, res) => {
   res.render('dashboard/index.html', {
+      // api_url: process.env.API_URL 
+  });
+});
+app.get('/dashboard/statistics', (req, res) => {
+  res.render('dashboard/statistics.html', {
+      // api_url: process.env.API_URL 
+  });
+});
+app.get('/dashboard/account-settings', (req, res) => {
+  res.render('dashboard/account-setting.html', {
+      // api_url: process.env.API_URL 
+  });
+});
+app.get('/dashboard/billing', (req, res) => {
+  res.render('dashboard/billing.html', {
       // api_url: process.env.API_URL 
   });
 });

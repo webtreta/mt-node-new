@@ -1,0 +1,246 @@
+{% extends "dashboard.html" %}
+
+{% block dashboard_content %}
+<div x-data="settingsData()" 
+     x-init="initializeData()" 
+     class="min-h-screen">
+    <!-- Top Header -->
+    <div class="flex justify-center items-center px-4">
+        <main class="flex flex-col bg-[#0A0419] w-full mx-0 sm:mx-4 my-10 md:p-6 rounded-lg">
+            <!-- Profile Section -->
+            <div class="bg-[#0F0F2D] p-6 rounded-lg mb-20">
+                <h2 class="text-white text-2xl font-semibold mb-6">Profile</h2>
+
+                <div class="space-y-6">
+                    <!-- Profile Photo -->
+                    <div>
+                        <p class="text-white mb-3 font-semibold">Profile Photo</p>
+                        <div class="flex items-center gap-4">
+                            <div class="relative">
+                                <div class="rounded-full overflow-hidden">
+                                    <img :src="base64Image || '/images/profile-image.png'"
+                                         alt="Profile"
+                                         class="md:w-20 md:h-20 w-10 h-10 object-cover">
+                                </div>
+                            </div>
+
+                            <label class="flex items-center gap-2 bg-[#1A1F37] text-[#938FAA] px-4 py-2 rounded-full cursor-pointer">
+                                <svg class="fill-[#7A41DC] text-[#7A41DC]" width="28" height="28" viewBox="0 0 24 24">
+                                    <path d="M12 4a4 4 0 014 4 4 4 0 01-4 4 4 4 0 01-4-4 4 4 0 014-4m0 10c4.42 0 8 1.79 8 4v2H4v-2c0-2.21 3.58-4 8-4z"/>
+                                </svg>
+                                Upload an Image
+                                <input type="file"
+                                       accept="image/*"
+                                       class="hidden"
+                                       @change="handleFileUpload($event)">
+                            </label>
+                        </div>
+                        <p x-show="message" 
+                           x-text="message" 
+                           class="text-white mt-4"></p>
+                    </div>
+
+                    <!-- Username Section -->
+                    <div>
+                        <p class="text-white mb-3">User Name</p>
+                        <div class="space-y-4">
+                            <div class="relative">
+                                <input type="text"
+                                       x-model="username"
+                                       class="text-white px-4 py-2 rounded-2xl border border-white focus:outline-none bg-transparent"
+                                       readonly>
+                            </div>
+
+                            <button class="flex items-center gap-2 bg-[#1A1F37] p-4 rounded-full px-8 text-[#938FAA] transition-colors">
+                                <!-- SVG icon from original code -->
+                                <span>Update Username</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Password Section -->
+            <div class="flex w-full gap-6">
+                <div class="bg-[#0F0F2D] w-full rounded-lg p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-white text-lg font-semibold">Password</h3>
+                    </div>
+                    
+                    <form @submit.prevent="handlePasswordUpdate" class="space-y-4">
+                        <div class="relative flex flex-col gap-10 md:w-1/2">
+                            <input type="password"
+                                   x-model="passwordForm.oldPassword"
+                                   placeholder="Old password"
+                                   class="text-white px-4 py-2 rounded-2xl border border-white focus:outline-none bg-transparent">
+                            
+                            <input type="password"
+                                   x-model="passwordForm.newPassword"
+                                   placeholder="New Password"
+                                   class="text-white px-4 py-2 rounded-2xl border border-white focus:outline-none bg-transparent">
+                            
+                            <input type="password"
+                                   x-model="passwordForm.confirmPassword"
+                                   placeholder="Confirm Password"
+                                   class="text-white px-4 py-2 rounded-2xl border border-white focus:outline-none bg-transparent">
+                            
+                            <p x-show="errorMessage"
+                               x-text="errorMessage"
+                               class="text-red-500 text-sm text-center"></p>
+                        </div>
+                        
+                        <button type="submit" 
+                                class="mt-5 flex items-center md:ml-32 max-sm:mx-auto gap-2 bg-[#1A1F37] p-4 rounded-full px-8 text-[#938FAA] transition-colors">
+                            <!-- SVG icon from original code -->
+                            <span>Update Password</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div x-show="isLoading"
+         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="text-white text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+            <p class="mt-4">Changing Password...</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://unpkg.com/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+<script>
+function settingsData() {
+    return {
+        userId: '',
+        token: '',
+        username: '',
+        base64Image: '',
+        message: '',
+        isLoading: false,
+        errorMessage: '',
+        passwordForm: {
+            oldPassword: '',
+            newPassword: '',
+            confirmPassword: ''
+        },
+
+        async initializeData() {
+            const userData = localStorage.getItem('user');
+            const tempToken = localStorage.getItem('token');
+            
+            if (userData) {
+                const parsedData = JSON.parse(userData);
+                this.userId = parsedData.user_id;
+                this.token = tempToken;
+                this.username = parsedData.username || 'User';
+                this.base64Image = parsedData.picture ? `data:image/png;base64,${parsedData.picture}` : '';
+            }
+        },
+
+        async handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                this.message = 'No file selected.';
+                return;
+            }
+        
+            try {
+                const compressedFile = await imageCompression(file, {
+                    maxSizeMB: 0.1,
+                    maxWidthOrHeight: 1920,
+                    useWebWorker: true,
+                    mimeType: 'image/webp'
+                });
+        
+                const reader = new FileReader();
+                reader.onload = async () => {
+                    const base64 = reader.result.split(',')[1];
+        
+                    // Fetch user data from local storage
+                    const userData = JSON.parse(localStorage.getItem('user'));
+                    if (!userData) {
+                        this.message = 'User data not found.';
+                        return;
+                    }
+        
+                    // Make the request to update the profile
+                    const response = await fetch('/updateProfile', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            userId: userData.user_id,  // Assuming 'id' is stored in user data
+                            picture: base64,
+                            token: this.token // Ensure token is correctly set
+                        })
+                    });
+        
+                    if (response.ok) {
+                        userData.picture = base64;
+                        localStorage.setItem('user', JSON.stringify(userData));
+                        this.base64Image = `data:image/png;base64,${base64}`;
+                        setTimeout(() => location.reload(), 1000);
+                        this.message = 'Profile updated successfully.';
+                    } else {
+                        this.message = 'Failed to update profile. Please try again.';
+                    }
+                };
+                reader.readAsDataURL(compressedFile);
+            } catch (error) {
+                console.error('Error processing file:', error);
+                this.message = 'Error processing file. Please try again.';
+            }
+        },
+        async handlePasswordUpdate(e) {
+            if (this.passwordForm.newPassword !== this.passwordForm.confirmPassword) {
+                this.errorMessage = 'New Password and Confirm Password do not match!';
+                return;
+            }
+            e.preventDefault();
+            this.isLoading = true;
+            this.errorMessage = '';
+        
+            try {
+                const response = await fetch('/changePassword', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userId: this.userId,
+                        oldPassword: this.passwordForm.oldPassword,
+                        newPassword: this.passwordForm.newPassword,
+                        confirmPassword: this.passwordForm.confirmPassword
+                    })
+                });
+        
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert(result.message);  // Success message
+                    this.passwordForm = {
+                        oldPassword: '',
+                        newPassword: '',
+                        confirmPassword: ''
+                    };
+                } else {
+                    this.errorMessage = result.message;  // Show error message
+                }
+            } catch (error) {
+                this.errorMessage = 'An error occurred. Please try again.';
+                console.error(error);
+            } finally {
+                this.isLoading = false;
+            }
+        }
+        
+    };
+}
+</script>
+{% endblock %}
