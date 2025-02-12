@@ -122,7 +122,7 @@
       });
 
       const result = await response.json();
-
+      console.log(result)
       if (result.token) {
           localStorage.setItem("token", result.token);
           localStorage.setItem("user", JSON.stringify(result));

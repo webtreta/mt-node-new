@@ -1,97 +1,10 @@
 {% extends "dashboard.html" %}
 
 {% block dashboard_content %}
-<div x-data="{
-    userData: null,
-    usageData: [],
-    
-    init() {
-        // Get user data from cookie
-        const userCookie = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('user='));
-            
-        if (userCookie) {
-            this.userData = JSON.parse(decodeURIComponent(userCookie.split('=')[1]));
-            this.fetchUsageData();
-        }
-    },
-    
-    async fetchUsageData() {
-        try {
-            const response = await fetch('http://65.0.27.233:8081/public/userReport', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ userId: this.userData.user_id })
-            });
-
-            if (!response.ok) {
-                console.error('Request failed:', await response.text());
-                return;
-            }
-
-            const result = await response.json();
-            
-            this.usageData = [
-                { name: 'Single Target Clicking', value: result.data.singleClick, color: '#4CAF50' },
-                { name: 'Multi Target Clicking', value: result.data.multiClick, color: '#7E57C2' },
-                { name: 'Auto HotKey', value: result.data.autoHotKey, color: '#FF9800' },
-                { name: 'Auto Scroll', value: result.data.autoScroll, color: '#FF9808' },
-                { name: 'Capture ScreenShot', value: result.data.captureSS, color: '#FF8C00' },
-                { name: 'Record Screen', value: result.data.recordScreen, color: '#8BC34A' },
-                { name: 'Touch And Hold', value: result.data.touchAndHold, color: '#9C27B0' },
-                { name: 'Zoom', value: result.data.zoom, color: '#3F51B5' },
-                { name: 'Auto Refresh', value: result.data.autoRefresh, color: '#FFC107' },
-                { name: 'Custom Cursor', value: result.data.customCursor, color: '#FF5722' },
-                { name: 'Auto Fill', value: result.data.autoFill, color: '#009688' },
-                { name: 'Record Mode', value: result.data.recordMode, color: '#795548' }
-            ];
-            
-            this.renderChart();
-        } catch (error) {
-            console.error('Error fetching usage data:', error);
-        }
-    },
-    
-    renderChart() {
-        if (!this.usageData.length) return;
-        
-        const data = this.usageData;
-        const width = 190;
-        const height = 190;
-        const centerX = width / 2;
-        const centerY = height / 2;
-        const innerRadius = 60;
-        const outerRadius = 80;
-        
-        // Using Recharts to render pie chart
-        const chart = new Recharts.PieChart({
-            width,
-            height,
-            data,
-            innerRadius,
-            outerRadius,
-            paddingAngle: 2
-        });
-        
-        const pie = new Recharts.Pie({
-            dataKey: 'value',
-            data,
-            cx: centerX,
-            cy: centerY,
-            innerRadius,
-            outerRadius,
-            fill: '#8884d8',
-            paddingAngle: 2
-        });
-        
-        chart.render(this.$refs.chartContainer);
-    }
-}" class="min-h-screen">
+<div x-data="dashboardData()" x-init="checkAuth()" x- class="min-h-screen">
     <div class="flex justify-center items-center px-4">
         <main class="flex flex-col bg-[#0A0419] w-full mx-0 sm:mx-4 my-10 p-6 rounded-lg">
+            
             <!-- Welcome Card -->
             <div class="bg-[#0F0F2D] rounded-lg px-6 py-4 mb-6">
                 <div class="flex flex-col sm:flex-row justify-between items-center">
@@ -111,13 +24,8 @@
                 <div class="bg-[#0F0F2D] rounded-lg p-6">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-white text-lg">Extension Usage</h3>
-                        <button class="text-gray-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                            </svg>
-                        </button>
                     </div>
-                    
+
                     <div class="h-48 flex items-center justify-center text-gray-500">
                         <div class="flex flex-col ml-10 md:flex-row items-center justify-between">
                             <div class="w-56 h-56 relative">
@@ -127,7 +35,7 @@
                                 <!-- Center Text -->
                                 <div class="absolute top-1/2 left-[45%] transform -translate-x-1/2 -translate-y-1/2 text-center">
                                     <div class="text-sm text-gray-400">Total Uses report</div>
-                                    <div class="text-white font-semibold" x-ref="totalUses">0</div>
+                                    <div class="text-white font-semibold" x-text="totalUses">0</div>
                                 </div>
                             </div>
                             
@@ -136,25 +44,113 @@
                                 <template x-for="item in usageData" :key="item.name">
                                     <div class="flex items-center mb-2">
                                         <div class="w-3 h-3 rounded-full mr-2" :style="{ backgroundColor: item.color }"></div>
-                                        <span class="text-sm text-gray-400" x-text="item.name"></span>
+                                        <!-- <span class="text-sm text-gray-400" x-text="item.name"></span> -->
                                     </div>
                                 </template>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="text-right mt-4">
-                        <a href="/dashboard/statistics" class="text-blue-500 hover:text-blue-400">
-                            See More →
-                        </a>
+                        <a href="/dashboard/statistics" class="text-blue-500 hover:text-blue-400">See More →</a>
                     </div>
                 </div>
             </div>
+
         </main>
     </div>
 </div>
 {% endblock %}
 
 {% block scripts %}
-<script src="https://cdn.jsdelivr.net/npm/recharts/dist/recharts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<script>
+function dashboardData() {
+    return {
+        userData: null,
+        usageData: [],
+        chart: null,
+        totalUses: 0,
+
+        init() {
+            this.checkAuth();
+        },
+
+        checkAuth() {
+            const token = localStorage.getItem('token');
+            const userData = localStorage.getItem('user');
+
+            if (!token || !userData) {
+                window.location.href = "/login"; // Redirect to login if not authenticated
+                return;
+            }
+
+            this.userData = JSON.parse(userData);
+            this.fetchUsageData();
+        },
+
+        async fetchUsageData() {
+            try {
+                const response = await fetch('https://verification.devicetest.org/public/userReport', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: this.userData.user_id })
+                });
+
+                if (!response.ok) {
+                    console.error('Request failed:', await response.text());
+                    return;
+                }
+
+                const result = await response.json();
+
+                this.usageData = [
+                    { name: 'Single Target Clicking', value: result.data.singleClick, color: '#4CAF50' },
+                    { name: 'Multi Target Clicking', value: result.data.multiClick, color: '#7E57C2' },
+                    { name: 'Auto HotKey', value: result.data.autoHotKey, color: '#FF9800' },
+                    { name: 'Auto Scroll', value: result.data.autoScroll, color: '#FF9808' },
+                    { name: 'Capture ScreenShot', value: result.data.captureSS, color: '#FF8C00' },
+                    { name: 'Record Screen', value: result.data.recordScreen, color: '#8BC34A' },
+                    { name: 'Touch And Hold', value: result.data.touchAndHold, color: '#9C27B0' },
+                    { name: 'Zoom', value: result.data.zoom, color: '#3F51B5' },
+                    { name: 'Auto Refresh', value: result.data.autoRefresh, color: '#FFC107' },
+                    { name: 'Custom Cursor', value: result.data.customCursor, color: '#FF5722' },
+                    { name: 'Auto Fill', value: result.data.autoFill, color: '#009688' },
+                    { name: 'Record Mode', value: result.data.recordMode, color: '#795548' }
+                ];
+
+                this.totalUses = this.usageData.reduce((sum, item) => sum + item.value, 0);
+
+                this.renderChart();
+            } catch (error) {
+                console.error('Error fetching usage data:', error);
+            }
+        },
+
+        renderChart() {
+            if (!this.usageData.length) return;
+
+            // Destroy existing chart to prevent duplication
+            if (this.chart) {
+                this.chart.destroy();
+            }
+
+            this.chart = new ApexCharts(this.$refs.chartContainer, {
+                chart: { type: 'donut', height: 250 },
+                series: this.usageData.map(item => item.value),
+                labels: this.usageData.map(item => item.name),
+                colors: this.usageData.map(item => item.color),
+                legend: { show: false },
+                responsive: [{
+                    breakpoint: 480,
+                    options: { chart: { width: 200 } }
+                }]
+            });
+
+            this.chart.render();
+        }
+    };
+}
+</script>
 {% endblock %}

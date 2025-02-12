@@ -14,7 +14,7 @@
     
     checkAuth() {
       const token = localStorage.getItem('token');
-      const userData = localStorage.getItem('userdata');
+      const userData = localStorage.getItem('user');
 
       this.isToken = !!token;
       if (userData) {
@@ -77,7 +77,7 @@
 
         {# Profile Dropdown Menu #}
         <div x-show="isProfileMenuOpen" @click.away="isProfileMenuOpen = false"
-          class="absolute right-0 mt-3 w-48 bg-[#0A0419] rounded-lg shadow-lg border border-gray-800 z-50">
+          class="absolute right-0 mt-10 w-48 bg-[#0A0419] rounded-lg shadow-lg border border-gray-800 z-50">
           <a href="/dashboard" class="flex items-center px-4 py-2 text-[#938FAA] hover:bg-gray-800">
             <img src="/images/user-icon.svg" class="w-5 h-5 mr-2"> Dashboard
           </a>

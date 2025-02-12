@@ -179,6 +179,11 @@ app.get('/forgot-password', (req, res) => {
       api_url: process.env.API_URL 
   });
 });
+app.get('/dashboard', (req, res) => {
+  res.render('dashboard/index.html', {
+      // api_url: process.env.API_URL 
+  });
+});
 app.get('/', (req, res) => {
   try {
     const platform = require(path.join(__dirname, 'data', 'platforms.json'));
