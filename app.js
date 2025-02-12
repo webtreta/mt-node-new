@@ -155,6 +155,8 @@ app.post("/auth/signin", async (req, res) => {
               token: data.token,
               email: email,
               role: data.role,
+              firstname: data.ourUsers.firstname,
+              lastname: data.ourUsers.lastname,
               picture: data.ourUsers?.picture || "",
               user_id: data.ourUsers?.id || "",
           });
