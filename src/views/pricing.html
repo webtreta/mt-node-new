@@ -1,7 +1,6 @@
 {% extends 'main.html' %}
 
 {% block meta %}
-<!-- Add any meta tags here -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10.3.0/swiper-bundle.min.css">
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -29,112 +28,266 @@
 {% endblock meta %}
 
 {% block body %}
-<div class="pricing-container text-white ">
-  <h1 class="  mb-3 text-4xl font-bold leading-snug sm:text-[42px] lg:text-[60px] text-center text-white">
-    <span class="md:text-[60px] text-[42px] font-medium text-center mb-8">  Plans & Pricing </span>
-  </h1>
-  <p class="subheading text-[#938FAA] text-center">All Prices listed below are in USD</p>
-
-  <div class="swiper-container overflow-hidden">
-    <div class="swiper-wrapper">
-      {% for plan in plans %}
-      <div class="swiper-slide bg-[#0A0419] border border-white {% if plan.isBestValue %}border-2 border-green-400{% endif %}">
-        {% if plan.isBestValue %}
-          <span class="absolute top-0 -right-0.5 bg-[#05030E] text-green-400 text-sm px-3 py-1 rounded-2xl border-2 border-green-400">
-            Best Value
-          </span>
-        {% endif %}
-        <div class="">
-          <h2 class="text-2xl font-medium mb-4">{{ plan.name }}</h2>
-          <p class="text-[#938FAA] text-center text-lg line-through">{{ plan.originalPrice }}</p>
-          <p class=" text-[#71EE9E] text-center text-sm my-2">{{ plan.discount }}</p>
-          <p class=" text-4xl text-center  ">{{ plan.price }}</p>
-          {% if plan.tempPrice >0%}
-          <button type="button"
-            class="py-3 my-8 text-center bg-[#71EE9E] text-black  rounded-lg text-xl w-full  px-8 ">
-            <!-- <img src="/img/generate-icon.svg" alt="Generate Icon" class="h-5 w-5 mx-2"> -->
-            Buy
-          </button>
-          {% else %}
-          <button id="download" @click="download" type="button"
-            class="my-2 text-center border w-full py-2 rounded-lg my-8 border-[#71EE9E] text-[#71EE9E]   font-semibold text-xl  px-8 ">
-            <!-- <img src="/img/generate-icon.svg" alt="Generate Icon" class="h-5 w-5 mx-2"> -->
-            Download
-          </button>
-          {% endif %}
-          <!-- Feature section rendering using a nested loop -->
-          <div class="features flex flex-col justify-start items-start space-y-3  ">
-            {% for feature in plan.features %}
-            <div class="feature-section flex flex-col justify-start  items-start">
-              <span class="feature-title text-left text-[#71EE9E] text-lg">{{ feature.title }}</span>
-              <ul class="flex flex-col justify-start items-start ">
-                {% for subtitle in feature.subtitles %}
-                <li class="flex flex-col justify-start  items-start space-y-2">
-                  <button class="subtitle-button text-left" onclick="toggleDropdown(event)">
-                    <span class="text-[#938FAA]">{{ subtitle.text }}</span>
-                    <span class="icon" style="display: inline-block; margin-left: 8px;">
-                      <!-- Chevron icon logic -->
-                      {% if subtitle.items %}
-                      <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"
-                        class="chevron-icon text-[#71EE9E]">
-                        <path id="chevron-{{ loop.index }}" fill="currentColor" d="M4 6l4 4 4-4z"></path>
-                        {% else %}
-                        <path id="chevron-{{ loop.index }}" fill="currentColor" d="M4 6l4 4 4-4z"></path>
-                        {% endif %}
-                      </svg>
-                    </span>
-                  </button>
-                  {% if subtitle.items %}
-                  <ul class="subtitle-items" class="flex flex-col justify-start items-start" style="display: none;">
-                    {% for item in subtitle.items %}
-                    <li class="flex items-center gap-2 pl-4 ">
-                      <svg width="16" height="16" fill="#71EE9E" xmlns="http://www.w3.org/2000/svg" class="check-icon">
-                        <path fill="#71EE9E"
-                          d="M12.293 3.293a1 1 0 0 1 1.414 1.414L6 12.414l-4-4a1 1 0 0 1 1.414-1.414L6 9.586l6.293-6.293z">
-                        </path>
-                      </svg>
-                      <span class="text-sm text-[#938FAA]">{{ item }}</span>
-                    </li>
-                    {% endfor %}
-                  </ul>
-                  {% endif %}
-                </li>
-                {% endfor %}
-              </ul>
-            </div>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-      {% endfor %}
+<div x-data="pricingData()" 
+     x-init="init()" 
+     class="pricing-container text-white min-h-screen p-8">
+    
+    <!-- Error Alert -->
+    <div x-show="error" 
+         class="fixed top-4 right-4 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg z-50"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 transform translate-x-full"
+         x-transition:enter-end="opacity-100 transform translate-x-0"
+         x-transition:leave="transition ease-in duration-300"
+         x-transition:leave-start="opacity-100 transform translate-x-0"
+         x-transition:leave-end="opacity-0 transform translate-x-full">
+        <span x-text="error"></span>
+        <button @click="error = null" class="ml-2 font-bold">&times;</button>
     </div>
-    <!-- Pagination (optional) -->
-    <div class="swiper-pagination"></div>
-  </div>
+
+    <h1 class="md:text-[60px] text-[42px] font-medium text-center mb-8">Plans & Pricing</h1>
+    <p class="text-[#938FAA] text-center mb-8">All Prices listed below are in USD</p>
+
+    <div class="max-w-7xl mx-auto">
+        <div class="swiper-container overflow-hidden">
+            <div class="swiper-wrapper">
+                {% for plan in plans %}
+                <div class="swiper-slide">
+                    <div class="relative rounded-2xl bg-[#0A0419] p-6 flex flex-col h-full {% if plan.isBestValue %}border-2 border-green-400{% else %}border border-white{% endif %}">
+                        {% if plan.isBestValue %}
+                        <span class="absolute top-0 -right-0.5 bg-[#05030E] text-green-400 text-sm px-3 py-1 rounded-2xl border-2 border-green-400">
+                            Best Value
+                        </span>
+                        {% endif %}
+
+                        <div class="mb-8">
+                            <h2 class="text-2xl font-medium mb-4">{{ plan.name }}</h2>
+                            <div class="text-[#938FAA] text-center text-lg line-through">{{ plan.originalPrice }}</div>
+                            <div class="text-[#71EE9E] text-center text-sm my-2">{{ plan.discount }}</div>
+                            <div class="text-4xl text-center">{{ plan.price }}</div>
+                        </div>
+
+                        {% if plan.tempPrice > 0 %}
+                        <button type="button"
+                                @click="handlePlanSelect($event, { tempPrice: {{ plan.tempPrice }}, name: '{{ plan.name }}' })"
+                                :disabled="loading"
+                                class="w-full py-2 rounded-lg mb-8 bg-[#71EE9E] text-black disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span x-text="loading ? 'Processing...' : 'Buy'"></span>
+                        </button>
+                        {% else %}
+                        <button type="button"
+                                @click="handleDownload"
+                                class="w-full py-2 rounded-lg mb-8 border border-[#71EE9E] text-[#71EE9E]">
+                            Download
+                        </button>
+                        {% endif %}
+
+                        <div class="space-y-4">
+                            {% for section in plan.features %}
+                            <div class="mb-6">
+                                <h3 class="text-lg font-medium mb-2 text-[#71EE9E]">{{ section.title }}</h3>
+                                {% for subtitle in section.subtitles %}
+                                <div x-data="{ isOpen: false }" class="mb-2">
+                                    {% if subtitle.items and subtitle.items|length > 0 %}
+                                    <div>
+                                        <button @click="isOpen = !isOpen"
+                                                class="flex items-center justify-between w-full text-left text-gray-300 hover:text-white py-1">
+                                            <span>{{ subtitle.text }}</span>
+                                            <svg x-show="!isOpen" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                            </svg>
+                                            <svg x-show="isOpen" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+                                            </svg>
+                                        </button>
+                                        <div x-show="isOpen" 
+                                             x-transition:enter="transition ease-out duration-200"
+                                             x-transition:enter-start="opacity-0 transform -translate-y-2"
+                                             x-transition:enter-end="opacity-100 transform translate-y-0"
+                                             class="space-y-2 pl-4 mt-2">
+                                            {% for item in subtitle.items %}
+                                            <div class="flex items-start gap-2">
+                                                <svg class="w-4 h-4 mt-1 flex-shrink-0 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                <span class="text-sm text-gray-300">{{ item }}</span>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                    <p class="text-gray-300">{{ subtitle.text }}</p>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div x-show="loading"
+         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="text-white text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+            <p class="mt-4">Processing Payment...</p>
+        </div>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@10.3.0/swiper-bundle.min.js"></script>
-<script src="/script/pricing.js"></script>
 <script>
-  function toggleDropdown(event) {
-    const subtitleButton = event.currentTarget;
-    const subtitleItems = subtitleButton.nextElementSibling;
+function pricingData() {
+    return {
+        loading: false,
+        error: null,
+        userId: null,
+        isToken: false,
 
-    // Toggle the display of subtitle items
-    if (subtitleItems && subtitleItems.classList.contains('subtitle-items')) {
-      subtitleItems.style.display = subtitleItems.style.display === "block" ? "none" : "block";
+        init() {
+            this.loadRazorpay();
+            this.checkAuth();
+            this.initSwiper();
+        },
 
-      // Change the chevron icon (up or down)
-      const icon = subtitleButton.querySelector('.icon');
-      const chevronPath = icon.querySelector('path');
+        async loadRazorpay() {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+                script.async = true;
+                script.onload = resolve;
+                script.onerror = () => reject(new Error('Failed to load Razorpay SDK'));
+                document.body.appendChild(script);
+            });
+        },
 
-      if (subtitleItems.style.display === "block") {
-        chevronPath.setAttribute("d", "M4 10l4-4 4 4z"); // Chevron Up
-      } else {
-        chevronPath.setAttribute("d", "M4 6l4 4 4-4z"); // Chevron Down
-      }
-    }
-  }
+        checkAuth() {
+            const token = localStorage.getItem('token');
+            
+            const userData = localStorage.getItem('user');
+            if (token && userData) {
+              const parsedData = JSON.parse(userData);
+              this.isToken = true;
+              this.userId = parsedData.user_id;
+          }
+            if (!token || !userData) {
+                window.location.href = "/login"; // Redirect to login if not authenticated
+                return;
+            }
+        },
+
+        initSwiper() {
+            new Swiper('.swiper-container', {
+                slidesPerView: 1.1,
+                spaceBetween: 20,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true
+                },
+                breakpoints: {
+                    768: { slidesPerView: 2.2 },
+                    1024: { slidesPerView: 3 }
+                }
+            });
+        },
+
+        handleDownload() {
+            // Implement download logic for free version
+            console.log('Downloading free version...');
+        },
+
+        async handlePlanSelect(event, plan) {
+            if (this.loading) return;
+            
+            try {
+                if (!this.isToken || !this.userId) {
+                    window.location.href = '/signin';
+                    return;
+                }
+
+                this.loading = true;
+                this.error = null;
+
+                const formData = new FormData();
+                formData.append('amount', Math.round(plan.tempPrice * 100));
+                formData.append('userId', this.userId);
+                formData.append('paymentType', plan.name);
+
+                const orderResponse = await fetch('https://verification.devicetest.org/public/create-order', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!orderResponse.ok) {
+                    throw new Error('Failed to create order');
+                }
+
+                const orderData = await orderResponse.json();
+
+                const options = {
+                    key: 'rzp_test_t6hApiVLJFh2ED',
+                    amount: Math.round(plan.tempPrice * 100),
+                    currency: 'INR',
+                    name: 'Web Treta',
+                    description: `Purchase ${plan.name} Plan`,
+                    order_id: orderData.order,
+                    handler: (response) => this.handlePaymentSuccess(response),
+                    modal: {
+                        ondismiss: () => {
+                            this.loading = false;
+                        }
+                    },
+                    prefill: {
+                        name: 'Customer Name',
+                        email: 'customer@example.com',
+                        contact: '1234567890'
+                    },
+                    theme: {
+                        color: '#71EE9E'
+                    }
+                };
+
+                const rzp = new window.Razorpay(options);
+                rzp.open();
+
+            } catch (error) {
+                this.error = error.message || 'Payment initialization failed';
+                this.loading = false;
+            }
+        },
+
+        async handlePaymentSuccess(response) {
+            try {
+                const verifyFormData = new FormData();
+                verifyFormData.append('orderId', response.razorpay_order_id);
+                verifyFormData.append('paymentId', response.razorpay_payment_id);
+                verifyFormData.append('signature', response.razorpay_signature);
+
+                const verifyResponse = await fetch('https://verification.devicetest.org/public/verify-payment', {
+                    method: 'POST',
+                    body: verifyFormData
+                });
+
+                const verifyData = await verifyResponse.json();
+
+                if (verifyResponse.ok && verifyData.success) {
+                    window.location.href = '/success';
+                } else {
+                    throw new Error('Payment verification failed');
+                }
+            } catch (error) {
+                this.error = error.message;
+            } finally {
+                this.loading = false;
+            }
+        }
+    };
+}
 </script>
-<script src="/script/download.js"></script>
 {% endblock body %}
