@@ -361,9 +361,21 @@ app.get('/mt-token', (req, res) => {
     error: req.query.error || ''
   });
 });
+app.get('/tools/keyboard-tester', (req, res) => {
+  res.render('tools/keyboard-tester.html', {
+      // api_url: process.env.API_URL 
+  });
+});
+app.get('/tools/reaction-time-test', (req, res) => {
+  res.render('tools/reaction-time-test.html', {
+      // api_url: process.env.API_URL 
+  });
+});
 app.get('*', (req, res) => {
   res.render('error.html');
 });
+
+
 
 const PORT = process.env.PORT || 3000; // Fixed `process.env.port` to `process.env.PORT`
 

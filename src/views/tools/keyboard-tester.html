@@ -1,0 +1,314 @@
+{% extends "main.html" %}
+{% block meta %}
+<style>
+    .key-btn {
+        @apply py-0.5 rounded-md text-center bg-gray-800 hover:bg-gray-700 transform transition-transform duration-150 outline-none;
+    }
+
+    .key-btn.active {
+        @apply bg-green-500;
+    }
+
+    .key-btn.pressed {
+        @apply bg-yellow-500 text-black;
+    }
+
+    .key-btn.clicked {
+        transform: scale(0.75);
+    }
+</style>
+{% endblock meta%}
+
+{% block body %}
+<div x-data="keyboardTester()" x-init="initialize()" class="mx-auto md:p-5">
+
+    <!-- Header Section -->
+    <div class="bg-[#0A0419] border-[3px] rounded-xl border-[#1D1634] md:mt-3 pt-5 pb-1 lg:mx-36 px-3">
+        <h1
+            class="text-3xl sm:text-4xl md:text-5xl lg:text-[50px] md:pb-3 leading-[1.2] sm:leading-[1.2] md:leading-[1.2] lg:leading-[1.2] pb-3 text-center bg-clip-text text-transparent text-white w-fit mx-auto">
+            Keyboard Tester
+        </h1>
+        <p class="text-center pt-3 text-[#938FAA] md:text-lg mb-4">
+            Test your keyboard keys and functionality
+        </p>
+    </div>
+
+    <!-- Main Section -->
+    <div class="relative md:mx-14 mt-10">
+        <!-- OS Selection -->
+        <div class="flex md:gap-4 justify-start md:justify-center place-items-center">
+            <button @click="setOsType('windows')"
+                :class="{'bg-[#0A0419] text-white': osType === 'windows', 'bg-transparent text-[#575476]': osType !== 'windows'}"
+                class="cursor-pointer py-2 px-4 flex gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    :class="{'opacity-100': osType === 'windows', 'opacity-40': osType !== 'windows'}" width="24"
+                    height="24" viewBox="0 0 24 24">
+                    <path fill="#fff"
+                        d="m3.001 5.479l7.377-1.016v7.127H3zm0 13.042l7.377 1.017v-7.04H3zm8.188 1.125L21.001 21v-8.502h-9.812zm0-15.292v7.236h9.812V3z" />
+                </svg>
+                <span>Windows</span>
+            </button>
+
+            <button @click="setOsType('mac')"
+                :class="{'bg-[#0A0419] text-white': osType === 'mac', 'bg-transparent text-[#575476]': osType !== 'mac'}"
+                class="cursor-pointer py-2 px-4 flex gap-2">
+                <img src="/images/apple-logo-white.svg"
+                    :class="{'opacity-100': osType === 'mac', 'opacity-40': osType !== 'mac'}" alt="mac logo">
+                <span>Mac</span>
+            </button>
+
+            <button @click="setOsType('android')"
+                :class="{'bg-[#0A0419] text-white': osType === 'android' || osType === 'ios', 'bg-transparent text-[#575476]': osType !== 'android' && osType !== 'ios'}"
+                class="cursor-pointer py-2 px-4 flex gap-2">
+                <img src="/images/android-logo-white.svg"
+                    :class="{'opacity-100': osType === 'android' || osType === 'ios', 'opacity-40': osType !== 'android' && osType !== 'ios'}"
+                    class="w-5 h-5" alt="android logo">
+                <span x-text="osType === 'ios' ? 'iOS' : 'Android'"></span>
+            </button>
+        </div>
+
+        <!-- Keyboard Area -->
+        <div class="bg-[#0A0419] p-4 md:overflow-x-auto">
+            <textarea x-model="text" x-ref="textarea" @keydown.window="handleKeyPress($event)"
+                class="w-full outline-none rounded-md py-3 px-4 bg-gray-8 bg-black text-white"
+                placeholder="Press keys to test..." rows="3"></textarea>
+
+            <div class="grid grid-cols-12 gap-1 mt-7 w-auto mx-auto" style="grid-template-rows: repeat(6, 60px)">
+                <template x-for="(row, rowIndex) in currentKeyboardLayout" :key="rowIndex">
+                    <div
+                        :class="{'flex space-x-1 col-span-full': true, 'justify-evenly': osType === 'mac', 'w-full': osType !== 'mac'}">
+                        <template x-for="(key, keyIndex) in row" :key="keyIndex">
+                            <button @click="handleKeyClick(key)" aria-label="keyboard buttons" :class="`
+        py-0.5 text-white
+        ${osType === 'mac' ? 'px-2 text-sm min-w-[70px] w-fit' : 'text-xs'}
+        rounded-md text-center w-full bg-gray-800 hover:bg-gray-700
+        ${activeKey.toLowerCase() === key.toLowerCase() ? 'bg-green-500' : previousKeys.has(key.toLowerCase()) ? 'bg-yellow-500 text-black' : 'bg-gray-800'}
+        ${key.length > 3 && osType === 'mac' ? 'px-8' : ''}
+        ${clickedKey === key ? 'scale-75' : ''}
+        transform transition-transform duration-150 outline-none
+    `" x-text="key"></button>
+                        </template>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Controls
+        <div class="mt-4 flex gap-4 justify-center">
+            <button @click="handleReset" class="px-4 py-2 bg-[#1A1F37] text-[#938FAA] rounded-lg hover:bg-[#252B48]">
+                Reset
+            </button>
+            <button @click="toggleSound" class="px-4 py-2 bg-[#1A1F37] text-[#938FAA] rounded-lg hover:bg-[#252B48]"
+                x-text="isSoundEnabled ? 'Disable Sound' : 'Enable Sound'">
+            </button>
+        </div> -->
+    </div>
+
+    <!-- Audio Element -->
+    <audio x-ref="sound" src="/clicksound.wav" preload="auto"></audio>
+    <script>
+        function keyboardTester() {
+            const winKeyRows = [
+                ["Esc", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"],
+                ["\`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Backspace"],
+                ["Tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\\"],
+                ["Caps Lock", "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'", "Enter"],
+                ["Shift", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/", "Shift"],
+                ["Ctrl", "Alt", "Space", "Alt", "Ctrl", "↑", "↓", "←", "→"]
+            ];
+
+            const macKeyRows = [
+                ["Esc", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12"],
+                ["\`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "Delete"],
+                ["Tab", "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "[", "]", "\\"],
+                ["Caps Lock", "A", "S", "D", "F", "G", "H", "J", "K", "L", ";", "'", "Return"],
+                ["Shift", "Z", "X", "C", "V", "B", "N", "M", ",", ".", "/", "Shift"],
+                ["Fn", "Ctrl", "Option", "Command", "Space", "Command", "Option", "←", "↑", "↓", "→"]
+            ];
+
+            const androidKeyRows = [
+                ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+                ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+                ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+                ["Z", "X", "C", "V", "B", "N", "M"],
+                ["Space"]
+            ];
+
+            return {
+                activeKey: '',
+                previousKeys: new Set(),
+                text: '',
+                capsLock: false,
+                isSoundEnabled: true,
+                shift: false,
+                clickedKey: null,
+                osType: 'windows',
+
+                get currentKeyboardLayout() {
+                    return this.osType === 'windows' ? winKeyRows :
+                        this.osType === 'mac' ? macKeyRows :
+                            androidKeyRows;
+                },
+
+                initialize() {
+                    this.detectDevice();
+                    this.$nextTick(() => {
+                        this.$refs.textarea.focus();
+                    });
+                },
+
+                detectDevice() {
+                    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+                    const isWindows = /Windows/.test(userAgent);
+                    const isMacOS = /Macintosh|MacIntel|MacPPC|Mac68K/.test(userAgent);
+                    const isIOS = /iPhone|iPad|iPod/.test(userAgent);
+                    const isAndroid = /Android/.test(userAgent);
+
+                    this.osType = isWindows ? 'windows' :
+                        isMacOS ? 'mac' :
+                            isIOS ? 'ios' :
+                                isAndroid ? 'android' : 'windows';
+                },
+
+                setOsType(type) {
+                    this.osType = type;
+                    this.handleReset();
+                },
+
+                playSound() {
+                    if (!this.isSoundEnabled || !this.$refs.sound) return;
+                    this.$refs.sound.currentTime = 0;
+                    this.$refs.sound.play().catch(() => { });
+                },
+
+                handleKeyClick(key) {
+                    this.activeKey = key.toLowerCase();
+                    this.previousKeys.add(key.toLowerCase());
+                    this.playSound();
+                
+                    // Determine display text for special keys
+                    let displayText = '';
+                    switch(key) {
+                        case 'Backspace':
+                            this.text = this.text.slice(0, -1);
+                            return;
+                        case 'Space':
+                            displayText = '[Space]';
+                            break;
+                        case 'Enter':
+                            displayText = '\n';
+                            break;
+                        case 'Tab':
+                            displayText = '\t';
+                            break;
+                        case 'Caps Lock':
+                            displayText = '[Caps Lock]';
+                            break;
+                        case 'Shift':
+                            displayText = '[Shift]';
+                            break;
+                        case 'Ctrl':
+                            displayText = '[Ctrl]';
+                            break;
+                        case 'Alt':
+                            displayText = '[Alt]';
+                            break;
+                        case 'Option':
+                            displayText = '[Option]';
+                            break;
+                        case 'Command':
+                            displayText = '[Command]';
+                            break;
+                        case 'Fn':
+                            displayText = '[Fn]';
+                            break;
+                        case '↑':
+                            displayText = '[Up]';
+                            break;
+                        case '↓':
+                            displayText = '[Down]';
+                            break;
+                        case '←':
+                            displayText = '[Left]';
+                            break;
+                        case '→':
+                            displayText = '[Right]';
+                            break;
+                        case 'Esc':
+                            displayText = '[Esc]';
+                            break;
+                        case 'Enter':
+                            displayText = '[Enter]';
+                            break;
+                        default:
+                            if (key.length === 1) {
+                                displayText = this.capsLock || this.shift ? key.toUpperCase() : key.toLowerCase();
+                            } else {
+                                displayText = `[${key}]`;
+                            }
+                    }
+                
+                    // Add the display text to textarea
+                    this.text += displayText;
+                
+                    this.clickedKey = key;
+                    setTimeout(() => {
+                        this.clickedKey = null;
+                        if (key === 'Shift') {
+                            this.shift = false;
+                        }
+                    }, 100);
+                },
+                handleKeyPress(event) {
+                    event.preventDefault();
+                    this.playSound();
+                
+                    const keyMap = {
+                        'Enter': 'Enter',
+                        'Backspace': 'Backspace',
+                        ' ': 'Space',
+                        'Shift': 'Shift',
+                        'Control': 'Ctrl',
+                        'Alt': 'Alt',
+                        'CapsLock': 'Caps Lock',
+                        'Escape': 'Esc',
+                        'AltGraph': 'Alt',
+                        'Tab': 'Tab',
+                        'F1': 'F1',
+                        'F2': 'F2',
+                        'F3': 'F3',
+                        'F4': 'F4',
+                        'F5': 'F5',
+                        'F6': 'F6',
+                        'F7': 'F7',
+                        'F8': 'F8',
+                        'F9': 'F9',
+                        'F10': 'F10',
+                        'F11': 'F11',
+                        'F12': 'F12',
+                        'ArrowUp': '↑',
+                        'ArrowDown': '↓',
+                        'ArrowLeft': '←',
+                        'ArrowRight': '→',
+                    };
+                
+                    const key = keyMap[event.key] || event.key;
+                    this.handleKeyClick(key);
+                },
+                handleReset() {
+                    this.activeKey = '';
+                    this.previousKeys = new Set();
+                    this.text = '';
+                    this.capsLock = false;
+                    this.shift = false;
+                },
+
+                toggleSound() {
+                    this.isSoundEnabled = !this.isSoundEnabled;
+                }
+            };
+        }
+    </script>
+</div>
+
+{% endblock body%}
