@@ -1,0 +1,372 @@
+{% extends "main.html" %}
+
+{% block meta %}
+<meta name="description" content="Test and improve your typing speed and accuracy">
+<meta name="keywords" content="typing test, wpm test, typing speed">
+<title>Typing Speed Test - Measure Your Typing Skills</title>
+
+<style>
+    .letter-cursor {
+        background-color: #1f2937;
+        text-decoration: underline;
+    }
+    .letter-correct { color: #10b981; }
+    .letter-incorrect { color: #ef4444; }
+    .custom-select {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>');
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 1rem;
+    }
+</style>
+{% endblock meta %}
+
+{% block body %}
+<div x-data="typingTest()" 
+     x-init="initialize()"
+     class="flex flex-col md:p-5">
+    
+    <!-- Header Section -->
+    <div class="bg-[#0A0419] border-[3px] rounded-xl border-[#1D1634] md:mt-3 pt-5 pb-1 lg:mx-36 px-3">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[50px] leading-[1.2] sm:leading-[1.2] md:leading-[1.2] lg:leading-[1.2] pb-5 text-center text-white w-fit mx-auto">
+            Typing Speed Test
+        </h1>
+        <p class="text-center pt-3 text-[#938FAA] md:text-lg mb-4">
+            Test your typing speed and accuracy with our free online tool!
+        </p>
+    </div>
+
+    <!-- Setup Screen -->
+    <template x-if="screenIndex === 0">
+        <div class="bg-[#0A0419] border-[3px] border-[#1D1634] flex flex-col justify-center items-center space-y-16 p-6 rounded-lg md:w-3/4 self-center my-12">
+            <div class="flex flex-col mt-4 space-y-14">
+                <!-- Duration Selection -->
+                <div class="flex items-center gap-7">
+                    <label class="text-lg font-medium text-slate-400">Test Duration</label>
+                    <select 
+                        x-model="duration"
+                        class="px-4 py-3 pr-12 bg-[#575476] rounded text-slate-100 outline-none cursor-pointer custom-select appearance-none">
+                        <option value="30">30 Seconds</option>
+                        <option value="60">1 Minute</option>
+                        <option value="120">2 Minutes</option>
+                        <option value="180">3 Minutes</option>
+                        <option value="300">5 Minutes</option>
+                        <option value="600">10 Minutes</option>
+                    </select>
+                </div>
+
+                <!-- Difficulty Selection -->
+                <div class="flex items-center gap-16">
+                    <label class="text-lg font-medium text-slate-400">Difficulty</label>
+                    <select 
+                        x-model="difficulty"
+                        class="px-9 py-3 pr-12 bg-[#575476] rounded text-slate-100 outline-none cursor-pointer custom-select appearance-none">
+                        <option value="Beginner">Beginner</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Start Button -->
+            <button
+                @click="startTest()"
+                class="my-2 bg-green-600 text-black px-4 py-2 rounded-lg text-lg font-medium hover:bg-green-500 flex items-center gap-3">
+                <img src="/images/typewriter.png" alt="Type writer">
+                Start Typing Test
+            </button>
+        </div>
+    </template>
+    <!-- Typing Test Screen -->
+    <template x-if="screenIndex === 1">
+        <div 
+            class="bg-[#0A0419] p-2 md:p-6 rounded-lg w-full md:w-[80%] mx-2 md:mx-auto my-12 outline-none"
+            @keydown="handleKeyPress"
+            tabindex="0"
+            id="typewriter">
+            
+            <!-- Test Info Bar -->
+            <div class="flex justify-between flex-wrap gap-2 text-slate-400">
+                <div class="flex gap-4">
+                    <!-- Timer -->
+                    <div class="bg-[#05030E] rounded-md py-2 px-4 flex flex-col gap-2 space-x-4">
+                        <span>Time Left</span>
+                        <span 
+                            :class="timeLeft < 10 ? 'text-red-700' : 'text-slate-400'"
+                            class="self-end"
+                            x-text="`${timeLeft} s`">
+                        </span>
+                    </div>
+
+                    <!-- Difficulty Display -->
+                    <div class="bg-[#05030E] rounded-md py-2 px-4 flex flex-col gap-2 space-x-4">
+                        <span>Difficulty</span>
+                        <span 
+                            :class="{
+                                'text-green-600': difficulty === 'Beginner',
+                                'text-orange-500': difficulty === 'Medium',
+                                'text-red-700': difficulty === 'Hard'
+                            }"
+                            class="self-end"
+                            x-text="difficulty">
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Reset Button -->
+                <div 
+                    class="px-3 py-3 bg-[#05030E] rounded-md cursor-pointer h-fit"
+                    @click="restartTest()">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-slate-400 cursor-pointer" viewBox="0 0 20 20">
+                        <path fill="currentColor" d="M15.65 4.35A8 8 0 1 0 17.4 13h-2.22a6 6 0 1 1-1-7.22L11 9h7V2z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Hidden Input for Mobile -->
+            <input type="text" class="absolute w-0 h-0" id="invisibleInput">
+
+            <!-- Typing Area -->
+            <div class="w-full bg-[#05030E] text-white p-2 md:p-6 rounded shadow-md my-4 text-base md:text-lg font-mono leading-loose">
+                <template x-for="(letter, index) in paragraph.split('')" :key="index">
+                    <span
+                        :class="{
+                            'letter-cursor': index === cursorIndex,
+                            'letter-correct': index < typedText.length && typedText[index] === letter,
+                            'letter-incorrect': index < typedText.length && typedText[index] !== letter
+                        }"
+                        @click="setCursor(index)"
+                        x-text="letter">
+                    </span>
+                </template>
+            </div>
+        </div>
+    </template>
+    <!-- Results Screen -->
+    <template x-if="screenIndex === 2">
+        <div class="flex flex-col items-center border-[3px] border-[#1D1634] rounded-xl mt-12 justify-center p-3 bg-[#0A0419] gap-8 text-slate-400 mx-auto w-full md:w-[80%] md:min-w-[50%]">
+            <p class="my-5 text-3xl text-center font-semibold text-slate-100">Result</p>
+
+            <div class="flex items-center p-4 justify-center flex-col text-xl font-medium gap-8">
+                <!-- WPM Result -->
+                <div class="flex items-center border-[3px] border-[#1D1634] rounded-xl bg-[#05030E] p-3 justify-between w-full gap-[6em] self-start">
+                    <p>WPM</p>
+                    <p x-text="result.wpm"></p>
+                </div>
+
+                <!-- Accuracy Result -->
+                <div class="flex items-center border-[3px] border-[#1D1634] rounded-xl p-3 bg-[#05030E] justify-between w-full gap-[6em] self-start">
+                    <p class="text-green-500">Accuracy</p>
+                    <p class="text-green-500" x-text="`${result.accuracy}%`"></p>
+                </div>
+
+                <!-- Errors Result -->
+                <div class="flex items-center border-[3px] border-[#1D1634] rounded-xl p-3 bg-[#05030E] justify-between w-full gap-[6em] self-start">
+                    <p class="text-red-500">Errors</p>
+                    <p class="text-red-500 self-end" x-text="result.errors"></p>
+                </div>
+            </div>
+
+            <!-- New Test Button -->
+            <button
+                class="w-fit my-4 bg-green-500 text-black px-6 py-2 flex gap-4 items-center rounded-lg text-lg font-medium hover:bg-green-400"
+                @click="resetToStart()">
+                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.4 13c0 4.6-3.8 8.4-8.4 8.4-4.6 0-8.4-3.8-8.4-8.4 0-4.6 3.8-8.4 8.4-8.4 1.8 0 3.5 0.6 4.9 1.6L13.2 9H20v-6.8l-2.3 2.3C15.9 3.1 13.5 2 11 2 5.5 2 1 6.5 1 12s4.5 10 10 10 10-4.5 10-10h-0.6z"/>
+                </svg>
+                <span>New Test</span>
+            </button>
+        </div>
+    </template>
+    <script>
+        const WORD_LISTS = {
+            Beginner: [
+                "the", "be", "to", "of", "and", "a", "in", "that", "have", "it",
+                "for", "not", "on", "with", "he", "as", "you", "do", "at", "this",
+                "but", "his", "by", "from", "they", "we", "say", "her", "she", "or",
+                "will", "my", "one", "all", "would", "there", "their", "what", "so",
+                "up", "out", "if", "about", "who", "get", "which", "go", "me", "when"
+            ],
+            Medium: [
+                "developer", "creative", "responsive", "interactive", "enhance",
+                "dynamic", "speed", "challenge", "focus", "accuracy", "advance",
+                "learning", "testing", "typing", "unique", "design", "performance",
+                "logic", "framework", "application", "debugging", "syntax", "interface",
+                "iteration", "refactor", "parameter", "compile", "execute", "frontend",
+                "backend", "workflow", "pipeline", "component", "architecture", "server"
+            ],
+            Hard: [
+                "cryptocurrency", "authentication", "implementation", "infrastructure",
+                "vulnerability", "accessibility", "consolidation", "initialization",
+                "optimization", "parallelization", "sophisticated", "circumference",
+                "architectural", "breakthrough", "customization", "determination",
+                "extraordinary", "fundamentally", "interpolation", "quantification",
+                "cryptographic", "hierarchical", "algorithmic", "transformation",
+                "decentralization", "synchronization", "artificial", "intelligence"
+            ]
+        };
+        
+        function typingTest() {
+            return {
+                duration: 30,
+                difficulty: 'Beginner',
+                screenIndex: 0,
+                paragraph: '',
+                typedText: '',
+                timeLeft: 30,
+                isTestRunning: false,
+                cursorIndex: 0,
+                result: { wpm: 0, accuracy: 0, errors: 0 },
+                timer: null,
+        
+                initialize() {
+                    this.generateParagraph();
+                },
+        
+                generateParagraph(wordCount = 50) {
+                    const selectedList = WORD_LISTS[this.difficulty];
+                    this.paragraph = Array.from(
+                        { length: wordCount },
+                        () => selectedList[Math.floor(Math.random() * selectedList.length)]
+                    ).join(' ');
+                },
+        
+                startTest() {
+                    this.screenIndex = 1;
+                    this.newTest();
+                },
+        
+                newTest() {
+                    const wordCount = {
+                        'Beginner': 300,
+                        'Medium': 50,
+                        'Hard': 70
+                    }[this.difficulty];
+        
+                    this.generateParagraph(wordCount);
+                    this.typedText = '';
+                    this.result = { wpm: 0, accuracy: 0, errors: 0 };
+                    this.timeLeft = this.duration;
+                    this.cursorIndex = 0;
+                    this.isTestRunning = false;
+                    
+                    if (this.timer) {
+                        clearInterval(this.timer);
+                        this.timer = null;
+                    }
+        
+                    this.$nextTick(() => {
+                        document.getElementById('invisibleInput')?.focus();
+                        document.getElementById('typewriter')?.focus();
+                    });
+                },
+        
+                startTimer() {
+                    if (this.timer) clearInterval(this.timer);
+                    this.timer = setInterval(() => {
+                        if (this.timeLeft > 0) {
+                            this.timeLeft--;
+                        } else {
+                            this.endTest();
+                        }
+                    }, 1000);
+                },
+        
+                handleKeyPress(e) {
+                    e.preventDefault();
+                    document.getElementById('invisibleInput')?.focus();
+        
+                    if (!this.paragraph) return;
+        
+                    if (!this.isTestRunning) {
+                        this.isTestRunning = true;
+                        this.startTimer();
+                    }
+        
+                    switch (e.key) {
+                        case 'ArrowLeft':
+                            this.cursorIndex = Math.max(0, this.cursorIndex - 1);
+                            break;
+                        case 'ArrowRight':
+                            if (this.cursorIndex < this.typedText.length) {
+                                this.cursorIndex = Math.min(this.paragraph.length, this.cursorIndex + 1);
+                            }
+                            break;
+                        case 'Backspace':
+                            if (this.cursorIndex > 0) {
+                                this.typedText = this.typedText.slice(0, this.cursorIndex - 1) + 
+                                               this.typedText.slice(this.cursorIndex);
+                                this.cursorIndex--;
+                            }
+                            break;
+                        default:
+                            if (e.key.length === 1 && this.cursorIndex < this.paragraph.length) {
+                                this.typedText = this.typedText.slice(0, this.cursorIndex) + 
+                                               e.key + 
+                                               this.typedText.slice(this.cursorIndex);
+                                
+                                if (e.key !== this.paragraph[this.cursorIndex]) {
+                                    this.result.errors++;
+                                }
+                                
+                                this.cursorIndex++;
+                                
+                                if (this.typedText === this.paragraph) {
+                                    this.endTest();
+                                }
+                            }
+                    }
+                },
+        
+                setCursor(index) {
+                    this.cursorIndex = index;
+                    document.getElementById('invisibleInput')?.focus();
+                },
+        
+                endTest() {
+                    if (this.timer) {
+                        clearInterval(this.timer);
+                        this.timer = null;
+                    }
+        
+                    const timeElapsed = this.duration - this.timeLeft;
+                    const wordsTyped = this.typedText.trim().split(' ').length;
+                    const wpm = Math.round((wordsTyped / timeElapsed) * 60);
+                    const accuracy = Math.max(0, Math.min(100, (
+                        ((this.paragraph.length - this.result.errors) / this.paragraph.length) * 100
+                    ))).toFixed(2);
+        
+                    this.result = {
+                        wpm,
+                        accuracy: parseFloat(accuracy),
+                        errors: this.result.errors
+                    };
+        
+                    this.screenIndex = 2;
+                },
+        
+                restartTest() {
+                    this.newTest();
+                },
+        
+                resetToStart() {
+                    this.screenIndex = 0;
+                    if (this.timer) {
+                        clearInterval(this.timer);
+                        this.timer = null;
+                    }
+                    this.newTest();
+                },
+        
+                // Cleanup method if needed
+                destroy() {
+                    if (this.timer) {
+                        clearInterval(this.timer);
+                        this.timer = null;
+                    }
+                }
+            };
+        }
+        </script>
+</div>
+{% endblock body %}

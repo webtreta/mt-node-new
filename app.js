@@ -381,6 +381,11 @@ app.get('/tools/speech-to-text', (req, res) => {
       // api_url: process.env.API_URL 
   });
 });
+app.get('/tools/typing-test', (req, res) => {
+  res.render('tools/typing-test.html', {
+      // api_url: process.env.API_URL 
+  });
+});
 app.get('*', (req, res) => {
   res.render('error.html');
 });
