@@ -1,0 +1,145 @@
+{% extends "main.html" %}
+
+{% block meta %}
+<meta name="description" content="Transform your written text into natural-sounding speech">
+<meta name="keywords" content="text to speech, text to voice, speech synthesis">
+<title>Text to Speech - Convert Text into Natural Speech</title>
+{% endblock meta %}
+
+{% block body %}
+<div x-data="textToSpeech()" x-init="initialize()" class="md:p-5 overflow-hidden">
+
+    <!-- Header Section -->
+    <div class="bg-[#0A0419] border-[3px] rounded-xl border-[#1D1634] mt-3 pt-5 pb-1 lg:mx-36 px-3">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[50px] md:pb-5 leading-[1.2] pb-3 text-center text-white w-fit mx-auto">
+            Text to Speech - Convert Text into Natural Speech
+        </h1>
+        <p class="text-center pt-3 text-[#938FAA] md:text-lg mb-4">
+            Transform your written text into natural-sounding speech with our free online tool. Choose from multiple languages and voices to hear your text read aloud instantly.
+        </p>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="bg-[#0A0419] mt-10 lg:mx-20 p-4">
+        <div>
+            <!-- Controls Section -->
+            <div class="flex justify-between">
+                <div class="flex gap-6 items-center flex-col-reverse md:flex-row">
+                    <!-- Undo/Redo Controls -->
+                    <div class="flex gap-6 items-center">
+                        <svg @click="handleUndo" class="cursor-pointer text-slate-400 hover:text-slate-100 w-6 h-6"
+                             x-bind:class="history.length <= 1 ? 'opacity-50' : ''" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H11L7.38,12.38C8.77,11.22 10.54,10.5 12.5,10.5C16.04,10.5 19.05,12.81 20.1,16L22.47,15.22C21.08,11.03 17.15,8 12.5,8Z"/>
+                        </svg>
+                        <svg @click="handleRedo" class="cursor-pointer text-slate-400 hover:text-slate-100 w-6 h-6"
+                             x-bind:class="redoStack.length === 0 ? 'opacity-50' : ''" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M18.4,10.6C16.55,9 14.15,8 11.5,8C6.85,8 2.92,11.03 1.54,15.22L3.9,16C4.95,12.81 7.96,10.5 11.5,10.5C13.45,10.5 15.23,11.22 16.62,12.38L13,16H22V7L18.4,10.6Z"/>
+                        </svg>
+                    </div>
+
+                    <!-- Language and Voice Selection -->
+                    <div class="flex gap-6 flex-col sm:flex-row">
+                        <!-- Language Selector -->
+                        <div class="flex gap-2 px-2 py-1 rounded-md bg-[#575476] items-center w-[180px]">
+                            {% raw %}
+                            <img :src="languageFlag" alt="Language Flag" class="h-7 w-7 rounded-full">
+                            <select x-model="options.language" class="outline-none bg-[#575476] cursor-pointer">
+                                <option value="en-US">English-US</option>
+                                <option value="en-IN">English-IN</option>
+                                <option value="en-GB">English-GB</option>
+                                <option value="fr-FR">French-FR</option>
+                                <option value="hi-IN">Hindi-IN</option>
+                                <option value="it-IT">Italian-IT</option>
+                                <option value="ja-JP">Japanese-JP</option>
+                                <option value="es-ES">Spanish-ES</option>
+                                <option value="ko-KR">Korean-KR</option>
+                            </select>
+                            {% endraw %}
+                        </div>
+
+                        <!-- Voice Selector -->
+                        <div class="flex gap-2 px-2 py-1 rounded-md bg-[#575476] items-center w-[150px]">
+                            {% raw %}
+                            <img :src="voiceImage" alt="Voice Type" class="h-7 w-7 rounded-full">
+                            <select x-model="options.voice" class="outline-none bg-[#575476] cursor-pointer">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            {% endraw %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Play/Pause Button -->
+                <div id="play-btn">
+                    {% raw %}
+                    <img :src="isSpeaking ? '/images/pause-button.webp' : '/images/play-button.webp'"
+                         :alt="isSpeaking ? 'Pause Button' : 'Play Button'"
+                         class="h-12 w-12 cursor-pointer" @click="isSpeaking ? handlePause() : handleSpeak()">
+                    {% endraw %}
+                </div>
+            </div>
+
+            <!-- Text Input Area -->
+            <textarea id="transcript" x-model="textToSpeak" @input="handleTextChange" rows="8"
+                      placeholder="Type your text here..."
+                      class="w-full p-3 my-5 md:my-2 bg-black text-slate-100 rounded-lg resize-none text-lg outline-none"
+                      style="line-height: 1.5rem; font-family: monospace;"></textarea>
+        </div>
+    </div>
+</div>
+
+<script>
+function textToSpeech() {
+    return {
+        isSpeaking: false,
+        textToSpeak: '',
+        options: {
+            voice: 'Male',
+            language: 'en-US'
+        },
+        history: [''],
+        redoStack: [],
+        synth: null,
+        voices: [],
+
+        initialize() {
+            this.synth = window.speechSynthesis;
+            const populateVoices = () => { this.voices = this.synth.getVoices(); };
+            populateVoices();
+            this.synth.addEventListener('voiceschanged', populateVoices);
+        },
+
+        get languageFlag() {
+            return this.options.language === 'en-US' ? '/images/flags/United States.webp' : '/images/flags/indian_flag.svg';
+        },
+
+        get voiceImage() {
+            return this.options.voice === 'Male' ? '/images/Jes-Kirkwood.webp' : '/images/Sofia-Smith.webp';
+        },
+
+        handleSpeak() {
+            if (!this.textToSpeak.trim()) return;
+            if (this.synth?.paused) {
+                this.isSpeaking = true;
+                this.synth.resume();
+                return;
+            }
+            this.isSpeaking = true;
+            const utterance = new SpeechSynthesisUtterance(this.textToSpeak);
+            utterance.lang = this.options.language;
+            utterance.onend = () => this.isSpeaking = false;
+            this.synth.speak(utterance);
+        },
+
+        handlePause() {
+            if (this.synth.speaking && !this.synth.paused) {
+                this.synth.pause();
+                this.isSpeaking = false;
+            }
+        }
+    };
+}
+</script>
+
+{% endblock body %}

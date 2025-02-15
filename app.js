@@ -371,6 +371,11 @@ app.get('/tools/reaction-time-test', (req, res) => {
       // api_url: process.env.API_URL 
   });
 });
+app.get('/tools/text-to-speech', (req, res) => {
+  res.render('tools/text-to-speech.html', {
+      // api_url: process.env.API_URL 
+  });
+});
 app.get('*', (req, res) => {
   res.render('error.html');
 });
