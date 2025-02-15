@@ -376,6 +376,11 @@ app.get('/tools/text-to-speech', (req, res) => {
       // api_url: process.env.API_URL 
   });
 });
+app.get('/tools/speech-to-text', (req, res) => {
+  res.render('tools/speech-to-text.html', {
+      // api_url: process.env.API_URL 
+  });
+});
 app.get('*', (req, res) => {
   res.render('error.html');
 });

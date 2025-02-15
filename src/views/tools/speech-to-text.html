@@ -1,0 +1,370 @@
+{% extends "main.html" %}
+
+{% block meta %}
+<meta name="description" content="Convert your speech into text instantly with our free online tool">
+<meta name="keywords" content="speech to text, voice to text, speech recognition">
+<title>Speech to Text - Convert Voice to Text Online</title>
+{% endblock meta %}
+
+{% block body %}
+<div x-data="speechToText()" 
+     x-init="initialize()"
+     class="p-3 md:p-5 overflow-hidden">
+    
+    <!-- Header Section -->
+    <div class="bg-[#0A0419] border-[3px] rounded-xl border-[#1D1634] md:mt-3 pt-5 pb-1 lg:mx-36 px-3">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[50px] leading-[1.2] sm:leading-[1.2] md:leading-[1.2] lg:leading-[1.2] pb-5 text-center text-transparent text-white w-fit mx-auto">
+            Speech to Text - Convert Voice to Text Online
+        </h1>
+        <p class="text-center pt-3 text-[#938FAA] md:text-lg mb-4">
+            Convert your speech into text instantly with our free online tool. Simply speak and watch your words appear as text in real-time.
+        </p>
+    </div>
+
+    <!-- Device Selection -->
+    <div class="mt-8 text-white">
+        <template x-if="devices.length > 0">
+            <select
+                x-model="selectedDeviceId"
+                @change="handleDeviceChange($event)"
+                class="block sm:w-fit border-[3px] border-[#1D1634] w-[-webkit-fill-available] mx-auto rounded-lg p-3 outline-none bg-[#0A0419]"
+                aria-label="Select Microphone">
+                <template x-for="(device, index) in devices" :key="index">
+                    <option :value="device.deviceId" x-text="device.label || `Microphone ${index + 1}`"></option>
+                </template>
+            </select>
+        </template>
+        <template x-if="devices.length === 0">
+            <p class="text-center text-gray-400 text-lg">
+                No audio devices found
+            </p>
+        </template>
+    </div>
+
+    <!-- Reset Button -->
+    <div class="flex justify-end items-end mt-10">
+        <button
+            @click="handleSpeechReset"
+            class="relative self-end right-0 sm:top-0 lg:mx-36 bg-[#0A0419] py-2 px-2 z-40"
+            aria-label="Reset button">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#575476]" viewBox="0 0 20 20">
+                <path fill="currentColor" d="M15.65 4.35A8 8 0 1 0 17.4 13h-2.22a6 6 0 1 1-1-7.22L11 9h7V2z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Main Speech-to-Text Area -->
+    <div class="bg-[#0A0419] lg:mx-36 p-4">
+        <div class="flex flex-col relative">
+            <!-- Control Bar -->
+            <div class="flex justify-between gap-4 p-2 flex-row">
+                <!-- Formatting Controls - Desktop -->
+                <div class="max-sm:hidden flex gap-6 items-center">
+                    <button @click="isBold = !isBold" 
+                            :class="{'bg-slate-700': isBold, 'bg-transparent': !isBold}"
+                            class="cursor-pointer text-slate-400 hover:text-slate-100 py-1 px-2 rounded-sm">
+                            <svg fill="#575476" height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 202 202" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M148.004,94.812c18.332-8.126,28.671-23.362,28.671-42.752c0-17.261-6.954-31.206-20.11-40.328 C145.653,4.166,130.438,0,113.721,0H16.957v34h17v134h-17v34h90.905c14.819,0,35.992-2.245,52.705-12.94 c16.241-10.393,24.476-26.161,24.476-46.868C185.043,118.342,171.057,100.763,148.004,94.812z M103.12,80H73.957V34h26.096 c25.961,0,36.551,6.34,36.551,21.884C136.604,75.816,118.396,80,103.12,80z M73.957,115h30.838c28.537,0,40.177,7.436,40.177,25.663 c0,18.14-13.987,27.337-41.572,27.337H73.957V115z"></path> </g></svg>
+                    </button>
+                    <button @click="isItalic = !isItalic"
+                            :class="{'bg-slate-700': isItalic, 'bg-transparent': !isItalic}"
+                            class="cursor-pointer text-slate-400 hover:text-slate-100 py-1 px-2 rounded-sm">
+                            <svg viewBox="0 0 16 16" height="20px" width="20px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14 1H5V4H7.75219L5.08553 12H2V15H11V12H8.24781L10.9145 4H14V1Z" fill="#575476"></path> </g></svg>
+                    </button>
+                    <button @click="isUnderline = !isUnderline"
+                            :class="{'bg-slate-700': isUnderline, 'bg-transparent': !isUnderline}"
+                            class="cursor-pointer text-slate-400 hover:text-slate-100 py-1 px-2 rounded-sm">
+                            <svg viewBox="0 0 24 24" height="40px" width="20px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 21H20M18 4V11C18 14.3137 15.3137 17 12 17C8.68629 17 6 14.3137 6 11V4M4 3H8M16 3H20" stroke="#575476" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    </button>
+                    <button @click="handleUndo"
+                            class="cursor-pointer text-slate-400 hover:text-slate-100 py-1 px-2">
+                            <svg viewBox="0 0 24 24" fill="none" height="50px" width="50px" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)matrix(1, 0, 0, -1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.144"></g><g id="SVGRepo_iconCarrier"> <path d="M6 13C6.50963 11.9961 7.37532 11.1655 8.46665 10.6333C9.55797 10.1011 10.8158 9.89624 12.0506 10.0495C14.0687 10.3 15.4753 11.6116 17 12.8186M17 10V13H14" stroke="#575476" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    </button>
+                    <button @click="handleRedo"
+                            class="cursor-pointer text-slate-400 hover:text-slate-100 py-1 px-2">
+                            <svg viewBox="0 0 24 24" fill="none" height="40px" width="40px" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20 9V15M20 15H14M20 15C17.6726 12.9114 15.5171 10.5468 12.2547 10.0878C10.3223 9.81593 8.35395 10.1794 6.64613 11.1234C4.93832 12.0675 3.58359 13.5409 2.78607 15.3218" stroke="#575476" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    </button>
+                </div>
+
+                <!-- Microphone Button -->
+                <div class="bg-[#0A0419] w-fit absolute top-4 left-[40%] md:left-1/2 rounded-full cursor-pointer"
+                     @click="isListening ? stopListening() : startListening()">
+                    <img :src="isListening ? '/images/speech-to-text-mic.webp' : '/images/mic-without-play.webp'"
+                         :alt="isListening ? 'Stop Recording' : 'Start Recording'"
+                         class="h-16 w-16">
+                </div>
+
+                <!-- Action Buttons - Desktop -->
+                <div class="max-sm:hidden flex gap-9 lg:mr-20 text-slate-400">
+                    <button @click="copyToClipboard" 
+                            class="hover:text-slate-100 cursor-pointer flex gap-2 items-center">
+                        <i class="far fa-copy text-lg"></i>
+                        <span class="hidden lg:block">Copy</span>
+                    </button>
+                    <button @click="saveAsTextFile"
+                            class="hover:text-slate-100 cursor-pointer flex gap-2 items-center">
+                        <i class="far fa-save text-lg"></i>
+                        <span class="hidden lg:block">Save</span>
+                    </button>
+                    <button @click="shareText"
+                            class="hover:text-slate-100 cursor-pointer flex gap-2 items-center">
+                        <i class="fas fa-share text-lg"></i>
+                        <span class="hidden lg:block">Share</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Transcript Area -->
+            <textarea
+                id="transcript"
+                x-model="transcript"
+                readonly
+                rows="8"
+                aria-label="transcript"
+                class="w-full my-2 px-4 py-8 bg-black text-slate-100 rounded-lg resize-none text-lg outline-none"
+                :style="{
+                    lineHeight: '1.5rem',
+                    fontFamily: 'monospace',
+                    fontWeight: isBold ? 'bold' : 'normal',
+                    fontStyle: isItalic ? 'italic' : 'normal',
+                    textDecoration: isUnderline ? 'underline' : 'none'
+                }"
+            ></textarea>
+
+            <!-- Mobile Controls -->
+            <div class="flex justify-between gap-4 p-2 flex-col">
+                <!-- Formatting Controls - Mobile -->
+                <div class="md:hidden flex gap-6 items-center">
+                    <!-- Same buttons as desktop but for mobile -->
+                    <template x-for="control in mobileControls">
+                        <button @click="control.action"
+                                :class="control.activeClass"
+                                class="cursor-pointer text-slate-400 hover:text-slate-100 py-1 px-2 rounded-sm">
+                            <i :class="control.icon"></i>
+                        </button>
+                    </template>
+                </div>
+
+                <!-- Action Buttons - Mobile -->
+                <div class="md:hidden flex gap-9 lg:mr-20 text-slate-400">
+                    <div class="flex justify-between gap-4 p-2 flex-row">
+                        <!-- Formatting Controls - Desktop -->
+                        <div class="md:hidden flex gap-6 items-center">
+                            <button @click="isBold = !isBold" 
+                                    :class="{'bg-slate-700': isBold, 'bg-transparent': !isBold}"
+                                    class="cursor-pointer text-slate-400 hover:text-slate-100 py-1 px-2 rounded-sm">
+                                    <svg fill="#575476" height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 202 202" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M148.004,94.812c18.332-8.126,28.671-23.362,28.671-42.752c0-17.261-6.954-31.206-20.11-40.328 C145.653,4.166,130.438,0,113.721,0H16.957v34h17v134h-17v34h90.905c14.819,0,35.992-2.245,52.705-12.94 c16.241-10.393,24.476-26.161,24.476-46.868C185.043,118.342,171.057,100.763,148.004,94.812z M103.12,80H73.957V34h26.096 c25.961,0,36.551,6.34,36.551,21.884C136.604,75.816,118.396,80,103.12,80z M73.957,115h30.838c28.537,0,40.177,7.436,40.177,25.663 c0,18.14-13.987,27.337-41.572,27.337H73.957V115z"></path> </g></svg>
+                            </button>
+                            <button @click="isItalic = !isItalic"
+                                    :class="{'bg-slate-700': isItalic, 'bg-transparent': !isItalic}"
+                                    class="cursor-pointer text-slate-400 hover:text-slate-100 py-1 px-2 rounded-sm">
+                                    <svg viewBox="0 0 16 16" height="20px" width="20px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14 1H5V4H7.75219L5.08553 12H2V15H11V12H8.24781L10.9145 4H14V1Z" fill="#575476"></path> </g></svg>
+                            </button>
+                            <button @click="isUnderline = !isUnderline"
+                                    :class="{'bg-slate-700': isUnderline, 'bg-transparent': !isUnderline}"
+                                    class="cursor-pointer text-slate-400 hover:text-slate-100 py-1 px-2 rounded-sm">
+                                    <svg viewBox="0 0 24 24" height="40px" width="20px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 21H20M18 4V11C18 14.3137 15.3137 17 12 17C8.68629 17 6 14.3137 6 11V4M4 3H8M16 3H20" stroke="#575476" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                            </button>
+                            <button @click="handleUndo"
+                                    class="cursor-pointer text-slate-400 hover:text-slate-100 py-1 px-2">
+                                    <svg viewBox="0 0 24 24" fill="none" height="50px" width="50px" xmlns="http://www.w3.org/2000/svg" transform="rotate(180)matrix(1, 0, 0, -1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.144"></g><g id="SVGRepo_iconCarrier"> <path d="M6 13C6.50963 11.9961 7.37532 11.1655 8.46665 10.6333C9.55797 10.1011 10.8158 9.89624 12.0506 10.0495C14.0687 10.3 15.4753 11.6116 17 12.8186M17 10V13H14" stroke="#575476" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                            </button>
+                            <button @click="handleRedo"
+                                    class="cursor-pointer text-slate-400 hover:text-slate-100 py-1 px-2">
+                                    <svg viewBox="0 0 24 24" fill="none" height="40px" width="40px" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20 9V15M20 15H14M20 15C17.6726 12.9114 15.5171 10.5468 12.2547 10.0878C10.3223 9.81593 8.35395 10.1794 6.64613 11.1234C4.93832 12.0675 3.58359 13.5409 2.78607 15.3218" stroke="#575476" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                            </button>
+                        </div>
+        
+                        <!-- Action Buttons - Desktop -->
+                        <div class="max-sm:hidden flex gap-9 lg:mr-20 text-slate-400">
+                            <button @click="copyToClipboard" 
+                                    class="hover:text-slate-100 cursor-pointer flex gap-2 items-center">
+                                <i class="far fa-copy text-lg"></i>
+                                <span class="hidden lg:block">Copy</span>
+                            </button>
+                            <button @click="saveAsTextFile"
+                                    class="hover:text-slate-100 cursor-pointer flex gap-2 items-center">
+                                <i class="far fa-save text-lg"></i>
+                                <span class="hidden lg:block">Save</span>
+                            </button>
+                            <button @click="shareText"
+                                    class="hover:text-slate-100 cursor-pointer flex gap-2 items-center">
+                                <i class="fas fa-share text-lg"></i>
+                                <span class="hidden lg:block">Share</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function speechToText() {
+    return {
+        devices: [],
+        selectedDeviceId: '',
+        transcript: '',
+        isListening: false,
+        recognition: null,
+        audioStream: null,
+        isBold: false,
+        isItalic: false,
+        isUnderline: false,
+        history: [''],
+        redoStack: [],
+
+        initialize() {
+            this.checkDevices();
+            if (window.webkitSpeechRecognition) {
+                this.recognition = new window.webkitSpeechRecognition();
+                this.setupRecognition();
+            }
+        },
+
+        async checkDevices() {
+            if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+                try {
+                    const deviceInfos = await navigator.mediaDevices.enumerateDevices();
+                    this.devices = deviceInfos.filter(device => device.kind === 'audioinput');
+                    if (this.devices.length > 0) {
+                        this.selectedDeviceId = this.devices[0].deviceId;
+                    }
+                } catch (error) {
+                    console.error('Error enumerating devices:', error);
+                }
+            }
+        },
+
+        setupRecognition() {
+            this.recognition.continuous = true;
+            this.recognition.interimResults = true;
+
+            const punctuationMap = {
+                'full stop': '.',
+                'question mark': '?',
+                'comma': ',',
+                'exclamation mark': '!',
+                'colon': ':',
+                'semicolon': ';',
+                'dash': '-',
+                'open parenthesis': '(',
+                'close parenthesis': ')',
+                'open quote': '"',
+                'close quote': '"'
+            };
+
+            this.recognition.onresult = (event) => {
+                let interimTranscript = '';
+                
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    let transcriptPart = event.results[i][0].transcript;
+
+                    // Apply punctuation formatting
+                    Object.entries(punctuationMap).forEach(([key, value]) => {
+                        const regex = new RegExp(`\\b${key}\\b`, 'gi');
+                        transcriptPart = transcriptPart.replace(regex, value);
+                    });
+
+                    if (event.results[i].isFinal) {
+                        this.transcript += ' ' + transcriptPart;
+                        this.history.push(this.transcript);
+                    } else {
+                        interimTranscript += transcriptPart;
+                    }
+                }
+            };
+
+            this.recognition.onend = () => {
+                this.isListening = false;
+                this.redoStack = [];
+            };
+        },
+
+        async startListening() {
+            try {
+                this.audioStream = await navigator.mediaDevices.getUserMedia({
+                    audio: {
+                        deviceId: this.selectedDeviceId ? { exact: this.selectedDeviceId } : undefined
+                    }
+                });
+                this.isListening = true;
+                this.recognition.start();
+            } catch (error) {
+                console.error('Error starting recognition:', error);
+            }
+        },
+
+        stopListening() {
+            this.recognition.stop();
+            this.isListening = false;
+            if (this.audioStream) {
+                this.audioStream.getTracks().forEach(track => track.stop());
+                this.audioStream = null;
+            }
+        },
+
+        handleUndo() {
+            if (this.history.length <= 1) return;
+            this.redoStack.unshift(this.transcript);
+            this.history.pop();
+            this.transcript = this.history[this.history.length - 1];
+        },
+
+        handleRedo() {
+            if (this.redoStack.length === 0) return;
+            this.history.push(this.transcript);
+            const nextState = this.redoStack.shift();
+            this.transcript = nextState;
+        },
+
+        copyToClipboard() {
+            if (!this.transcript.trim()) return;
+            navigator.clipboard.writeText(this.transcript)
+                .then(() => alert('Text copied to clipboard!'))
+                .catch(error => console.error('Failed to copy:', error));
+        },
+
+        saveAsTextFile() {
+            if (!this.transcript.trim()) return;
+            const blob = new Blob([this.transcript], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'transcript.txt';
+            link.click();
+            URL.revokeObjectURL(url);
+        },
+
+        async shareText() {
+            if (!this.transcript.trim()) return;
+            try {
+                if (navigator.share) {
+                    await navigator.share({
+                        title: 'Transcript',
+                        text: this.transcript
+                    });
+                } else {
+                    alert('Share API is not supported in your browser.');
+                }
+            } catch (error) {
+                console.error('Error sharing:', error);
+            }
+        },
+
+        handleSpeechReset() {
+            this.transcript = '';
+            this.stopListening();
+        },
+
+        handleDeviceChange(event) {
+            this.selectedDeviceId = event.target.value;
+            if (this.isListening) {
+                this.stopListening();
+                this.startListening();
+            }
+        }
+    };
+}
+</script>
+{% endblock body %}
