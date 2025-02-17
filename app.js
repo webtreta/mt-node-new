@@ -56,40 +56,9 @@ app.set('view engine', 'html');
 
 
 // Middleware to check authentication
-function isAuthenticated(req, res, next) {
-  const token = req.cookies.token;
-  if (!token) {
-    return res.redirect("/login");
-  }
-  
-  // Use the token to fetch user data (or check if it's cached)
-  fetchUserData(token)
-    .then(userData => {
-      // Store user info in res.locals to be accessible in views
-      res.locals.user = user;
-      console.log(user)
-      res.locals.isAuthenticated = true;
-      next();
-    })
-    .catch(err => {
-      console.error("Failed to fetch user data:", err);
-      return res.redirect("/login");
-    });
-}
 
 
-app.use((req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1] || null;
-  if (token) {
-      try {
-          const decoded = JSON.parse(atob(token.split(".")[1]));
-          res.locals.user = decoded;
-      } catch (error) {
-          res.locals.user = null;
-      }
-  }
-  next();
-});
+
 
 app.post('/generate-token', async (req, res) => {
   const { email } = req.body;
@@ -283,31 +252,31 @@ app.get('/', (req, res) => {
   }
 });
 app.get('/download/windows', (req, res) => {
-  res.render('windows-download.html');
+  res.render('download/windows-download.html');
 })
 app.get('/download/mac', (req, res) => {
-  res.render('mac-download.html');
+  res.render('download/mac-download.html');
 })
 app.get('/download/android', (req, res) => {
-  res.render('android-download.html');
+  res.render('download/android-download.html');
 })
 app.get('/download/ios', (req, res) => {
-  res.render('ios-download.html');
+  res.render('download/ios-download.html');
 })
 app.get('/download/chrome', (req, res) => {
-  res.render('chrome-download.html');
+  res.render('download/chrome-download.html');
 })
 app.get('/download/edge', (req, res) => {
-  res.render('edge-download.html');
+  res.render('download/edge-download.html');
 })
 app.get('/download/firefox', (req, res) => {
-  res.render('firefox-download.html');
+  res.render('download/firefox-download.html');
 })
 app.get('/download/brave', (req, res) => {
-  res.render('brave-download.html');
+  res.render('download/brave-download.html');
 })
 app.get('/download/opera', (req, res) => {
-  res.render('opera-download.html');
+  res.render('download/opera-download.html');
 })
 app.get('/pricing', (req, res) => {
   res.render('pricing.html', { plans });
@@ -321,31 +290,28 @@ app.get('/sign-up', (req, res) => {
   });
 });
 app.get('/about-us', (req, res) => {
-  res.render('about-us.html');
+  res.render('policy-pages/about-us.html');
 });
 app.get('/cookie-policy', (req, res) => {
-  res.render('cookie-policy.html');
-});
-app.get('/cookie-policy', (req, res) => {
-  res.render('cookie-policy.html');
+  res.render('policy-pages/cookie-policy.html');
 });
 app.get('/dmca-policy', (req, res) => {
-  res.render('dmca-policy.html');
+  res.render('policy-pages/dmca-policy.html');
 });
 app.get('/eu-policy', (req, res) => {
-  res.render('eu-policy.html');
+  res.render('policy-pages/eu-policy.html');
 });
 app.get('/gdpr-policy', (req, res) => {
-  res.render('gdpr-policy.html');
+  res.render('policy-pages/gdpr-policy.html');
 });
 app.get('/privacy-policy', (req, res) => {
-  res.render('privacy-policy.html');
+  res.render('policy-pages/privacy-policy.html');
 });
 app.get('/terms', (req, res) => {
-  res.render('terms.html');
+  res.render('policy-pages/terms.html');
 });
 app.get('/legal-notice', (req, res) => {
-  res.render('legal-notice.html');
+  res.render('policy-pages/legal-notice.html');
 });
 app.get('/generate-token', (req, res) => {
   res.render('generate-token.html');
