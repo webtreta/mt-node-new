@@ -48,7 +48,7 @@
     <h1 class="md:text-[60px] text-[42px] font-medium text-center mb-8">Plans & Pricing</h1>
     <p class="text-[#938FAA] text-center mb-8">All Prices listed below are in USD</p>
 
-    <div class="max-w-7xl mx-auto">
+    <section id="plans" class="max-w-7xl mx-auto">
         <div class="swiper-container overflow-hidden">
             <div class="swiper-wrapper">
                 {% for plan in plans %}
@@ -68,14 +68,14 @@
                         </div>
 
                         {% if plan.tempPrice > 0 %}
-                        <button type="button"
+                        <button type="button" aria-label="Buy Button"
                                 @click="handlePlanSelect($event, { tempPrice: {{ plan.tempPrice }}, name: '{{ plan.name }}' })"
                                 :disabled="loading"
                                 class="w-full py-2 rounded-lg mb-8 bg-[#71EE9E] text-black disabled:opacity-50 disabled:cursor-not-allowed">
                             <span x-text="loading ? 'Processing...' : 'Buy'"></span>
                         </button>
                         {% else %}
-                        <button type="button"
+                        <button type="button" aria-label="Download Button"
                                 @click="handleDownload"
                                 class="w-full py-2 rounded-lg mb-8 border border-[#71EE9E] text-[#71EE9E]">
                             Download
@@ -129,10 +129,10 @@
             </div>
             <div class="swiper-pagination"></div>
         </div>
-    </div>
+    </section>
 
     <!-- Loading Overlay -->
-    <div x-show="loading"
+    <div id="loader" x-show="loading"
          class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="text-white text-center">
             <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
@@ -176,10 +176,7 @@ function pricingData() {
               this.isToken = true;
               this.userId = parsedData.user_id;
           }
-            if (!token || !userData) {
-                window.location.href = "/login"; // Redirect to login if not authenticated
-                return;
-            }
+            
         },
 
         initSwiper() {
@@ -207,7 +204,7 @@ function pricingData() {
             
             try {
                 if (!this.isToken || !this.userId) {
-                    window.location.href = '/signin';
+                    window.location.href = '/login';
                     return;
                 }
 

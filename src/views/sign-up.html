@@ -61,7 +61,7 @@
               text: 'A verification email has been sent. Please verify your account.',
               showConfirmButton: true
             });
-            window.location.href = '/signin';
+            window.location.href = '/login';
           } else if (result.message === 'Email is Already Present') {
             await Swal.fire({
               icon: 'info',
@@ -69,7 +69,7 @@
               text: 'Please log in with your existing account.',
               showConfirmButton: true
             });
-            window.location.href = '/signin';
+            window.location.href = '/login';
           }
         } else {
           Swal.fire({
@@ -158,7 +158,7 @@
                     Create an account
                 </button>
 
-                <a href="/signin" class="text-[#b270b5] underline self-center block text-center">
+                <a href="/login" class="text-[#b270b5] underline self-center block text-center">
                     Login to existing account
                 </a>
             </form>

@@ -60,13 +60,13 @@
     <div class="flex flex-row items-center max-sm:w-full justify-between gap-x-4 md:col-span-4">
       <a href="/" class="block md:mx-auto mx-0">
         <img src="/images/logo.webp"
-          class="md:mt-3 mx-auto sm:mt-0 sm:ml-3 w-[120px] md:w-[120px] sm:w-[150px] lg:w-[160px]" alt="logo">
+          class="md:mt-3 mx-auto sm:mt-0 sm:ml-3 w-[120px] md:w-[120px] sm:w-[150px] lg:w-[160px]" alt="Mt-Auto-Clicker logo" aria-label="Mt-Auto-Clicker logo">
       </a>
 
       <!-- Mobile Menu Button -->
       <div class="md:hidden flex items-center gap-3">
         
-        <button @click="menuOpen = !menuOpen" class="text-white">
+        <button @click="menuOpen = !menuOpen" class="text-white" aria-label="hamburger">
           <svg width="30" height="30" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M8.75 35H61.25" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             <path d="M8.75 17.5H43.75M26.25 52.5H61.25" stroke="#71EE9E" stroke-width="2" stroke-linecap="round"
@@ -77,8 +77,8 @@
           <template x-if="isToken">
             <div class="relative">
               <div class="flex items-center gap-2">
-                <img :src="base64Image || '/images/profile-image.png'" class="w-9 h-9 object-cover rounded-full"
-                  alt="Profile">
+                <img :src="base64Image || '/images/profile-image.png'"  class="w-9 h-9 object-cover rounded-full"
+                  alt="Profile Photo" aria-label="Profile Photo">
                 <button @click="isProfileMenuOpen = !isProfileMenuOpen" class="p-1 hover:bg-gray-800 rounded-full">
                   <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.75a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5zm0 14a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5zM13.75 12a1.75 1.75 0 1 1-3.5 0 1.75 1.75 0 0 1 3.5 0z" fill="#938FAA"></path></g></svg>
                 </button>
@@ -88,13 +88,13 @@
               <div x-show="isProfileMenuOpen"
                 class="absolute right-0 mt-2 w-48 bg-[#0A0419] rounded-lg shadow-lg border border-gray-800">
                 <a href="/dashboard" class="flex items-center px-4 py-2 text-[#938FAA] hover:bg-gray-800">
-                  <img src="/images/user-icon.svg" class="w-5 h-5 mr-2" alt=""> Dashboard
+                  <img src="/images/user-icon.svg"  class="w-5 h-5 mr-2" alt="user-icon" aria-label="user-icon"> Dashboard
                 </a>
                 <a href="/dashboard/account-settings" class="flex items-center px-4 py-2 text-[#938FAA] hover:bg-gray-800">
-                  <img src="/images/setting-icon.svg" class="w-5 h-5 mr-2" alt=""> Account Settings
+                  <img src="/images/setting-icon.svg" class="w-5 h-5 mr-2" alt="setting icon" aria-label="setting icon"> Account Settings
                 </a>
                 <button @click="handleLogout" class="flex items-center w-full px-4 py-2 text-[#938FAA] hover:bg-gray-800">
-                  <img src="/images/log-out-icon.svg" class="w-5 h-5 mr-2" alt=""> Log Out
+                  <img src="/images/log-out-icon.svg" class="w-5 h-5 mr-2" alt="logout icon" aria-label="logout icon"> Log Out
                 </button>
               </div>
             </div>
@@ -104,7 +104,7 @@
             <a href="/login"
               class="inline-flex items-center font-semibold text-base w-max border border-[#71EE9E] text-[#71EE9E] rounded-xl px-2 py-2">
               Login
-              <svg class="ml-4" width="19" height="23" viewBox="0 0 19 23" fill="none">
+              <svg class="ml-4" width="19" height="23" viewBox="0 0 19 23" fill="none" aria-label="login icon">
                 <path
                   d="M16.2306 0.96875H8.61336C7.90651 0.969743 7.22883 1.33881 6.72902 1.99497C6.2292 2.65113 5.94807 3.5408 5.94732 4.46875V10.9688H9.21181C10.8667 10.9688 11.8056 9.07355 10.8029 7.75699L10.741 7.67562C10.6041 7.48656 10.529 7.23481 10.5315 6.97405C10.5341 6.71329 10.6141 6.46415 10.7546 6.27975C10.895 6.09535 11.0848 5.99027 11.2834 5.98694C11.4821 5.9836 11.6738 6.08226 11.8178 6.26188L15.6265 11.2619C15.7692 11.4494 15.8494 11.7036 15.8494 11.9688C15.8494 12.2339 15.7692 12.4881 15.6265 12.6756L11.8178 17.6756C11.6738 17.8552 11.4821 17.9539 11.2834 17.9506C11.0848 17.9472 10.895 17.8422 10.7546 17.6578C10.6141 17.4734 10.5341 17.2242 10.5315 16.9634C10.529 16.7027 10.6041 16.4509 10.741 16.2619L10.8029 16.1805C11.8056 14.864 10.8667 12.9688 9.21181 12.9688H5.94732V19.4688C5.94732 21.4719 7.55599 22.9688 8.99422 22.9688H16.2306C16.9375 22.9678 17.6151 22.5987 18.115 21.9425C18.6148 21.2864 18.8959 20.3967 18.8967 19.4688V4.46875C18.8959 3.5408 18.6148 2.65113 18.115 1.99497C17.6151 1.33881 16.9375 0.969743 16.2306 0.96875Z"
                   fill="#71EE9E" />
@@ -129,9 +129,9 @@
         <div class="relative">
           <div class="flex items-center gap-2">
             <img :src="base64Image || '/images/profile-image.png'" class="w-9 h-9 object-cover rounded-full"
-              alt="Profile">
-            <button @click="isProfileMenuOpen = !isProfileMenuOpen" class="p-1 hover:bg-gray-800 rounded-full">
-              <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.75a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5zm0 14a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5zM13.75 12a1.75 1.75 0 1 1-3.5 0 1.75 1.75 0 0 1 3.5 0z" fill="#938FAA"></path></g></svg>
+              alt="Profile photo" aria-label="Profile photo">
+            <button aria-label="Profile Menu Open button" @click="isProfileMenuOpen = !isProfileMenuOpen" class="p-1 hover:bg-gray-800 rounded-full">
+              <svg aria-label="profile menu option button icon" width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.75a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5zm0 14a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5zM13.75 12a1.75 1.75 0 1 1-3.5 0 1.75 1.75 0 0 1 3.5 0z" fill="#938FAA"></path></g></svg>
             </button>
           </div>
 
@@ -139,13 +139,13 @@
           <div x-show="isProfileMenuOpen"
             class="absolute right-0 mt-2 w-48 bg-[#0A0419] rounded-lg shadow-lg border border-gray-800">
             <a href="/dashboard" class="flex items-center px-4 py-2 text-[#938FAA] hover:bg-gray-800">
-              <img src="/images/user-icon.svg" class="w-5 h-5 mr-2" alt=""> Dashboard
+              <img src="/images/user-icon.svg" class="w-5 h-5 mr-2" alt="user-icon" aria-label="user-icon"> Dashboard
             </a>
             <a href="/dashboard/account-settings" class="flex items-center px-4 py-2 text-[#938FAA] hover:bg-gray-800">
-              <img src="/images/setting-icon.svg" class="w-5 h-5 mr-2" alt=""> Account Settings
+              <img src="/images/setting-icon.svg" class="w-5 h-5 mr-2" alt="setting-icon" aria-label="setting-icon"> Account Settings
             </a>
             <button @click="handleLogout" class="flex items-center w-full px-4 py-2 text-[#938FAA] hover:bg-gray-800">
-              <img src="/images/log-out-icon.svg" class="w-5 h-5 mr-2" alt=""> Log Out
+              <img src="/images/log-out-icon.svg" class="w-5 h-5 mr-2" alt="logout-icon" aria-label="logout-icon"> Log Out
             </button>
           </div>
         </div>
@@ -155,7 +155,7 @@
         <a href="/login"
           class="inline-flex items-center font-semibold text-base w-max border border-[#71EE9E] text-[#71EE9E] rounded-xl px-4 py-2">
           Login
-          <svg class="ml-4" width="19" height="23" viewBox="0 0 19 23" fill="none">
+          <svg aria-label="login-icon" class="ml-4" width="19" height="23" viewBox="0 0 19 23" fill="none">
             <path
               d="M16.2306 0.96875H8.61336C7.90651 0.969743 7.22883 1.33881 6.72902 1.99497C6.2292 2.65113 5.94807 3.5408 5.94732 4.46875V10.9688H9.21181C10.8667 10.9688 11.8056 9.07355 10.8029 7.75699L10.741 7.67562C10.6041 7.48656 10.529 7.23481 10.5315 6.97405C10.5341 6.71329 10.6141 6.46415 10.7546 6.27975C10.895 6.09535 11.0848 5.99027 11.2834 5.98694C11.4821 5.9836 11.6738 6.08226 11.8178 6.26188L15.6265 11.2619C15.7692 11.4494 15.8494 11.7036 15.8494 11.9688C15.8494 12.2339 15.7692 12.4881 15.6265 12.6756L11.8178 17.6756C11.6738 17.8552 11.4821 17.9539 11.2834 17.9506C11.0848 17.9472 10.895 17.8422 10.7546 17.6578C10.6141 17.4734 10.5341 17.2242 10.5315 16.9634C10.529 16.7027 10.6041 16.4509 10.741 16.2619L10.8029 16.1805C11.8056 14.864 10.8667 12.9688 9.21181 12.9688H5.94732V19.4688C5.94732 21.4719 7.55599 22.9688 8.99422 22.9688H16.2306C16.9375 22.9678 17.6151 22.5987 18.115 21.9425C18.6148 21.2864 18.8959 20.3967 18.8967 19.4688V4.46875C18.8959 3.5408 18.6148 2.65113 18.115 1.99497C17.6151 1.33881 16.9375 0.969743 16.2306 0.96875Z"
               fill="#71EE9E" />

@@ -29,6 +29,7 @@
     0% {
       transform: translateX(0);
     }
+
     100% {
       transform: translateX(-100%);
     }
@@ -93,8 +94,8 @@
 }">
 
   {# Hero Section #}
-  <div id="hero-section" class="bg-[#05030E] text-white overflow-x-hidden">
-    <main class="flex flex-col items-center text-center  mt-16 px-4">
+  <main id="hero-section" class="bg-[#05030E] text-white overflow-x-hidden">
+    <section class="flex flex-col items-center text-center  mt-16 px-4">
       <h1 class="md:text-[60px] text-[42px] text-white">
         MT Auto Clicker
       </h1>
@@ -107,11 +108,21 @@
         </p>
       </div>
 
-      <div class="flex flex-wrap md:flex-row flex-col items-center justify-center gap-x-10 bg-[#05030E] md:gap-x-20 px-3">
+      <div
+        class="flex flex-wrap md:flex-row flex-col items-center justify-center gap-x-10 bg-[#05030E] md:gap-x-20 px-3">
         {# Download Button #}
         <a href="/download/windows">
-          <button class="mt-10 bg-[#71EE9E] text-black px-4 py-4 md:px-3 md:py-[10px] rounded-lg text-lg font-medium flex items-center justify-center space-x-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class='mb-1' width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="none" /><path fill="#05030E" fillRule="evenodd" d="M12 1.25a.75.75 0 0 0-.75.75v10.973l-1.68-1.961a.75.75 0 1 0-1.14.976l3 3.5a.75.75 0 0 0 1.14 0l3-3.5a.75.75 0 1 0-1.14-.976l-1.68 1.96V2a.75.75 0 0 0-.75-.75" clipRule="evenodd" /><path fill="#05030E" d="M14.25 9v.378a2.249 2.249 0 0 1 2.458 3.586l-3 3.5a2.25 2.25 0 0 1-3.416 0l-3-3.5A2.25 2.25 0 0 1 9.75 9.378V9H8c-2.828 0-4.243 0-5.121.879C2 10.757 2 12.172 2 15v1c0 2.828 0 4.243.879 5.121C3.757 22 5.172 22 8 22h8c2.828 0 4.243 0 5.121-.879C22 20.243 22 18.828 22 16v-1c0-2.828 0-4.243-.879-5.121C20.243 9 18.828 9 16 9z" /></svg>
+          <button aria-label="Download-button"
+            class="mt-10 bg-[#71EE9E] text-black px-4 py-4 md:px-3 md:py-[10px] rounded-lg text-lg font-medium flex items-center justify-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" aria-label="Download-button-icon" class='mb-1' width="24"
+              height="24" viewBox="0 0 24 24">
+              <rect width="24" height="24" fill="none" />
+              <path fill="#05030E" fillRule="evenodd"
+                d="M12 1.25a.75.75 0 0 0-.75.75v10.973l-1.68-1.961a.75.75 0 1 0-1.14.976l3 3.5a.75.75 0 0 0 1.14 0l3-3.5a.75.75 0 1 0-1.14-.976l-1.68 1.96V2a.75.75 0 0 0-.75-.75"
+                clipRule="evenodd" />
+              <path fill="#05030E"
+                d="M14.25 9v.378a2.249 2.249 0 0 1 2.458 3.586l-3 3.5a2.25 2.25 0 0 1-3.416 0l-3-3.5A2.25 2.25 0 0 1 9.75 9.378V9H8c-2.828 0-4.243 0-5.121.879C2 10.757 2 12.172 2 15v1c0 2.828 0 4.243.879 5.121C3.757 22 5.172 22 8 22h8c2.828 0 4.243 0 5.121-.879C22 20.243 22 18.828 22 16v-1c0-2.828 0-4.243-.879-5.121C20.243 9 18.828 9 16 9z" />
+            </svg>
             <span class="text-[16px] md:text-[20px] leading-[18px]">
               Download
             </span>
@@ -120,19 +131,26 @@
 
         {# Pricing Button #}
         <a href="/pricing">
-          <button class="border border-[#71EE9E] group text-[#71EE9E] hover:bg-[#71EE9E] hover:text-[#05030E] font-medium text-base md:text-lg md:px-4 md:py-[11px] px-5 py-4 flex items-center space-x-3 mt-10 justify-between rounded-lg shadow-md hover:shadow-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 14 14"><rect width="14" height="14" fill="none" /><path fill="#71ee9e" fillRule="evenodd" d="M13.463 9.692C13.463 12.664 10.77 14 7 14S.537 12.664.537 9.713c0-3.231 1.616-4.868 4.847-6.505L4.24 1.077A.7.7 0 0 1 4.843 0H9.41a.7.7 0 0 1 .603 1.023L8.616 3.208c3.23 1.615 4.847 3.252 4.847 6.484M7.625 4.887a.625.625 0 1 0-1.25 0v.627a1.74 1.74 0 0 0-.298 3.44l1.473.322a.625.625 0 0 1-.133 1.236h-.834a.625.625 0 0 1-.59-.416a.625.625 0 1 0-1.178.416a1.88 1.88 0 0 0 1.56 1.239v.636a.625.625 0 1 0 1.25 0v-.636a1.876 1.876 0 0 0 .192-3.696l-1.473-.322a.49.49 0 0 1 .105-.97h.968a.62.62 0 0 1 .59.416a.625.625 0 0 0 1.178-.417a1.87 1.87 0 0 0-1.56-1.238z" clipRule="evenodd" class='hover:text-[#05030E] group-hover:fill-[#05030E] ' /></svg>
+          <button aria-label="pricing-button"
+            class="border border-[#71EE9E] group text-[#71EE9E] hover:bg-[#71EE9E] hover:text-[#05030E] font-medium text-base md:text-lg md:px-4 md:py-[11px] px-5 py-4 flex items-center space-x-3 mt-10 justify-between rounded-lg shadow-md hover:shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" aria-label="pricing-button-icon" width="24" height="24"
+              viewBox="0 0 14 14">
+              <rect width="14" height="14" fill="none" />
+              <path fill="#71ee9e" fillRule="evenodd"
+                d="M13.463 9.692C13.463 12.664 10.77 14 7 14S.537 12.664.537 9.713c0-3.231 1.616-4.868 4.847-6.505L4.24 1.077A.7.7 0 0 1 4.843 0H9.41a.7.7 0 0 1 .603 1.023L8.616 3.208c3.23 1.615 4.847 3.252 4.847 6.484M7.625 4.887a.625.625 0 1 0-1.25 0v.627a1.74 1.74 0 0 0-.298 3.44l1.473.322a.625.625 0 0 1-.133 1.236h-.834a.625.625 0 0 1-.59-.416a.625.625 0 1 0-1.178.416a1.88 1.88 0 0 0 1.56 1.239v.636a.625.625 0 1 0 1.25 0v-.636a1.876 1.876 0 0 0 .192-3.696l-1.473-.322a.49.49 0 0 1 .105-.97h.968a.62.62 0 0 1 .59.416a.625.625 0 0 0 1.178-.417a1.87 1.87 0 0 0-1.56-1.238z"
+                clipRule="evenodd" class='hover:text-[#05030E] group-hover:fill-[#05030E] ' />
+            </svg>
             <span class="text-[16px] md:text-[20px] leading-[18px]">
               Pricing
             </span>
           </button>
         </a>
       </div>
-    </main>
-  </div>
+    </section>
+  </main>
 
   {# Features Section #}
-  <div class="bg-[#05030e] text-white py-16 lg:ml-16 mt-[90px]">
+  <section id="feature-section" class="feature-section bg-[#05030e] text-white py-16 lg:ml-16 mt-[90px]">
     <div class="container mx-auto px-6 lg:pl-20">
       <div class="mb-14">
         <h2 class="text-4xl text-[#E93BF3] mb-4 font-semibold">
@@ -145,253 +163,251 @@
 
       <div class="grid  grid-cols-1 sm:grid-cols-3 gap-5 sm:w-[95%]">
         <div class="flex bg-[#0A0419]  rounded-xl  gap-4 p-4">
-          <img src="/images/features-images/Single-Target-Clicking.webp" class="w-20 h-20" alt="">
+          <img src="/images/features-images/Single-Target-Clicking.webp" class="w-20 h-20"
+            alt="Single-Target-Clicking-image" aria-label="Single-Target-Clicking-image">
           <div class="flex flex-col gap-4">
             <span>Single Target Clicking</span>
-            <span>Automate clicks on a single spot with customizable click intervals as low as 1 millisecond. Ideal for precision tasks.</span>
+            <span>Automate clicks on a single spot with customizable click intervals as low as 1 millisecond. Ideal for
+              precision tasks.</span>
           </div>
         </div>
         <div class="flex bg-[#0A0419]  rounded-xl  gap-4 p-4">
-          <img src="/images/features-images/Multi-Target-Clicking.webp" class="w-20 h-20" alt="">
+          <img src="/images/features-images/Multi-Target-Clicking.webp" class="w-20 h-20"
+            alt="Multi-Target-Clicking-image" aria-label="Multi-Target-Clicking-image">
           <div class="flex flex-col gap-4">
             <span>Multi Target Clicking</span>
-            <span>Click on multiple targets with ease. Supports up to 1 millisecond clicking intervals and allows unlimited target selection for diverse automation tasks.</span>
+            <span>Click on multiple targets with ease. Supports up to 1 millisecond clicking intervals and allows
+              unlimited target selection for diverse automation tasks.</span>
           </div>
         </div>
         <div class="flex bg-[#0A0419] rounded-xl  gap-4 p-4">
-          <img src="/images/features-images/auto-form-fill-up.webp" class="w-20 h-20" alt="">
+          <img src="/images/features-images/auto-form-fill-up.webp" class="w-20 h-20" alt="Auto-form-fill-up-image"
+            aria-label="Auto-form-fill-up-image">
           <div class="flex flex-col gap-4">
             <span>Auto Form Fill Up</span>
             <span>Automatically fill forms with pre-saved information, simplifying repetitive data entry tasks</span>
           </div>
         </div>
         <div class="flex bg-[#0A0419] rounded-xl  gap-4 p-4">
-          <img src="/images/features-images/auto-scroll.webp" class="w-20 h-20" alt="">
+          <img src="/images/features-images/auto-scroll.webp" class="w-20 h-20" alt="Auto-scroll-image"
+            aria-label="Auto-scroll-image">
           <div class="flex flex-col gap-4">
             <span>Auto Scroll</span>
-            <span>Automate scrolling for Instagram Reels, YouTube Shorts, TikTok, and Facebook. Includes customizable scroll intervals and directional control (up or down).</span>
+            <span>Automate scrolling for Instagram Reels, YouTube Shorts, TikTok, and Facebook. Includes customizable
+              scroll intervals and directional control (up or down).</span>
           </div>
         </div>
         <div class="flex bg-[#0A0419] rounded-xl  gap-4 p-4">
-          <img src="/images/features-images/auto-refresh.webp" class="w-20 h-20" alt="">
+          <img src="/images/features-images/auto-refresh.webp" class="w-20 h-20" alt="Auto-refresh-image"
+            aria-label="Auto-refresh-image">
           <div class="flex flex-col gap-4">
             <span>Auto Refresh</span>
-            <span>Refresh apps, web pages, or software automatically. Includes options for user-defined refresh intervals.</span>
+            <span>Refresh apps, web pages, or software automatically. Includes options for user-defined refresh
+              intervals.</span>
           </div>
         </div>
         <div class="flex bg-[#0A0419] rounded-xl  gap-4 p-4">
-          <img src="/images/features-images/auto-swipe.webp" class="w-20 h-20" alt="">
+          <img src="/images/features-images/auto-swipe.webp" class="w-20 h-20" alt="Auto-swipe-image"
+            aria-label="Auto-swipe-image">
           <div class="flex flex-col gap-4">
             <span>Auto Swipe</span>
-            <span>Automate left or right swipes with user-defined swipe intervals. Suitable for apps, browsers, and software.</span>
+            <span>Automate left or right swipes with user-defined swipe intervals. Suitable for apps, browsers, and
+              software.</span>
           </div>
         </div>
         <div class="flex bg-[#0A0419] rounded-xl  gap-4 p-4">
-          <img src="/images/features-images/touch-hold.webp" class="w-20 h-20" alt="">
+          <img src="/images/features-images/touch-hold.webp" class="w-20 h-20" alt="Touch-hold-image"
+            aria-label="Touch-hold-image">
           <div class="flex flex-col gap-4">
             <span>Touch & Hold</span>
             <span>Automate touch and hold gestures for long-press actions with customizable hold duration.</span>
           </div>
         </div>
         <div class="flex bg-[#0A0419] rounded-xl  gap-4 p-4">
-          <img src="/images/features-images/capture-screenshot.webp" class="w-20 h-20" alt="">
+          <img src="/images/features-images/capture-screenshot.webp" class="w-20 h-20" alt="Capture-screenshot-image"
+            aria-label="Capture-screenshot-image">
           <div class="flex flex-col gap-4">
             <span>Capture Screenshot/Reord</span>
-            <span>Easily capture screenshots (full page, selected area, or current screen) and record videos in formats like MP4, WEBM, and MKV with resolutions from 480p to 4K.</span>
+            <span>Easily capture screenshots (full page, selected area, or current screen) and record videos in formats
+              like MP4, WEBM, and MKV with resolutions from 480p to 4K.</span>
           </div>
         </div>
         <div class="flex bg-[#0A0419] rounded-xl  gap-4 p-4">
-          <img src="/images/features-images/macro-recorder.webp" class="w-20 h-20" alt="">
+          <img src="/images/features-images/macro-recorder.webp" class="w-20 h-20" alt="Macro-recorder-image"
+            aria-label="Macro-recorder-image">
           <div class="flex flex-col gap-4">
             <span>Macro Recorder</span>
-            <span>Record and replay complex sequences of mouse clicks, keystrokes, and wait commands. Supports both auto and manual recording modes.</span>
+            <span>Record and replay complex sequences of mouse clicks, keystrokes, and wait commands. Supports both auto
+              and manual recording modes.</span>
           </div>
         </div>
         <div class="flex bg-[#0A0419] rounded-xl  gap-4 p-4">
-          <img src="/images/features-images/auto-zoom.webp" class="w-20 h-20" alt="">
+          <img src="/images/features-images/auto-zoom.webp" class="w-20 h-20" alt="auto-zoom-image"
+            aria-label="auto-zoom-image">
           <div class="flex flex-col gap-4">
             <span>Auto Zoom</span>
-            <span>Automate zooming actions for apps, browsers, or software. Supports customizable zoom intervals for precise control.</span>
+            <span>Automate zooming actions for apps, browsers, or software. Supports customizable zoom intervals for
+              precise control.</span>
           </div>
         </div>
         <div class="flex bg-[#0A0419] rounded-xl  gap-4 p-4">
-          <img src="/images/features-images/auto-hotkey.webp" class="w-20 h-20" alt="">
+          <img src="/images/features-images/auto-hotkey.webp" class="w-20 h-20" alt="auto-hotkey-image"
+            aria-label="auto-hotkey-image">
           <div class="flex flex-col gap-4">
             <span>Auto Hotkey</span>
-            <span>Leverage predefined scripts for automation. Beginner-friendly with no programming skills required.</span>
+            <span>Leverage predefined scripts for automation. Beginner-friendly with no programming skills
+              required.</span>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
   {# Special Features Sections #}
-<h2 class="text-[36px] text-white mb-16 mt-16 leading-[40px] text-center font-[600]">
-  What Makes Us Special?
-</h2>
-
-{# Cross Platform Section #}
-<div id="what-makes-us-special-section" class="bg-[#0A0419] border-[3px] rounded-xl border-[#1D1634] md:ml-36 md:mr-24 flex flex-col items-center p-6 text-white">
-  <div class="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-    <div>
-      <h3 class="text-2xl leading-[40px] font-bold mb-4">
-        Cross Platform Compatibility
-      </h3>
-      <p class="text-wrap text-[#938FAA] leading-6 font-semibold text-[16px] text-left mt-2">
-        Access MT Auto Clicker on Windows, macOS, Android, iOS, and web browsers like Chrome and Edge. MT Tokens let you sync usage across platforms, ensuring flexibility and ease of use.
-      </p>
-    </div>
-
-    <div class="flex justify-center bg-[#16162E]">
-      <video 
-        x-ref="video"
-        src="/images/cross.mp4"
-        loop
-        muted
-        autoplay
-        playsinline
-        class="w-full h-auto"
-        x-init="$nextTick(() => $refs.video.play())"
-      ></video>
-    </div>
-  </div>
-</div>
-
-{# Community Section #}
-<div id="community-section" class="mt-10 bg-[#0A0419] border-[3px] rounded-xl border-[#1D1634] md:ml-36 md:mr-24 p-6 flex flex-col items-center text-white">
-  <div class="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2">
-    <div class="bg-[#0A0419] rounded-lg shadow-lg">
-      <img 
-        src="/images/MT-Community.svg"
-        class="w-72 md:ml-[30px] mx-auto"
-        alt="Mt community logo"
-        loading="lazy"
-      >
-    </div>
-    <div class="mt-24 max-sm:px-3">
-      <h3 class="text-2xl leading-[30px] text-right md:leading-[40px] font-bold mb-4">
-        MT Community
-      </h3>
-      <p class="text-[#938FAA] text-wrap leading-6 font-semibold text-[16px] text-right mt-2">
-        Join the MT Community forum to ask questions, troubleshoot issues, and get quick support from MT Staff. A future update will enable users to share presets.
-      </p>
-    </div>
-  </div>
-</div>
-
-{# Token Management Section #}
-<div id="token-management-section" class="mt-10 border-[3px] p-6 rounded-xl border-[#1D1634] bg-[#0A0419] md:ml-36 md:mr-24 flex flex-col items-center text-white">
-  <div class="w-full max-w-7xl gap-28 grid grid-cols-1 lg:grid-cols-2">
-    <div class="mt-16 max-sm:px-3">
-      <h3 class="text-2xl leading-[30px] md:leading-[40px] font-bold mb-4">
-        Token Management
-      </h3>
-      <p class="text-[#938FAA] leading-6 font-semibold text-[16px] text-left mt-2">
-        MT Tokens are your digital keys for MT Auto Clicker. Each generation adds 50 tokens, with a limit of 200 tokens per account. Use them across Windows, Mac, and browser extensions for easy access. Invite friends to earn more tokens!
-      </p>
-    </div>
-    <div class="bg-[#0A0419] p-6 rounded-lg shadow-lg">
-      <img
-        src="./images/Token-Management.svg"
-        class="w-72 md:ml-[30px] mx-auto"
-        alt="Mt Token Management Logo"
-        loading="lazy"
-      >
-    </div>
-  </div>
-</div>
-
-{# Testimonials Section #}
-<div 
-  id="testimonial-section" 
-  class="bg-[#05030e] text-white py-12 px-4 lg:ml-20 sm:px-8 lg:px-16"
-  x-data="{ isPaused: false }"
->
-  <h2 class="text-[36px] text-white mb-16 mt-10 leading-[40px] text-left font-[600]">
-    Why we Work?
+  <section id="what-makes-us-special-section" class="what-makes-us-special">
+  <h2 class="text-[36px] text-white mb-16 mt-16 leading-[40px] text-center font-[600]">
+    What Makes Us Special?
   </h2>
-  
-  <div class="bg-[#05030e] text-white group overflow-hidden">
-    <div 
-      class="flex gap-4 sm:gap-6 md:gap-8 justify-start w-full overflow-hidden"
-      @mouseenter="isPaused = true"
-      @mouseleave="isPaused = false"
-    >
-      <div 
-        class="flex space-x-4 sm:space-x-6 testimonial-scroll"
-        :class="{ 'paused': isPaused }"
-      >
-        {% for card in testimonials %}
-        <div class="card w-[300px] h-[300px] bg-[#0A0419] p-5 border-[3px] rounded-xl border-[#1D1634] hover:shadow-lg flex flex-col justify-between">
-          <div class="flex flex-col justify-between h-full w-full">
-            <p class="text-[#938FAA] leading-[25.6px] font-semibold text-md text-left mt-2">
-              {{ card.description }}
-            </p>
-            <div class="flex items-center">
-              <img
-                src="{{ card.image }}"
-                alt="Mt Auto Clicker Logo"
-                class="h-10 w-10 rounded-full object-cover"
-                loading="lazy"
-              >
-              <span class="text-gray-200 text-[18px] leading-[20px] font-medium ml-4">
-                {{ card.author }}
-              </span>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
+
+  {# Cross Platform Section #}
+  <div id="what-makes-us-special-section"
+    class="bg-[#0A0419] border-[3px] rounded-xl border-[#1D1634] md:ml-36 md:mr-24 flex flex-col items-center p-6 text-white">
+    <div id="Cross-Platform" class="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div>
+        <h3 class="text-2xl leading-[40px] font-bold mb-4">
+          Cross Platform Compatibility
+        </h3>
+        <p class="text-wrap text-[#938FAA] leading-6 font-semibold text-[16px] text-left mt-2">
+          Access MT Auto Clicker on Windows, macOS, Android, iOS, and web browsers like Chrome and Edge. MT Tokens let
+          you sync usage across platforms, ensuring flexibility and ease of use.
+        </p>
+      </div>
+
+      <div class="flex justify-center bg-[#16162E]">
+        <video x-ref="video" src="/images/cross.mp4" loop muted autoplay playsinline class="w-full h-auto"
+          x-init="$nextTick(() => $refs.video.play())" alt="cross-platform-video" aria-label="cross-platform-video"></video>
       </div>
     </div>
   </div>
-</div>
 
-{# Download Section #}
-<div id="download-links-section" class="bg-[#05030E] text-white flex flex-col max-sm:mt-20 items-center">
-  <h2 class="text-[24px] leading-[24px] font-[600] mb-9">
-    AVAILABLE ON
-  </h2>
-  <div class="flex flex-wrap justify-center md:mx-0 gap-6" role="group" aria-label="Download options">
-    {% for platform in platform %}
-    <div class="bg-card p-4 border border-[#71EE9E] rounded-lg flex justify-center items-center w-20 h-20 hover:scale-105 transition-transform">
-      <a href="/download/{{ platform.name }}">
-        <img
-          src="{{ platform.icon }}"
-          alt="{{ platform.name }}"
-          class="w-10 h-10"
-          loading="lazy"
-        >
-      </a>
-    </div>
-    {% endfor %}
-  </div>
-</div>
-
-{# Disclaimer Section #}
-<div id="disclaimer-section" class="mt-10 sm:p-10 p-0 flex max-sm:mt-20 flex-col gap-10">
-  <div class="w-[88%] border-[3px] rounded-xl border-[#1D1634] mx-auto bg-[#0A0419]">
-    <div class="rounded-lg shadow-md p-6 text-center">
-      <p class="text-[1.5rem] font-[700] mb-3 text-white">Disclaimer</p>
-      <p class="text-center text-[#938FAA]">
-        MT Auto Clicker is intended for legitimate use only. Users are solely responsible for their actions and must comply with applicable laws. By using our Auto Clicker, you agree to these terms.
-      </p>
+  {# Community Section #}
+  <div id="community-section"
+    class="mt-10 bg-[#0A0419] border-[3px] rounded-xl border-[#1D1634] md:ml-36 md:mr-24 p-6 flex flex-col items-center text-white">
+    <div class="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2">
+      <div class="bg-[#0A0419] rounded-lg shadow-lg">
+        <img src="/images/MT-Community.svg" class="w-72 md:ml-[30px] mx-auto" alt="Mt community logo" aria-label="Mt Community image" loading="lazy">
+      </div>
+      <div class="mt-24 max-sm:px-3">
+        <h3 class="text-2xl leading-[30px] text-right md:leading-[40px] font-bold mb-4">
+          MT Community
+        </h3>
+        <p class="text-[#938FAA] text-wrap leading-6 font-semibold text-[16px] text-right mt-2">
+          Join the MT Community forum to ask questions, troubleshoot issues, and get quick support from MT Staff. A
+          future update will enable users to share presets.
+        </p>
+      </div>
     </div>
   </div>
 
-  <div class="w-[88%] border-[3px] rounded-xl border-[#1D1634] mx-auto bg-[#0A0419]">
-    <div class="rounded-lg shadow-md p-6 text-center">
-      <h3 class="text-[1.5rem] font-[700] mb-3 text-white">
-        Trademark Disclaimer
-      </h3>
-      <p class="text-center text-[#938FAA]">
-        All trademarks, logos, and brand names mentioned or displayed on the MT Auto Clicker website, software, apps, and extensions are the sole property of 
-        <a href="https://www.webtreta.com/" class="no-underline">
-          Web Treta
-        </a>. Using these trademarks, logos, and brand names does not imply endorsement or affiliation with any other entity.
-      </p>
+  {# Token Management Section #}
+  <div id="token-management-section"
+    class="mt-10 border-[3px] p-6 rounded-xl border-[#1D1634] bg-[#0A0419] md:ml-36 md:mr-24 flex flex-col items-center text-white">
+    <div class="w-full max-w-7xl gap-28 grid grid-cols-1 lg:grid-cols-2">
+      <div class="mt-16 max-sm:px-3">
+        <h3 class="text-2xl leading-[30px] md:leading-[40px] font-bold mb-4">
+          Token Management
+        </h3>
+        <p class="text-[#938FAA] leading-6 font-semibold text-[16px] text-left mt-2">
+          MT Tokens are your digital keys for MT Auto Clicker. Each generation adds 50 tokens, with a limit of 200
+          tokens per account. Use them across Windows, Mac, and browser extensions for easy access. Invite friends to
+          earn more tokens!
+        </p>
+      </div>
+      <div class="bg-[#0A0419] p-6 rounded-lg shadow-lg">
+        <img src="./images/Token-Management.svg" class="w-72 md:ml-[30px] mx-auto" alt="Mt Token Management Logo" aria-label="Mt Token Management Logo"
+          loading="lazy">
+      </div>
     </div>
   </div>
-</div>
+</section>
+  {# Testimonials Section #}
+  <section id="testimonial-section" class="testimonial-section bg-[#05030e] text-white py-12 px-4 lg:ml-20 sm:px-8 lg:px-16"
+    x-data="{ isPaused: false }">
+    <h2 class="text-[36px] text-white mb-16 mt-10 leading-[40px] text-left font-[600]">
+      Why we Work?
+    </h2>
+
+    <div class="bg-[#05030e] text-white group overflow-hidden">
+      <div class="flex gap-4 sm:gap-6 md:gap-8 justify-start w-full overflow-hidden" @mouseenter="isPaused = true"
+        @mouseleave="isPaused = false">
+        <div class="flex space-x-4 sm:space-x-6 testimonial-scroll" :class="{ 'paused': isPaused }">
+          {% for card in testimonials %}
+          <div
+            class="card w-[300px] h-[300px] bg-[#0A0419] p-5 border-[3px] rounded-xl border-[#1D1634] hover:shadow-lg flex flex-col justify-between">
+            <div class="flex flex-col justify-between h-full w-full">
+              <p class="text-[#938FAA] leading-[25.6px] font-semibold text-md text-left mt-2">
+                {{ card.description }}
+              </p>
+              <div class="flex items-center">
+                <img src="{{ card.image }}" alt="Testomonials user image" aria-label="Testomonials user image" class="h-10 w-10 rounded-full object-cover"
+                  loading="lazy">
+                <span class="text-gray-200 text-[18px] leading-[20px] font-medium ml-4">
+                  {{ card.author }}
+                </span>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {# Download Section #}
+  <section id="download-links-section" class="download-links-section bg-[#05030E] text-white flex flex-col max-sm:mt-20 items-center">
+    <h2 class="text-[24px] leading-[24px] font-[600] mb-9">
+      AVAILABLE ON
+    </h2>
+    <div class="flex flex-wrap justify-center md:mx-0 gap-6" role="group" aria-label="Download options">
+      {% for platform in platform %}
+      <div
+        class="bg-card p-4 border border-[#71EE9E] rounded-lg flex justify-center items-center w-20 h-20 hover:scale-105 transition-transform">
+        <a href="/download/{{ platform.name }}">
+          <img src="{{ platform.icon }}" alt="{{ platform.name }}" aria-label="{{ platform.name }}" class="w-10 h-10" loading="lazy">
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  {# Disclaimer Section #}
+  <section id="disclaimer-section" class="disclaimer-section mt-10 sm:p-10 p-0 flex max-sm:mt-20 flex-col gap-10">
+    <div class="w-[88%] border-[3px] rounded-xl border-[#1D1634] mx-auto bg-[#0A0419]">
+      <div class="rounded-lg shadow-md p-6 text-center">
+        <p class="text-[1.5rem] font-[700] mb-3 text-white">Disclaimer</p>
+        <p class="text-center text-[#938FAA]">
+          MT Auto Clicker is intended for legitimate use only. Users are solely responsible for their actions and must
+          comply with applicable laws. By using our Auto Clicker, you agree to these terms.
+        </p>
+      </div>
+    </div>
+
+    <div class="w-[88%] border-[3px] rounded-xl border-[#1D1634] mx-auto bg-[#0A0419]">
+      <div class="rounded-lg shadow-md p-6 text-center">
+        <h3 class="text-[1.5rem] font-[700] mb-3 text-white">
+          Trademark Disclaimer
+        </h3>
+        <p class="text-center text-[#938FAA]">
+          All trademarks, logos, and brand names mentioned or displayed on the MT Auto Clicker website, software, apps,
+          and extensions are the sole property of
+          <a href="https://www.webtreta.com/" class="no-underline">
+            Web Treta
+          </a>. Using these trademarks, logos, and brand names does not imply endorsement or affiliation with any other
+          entity.
+        </p>
+      </div>
+    </div>
+  </section>
 
 </div>
 
