@@ -1,9 +1,9 @@
 {% extends "dashboard.html" %}
 
 {% block dashboard_content %}
-<div x-data="dashboardData()" x-init="checkAuth()" x- class="min-h-screen">
+<div x-data="dashboardData()" x-init="checkAuth()" class="min-h-screen">
     <div class="flex justify-center items-center px-4">
-        <main class="flex flex-col bg-[#0A0419] w-full mx-0 sm:mx-4 my-10 p-6 rounded-lg">
+        <main class="flex flex-col bg-[#0A0419] w-full max-w-5xl mx-auto sm:mx-4 my-10 p-6 rounded-lg">
             
             <!-- Welcome Card -->
             <div class="bg-[#0F0F2D] rounded-lg px-6 py-4 mb-6">
@@ -13,41 +13,33 @@
                         <h1 class="text-xl font-semibold mb-1" x-text="userData ? `${userData.firstname} ${userData.lastname}` : 'User'"></h1>
                         <p class="text-gray-400">Glad to see you again!</p>
                     </div>
-                    <div class="w-32 h-32 sm:w-52 sm:h-52">
-                        <img src="/images/avatar.png" alt="Avatar" class="rounded-lg" loading="lazy">
+                    <div class="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40">
+                        <img src="/images/avatar.png" alt="Avatar" class="rounded-lg w-full h-full object-cover" loading="lazy">
                     </div>
                 </div>
             </div>
 
             <!-- Usage Cards Grid -->
-            <div class="grid grid-cols-1 gap-6">
+            <div class="grid grid-cols-1  gap-6">
                 <div class="bg-[#0F0F2D] rounded-lg p-6">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-white text-lg">Extension Usage</h3>
                     </div>
 
-                    <div class="h-48 flex items-center justify-center text-gray-500">
-                        <div class="flex flex-col ml-10 md:flex-row items-center justify-between">
-                            <div class="w-56 h-56 absolute my-10">
-                                <!-- Chart Container -->
-                                <div x-ref="chartContainer"></div>
-                                
-                                <!-- Center Text -->
-                                <div class="absolute top-1/2 left-[45%] transform -translate-x-1/2 -translate-y-1/2 text-center">
-                                    <div class="text-sm text-gray-400 text-center">Total Uses report</div>
-                                    <div class="text-white font-semibold" x-text="totalUses">0</div>
-                                </div>
+                    <div class="flex flex-col md:flex-row items-center justify-center text-gray-500">
+                        <!-- Chart Container -->
+                        <div class="relative w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 flex items-center mx-10 justify-center">
+                            <div class="w-full h-full" x-ref="chartContainer"></div>
+
+                            <!-- Center Text -->
+                            <div class="absolute inset-0 flex flex-col items-center justify-center mx-10 text-center">
+                                <div class="text-sm text-gray-400">Total Uses</div>
+                                <div class="text-white font-semibold text-lg" x-text="totalUses">0</div>
                             </div>
-                            
-                            <!-- Legend -->
-                            <div class="mt-4 md:mt-0 md:ml-8">
-                                <template x-for="item in usageData" :key="item.name">
-                                    <div class="flex items-center mb-2">
-                                        <div class="w-3 h-3 rounded-full mr-2" :style="{ backgroundColor: item.color }"></div>
-                                        <!-- <span class="text-sm text-gray-400" x-text="item.name"></span> -->
-                                    </div>
-                                </template>
-                            </div>
+                        </div>
+
+                        <!-- Legend -->
+                        <div class="mt-6 md:mt-0 md:ml-8">
                         </div>
                     </div>
 
@@ -56,7 +48,6 @@
                     </div>
                 </div>
             </div>
-
         </main>
     </div>
 </div>
@@ -130,26 +121,41 @@ function dashboardData() {
 
         renderChart() {
             if (!this.usageData.length) return;
-
+        
             // Destroy existing chart to prevent duplication
             if (this.chart) {
                 this.chart.destroy();
             }
-
+        
             this.chart = new ApexCharts(this.$refs.chartContainer, {
-                chart: { type: 'donut', height: 250 },
+                chart: {
+                    type: 'donut',
+                    height: 'auto',
+                    width: '100%',
+                    toolbar: { show: false }
+                },
                 series: this.usageData.map(item => item.value),
                 labels: this.usageData.map(item => item.name),
                 colors: this.usageData.map(item => item.color),
                 legend: { show: false },
-                responsive: [{
-                    breakpoint: 480,
-                    options: { chart: { width: 200 } }
-                }]
+                responsive: [
+                    {
+                        breakpoint: 1024, // Large screens
+                        options: { chart: { height: 280 } }
+                    },
+                    {
+                        breakpoint: 768, // Tablets
+                        options: { chart: { height: 240 } }
+                    },
+                    {
+                        breakpoint: 480, // Mobile
+                        options: { chart: { height: 200 } }
+                    }
+                ]
             });
-
+        
             this.chart.render();
-        }
+        }        
     };
 }
 </script>

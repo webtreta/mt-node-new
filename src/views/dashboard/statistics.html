@@ -7,7 +7,7 @@
             <!-- Welcome Card -->
             <div class="bg-[#0F0F2D] rounded-lg px-6 py-4 mb-6">
                 <h2 class='text-white text-lg'>Software Usage</h2>
-                <div class="flex flex-col gap-10 py-6 sm:flex-row justify-center sm:justify-between items-center">
+                <div class="flex flex-col gap-10 py-6 lg:flex-row justify-center sm:justify-between items-center">
                     <div class="flex flex-col items-center sm:items-start">
                         <div class="w-40 h-40 sm:w-56 sm:h-56 relative">
                             <div x-ref="chartContainer"></div>
@@ -18,11 +18,11 @@
                         </div>
                     </div>
                     <div class="flex flex-col items-center sm:items-start mt-6 sm:mt-0 w-full">
-                        <ul class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full max-w-4xl">
+                        <ul class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl">
                             <template x-for="(entry, index) in usageData" :key="index">
                                 <li class="flex items-center space-x-3 p-3 bg-[#181830] rounded-lg w-full">
                                     <span :style="'color: ' + entry.color" class="text-xl">•</span>
-                                    <div class="flex items-center justify-between w-full">
+                                    <div class="flex items-center  justify-between w-full">
                                         <span class="text-white font-medium mx-1" x-text="entry.name"></span>
                                         <span class="text-white font-semibold text-right" x-text="entry.value"></span>
                                     </div>
