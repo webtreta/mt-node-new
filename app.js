@@ -313,6 +313,9 @@ app.get('/terms', (req, res) => {
 app.get('/legal-notice', (req, res) => {
   res.render('policy-pages/legal-notice.html');
 });
+app.get('/contact-us', (req, res) => {
+  res.render('contact-us.html');
+});
 app.get('/generate-token', (req, res) => {
   res.render('generate-token.html');
 });
