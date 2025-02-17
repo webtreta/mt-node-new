@@ -180,18 +180,59 @@ function pricingData() {
         },
 
         initSwiper() {
+            // Get all slides and find the Lifetime plan index
+            const slides = document.querySelectorAll('.swiper-slide');
+            const lifetimeIndex = Array.from(slides).findIndex(
+                slide => slide.querySelector('h2').textContent.trim() === 'Lifetime'
+            );
+        
+            // Initialize Swiper with specific configurations
             new Swiper('.swiper-container', {
+                initialSlide: lifetimeIndex !== -1 ? lifetimeIndex : 0,
                 slidesPerView: 1.1,
                 spaceBetween: 20,
+                centeredSlides: false,
                 pagination: {
                     el: '.swiper-pagination',
-                    clickable: true
+                    clickable: true,
                 },
                 breakpoints: {
-                    768: { slidesPerView: 2.2 },
-                    1024: { slidesPerView: 3 }
+                    320: {
+                        slidesPerView: 1.1,
+                        spaceBetween: 20,
+                        initialSlide: lifetimeIndex !== -1 ? lifetimeIndex : 0
+                    },
+                    768: {
+                        slidesPerView: 2.2,
+                        spaceBetween: 20,
+                        initialSlide: 0
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                        initialSlide: 0
+                    }
                 }
             });
+        
+            // Add some styles to show part of next slide
+            const style = document.createElement('style');
+            style.textContent = `
+                @media (max-width: 767px) {
+                    .swiper-container {
+                        overflow: visible !important;
+                        padding-right: 20px !important;
+                    }
+                    .swiper-slide {
+                        opacity: 1;
+                        transition: opacity 0.3s ease;
+                    }
+                    .swiper-slide-next {
+                        opacity: 0.6;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
         },
 
         handleDownload() {
@@ -284,6 +325,7 @@ function pricingData() {
                 this.loading = false;
             }
         }
+        
     };
 }
 </script>
