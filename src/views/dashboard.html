@@ -92,22 +92,13 @@
         
         <div class="flex items-center">
             <template x-if="base64Image">
-                <img :src="base64Image" alt="Profile" class="w-9 h-9 object-cover">
+                <img :src="base64Image" alt="Profile" @click="isProfileMenuOpen = !isProfileMenuOpen" class="w-9 h-9 object-cover">
             </template>
             <template x-if="!base64Image">
-                <img src="/images/profile-image.png" alt="Profile" class="w-12 h-12 object-cover">
+                <img src="/images/profile-image.png" @click="isProfileMenuOpen = !isProfileMenuOpen" alt="Profile" class="w-12 h-12 object-cover">
             </template>
             
-            <button
-                @click="isProfileMenuOpen = !isProfileMenuOpen"
-                class="p-1 hover:bg-gray-800 rounded-full max-sm:ml-3"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" class="text-[#938FAA] w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="1"></circle>
-                    <circle cx="12" cy="5" r="1"></circle>
-                    <circle cx="12" cy="19" r="1"></circle>
-                </svg>
-            </button>
+            
         </div>
         
         <!-- Profile Menu -->
@@ -137,10 +128,10 @@
         <aside class="max-sm:hidden md:w-72 bg-[#0A0419] h-full mt-4 md:mt-20 mx-4 md:mx-10 p-4 rounded-xl">
             <nav class="space-y-6">
                 {% for link in [
-                    { href: '/dashboard', icon: 'house', label: 'Dashboard' },
-                    { href: '/dashboard/statistics', icon: 'chart', label: 'Statistics' },
-                    { href: '/dashboard/account-settings', icon: 'settings', label: 'Account Settings' },
-                    { href: '/dashboard/billing', icon: 'credit-card', label: 'Billing' }
+                    { href: '/dashboard/', icon: 'house', label: 'Dashboard' },
+                    { href: '/dashboard/statistics/', icon: 'chart', label: 'Statistics' },
+                    { href: '/dashboard/account-settings/', icon: 'settings', label: 'Account Settings' },
+                    { href: '/dashboard/billing/', icon: 'credit-card', label: 'Billing' }
                 ] %}
                 <a
                     href="{{ link.href }}"

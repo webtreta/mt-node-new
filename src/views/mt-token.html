@@ -63,8 +63,9 @@
   </section>
   <!-- Token Generation Section -->
   <template x-if="isToken" id="generate-token-section">
+    <div class="flex justify-between flex-wrap">
     <div
-      class="my-4 md:w-[45%] w-full max-sm:mx-5 bg-[#0A0419] border-[3px] border-[#1D1634] mt-8 flex flex-col items-center justify-center gap-3 px-20 py-10 rounded-md md:mx-auto">
+      class="my-4 md:w-[70%] lg:w-[45%] w-full max-sm:mx-5 bg-[#0A0419] border-[3px] border-[#1D1634] mt-10 flex flex-col items-center justify-center gap-3 px-8 md:px-20 py-10 rounded-md md:mx-auto">
       <h2 class="text-xl font-medium text-center py-4 mt-6 text-slate-100">
         Generate Token
       </h2>
@@ -79,13 +80,14 @@
         </button>
       </form>
     </div>
+    </div>
   </template>
 
   <!-- Generate Token without sign-in -->
   <template x-if="!isToken" id="generate-token-section-without-signin">
     <div class="flex justify-between flex-wrap">
       <div
-        class="my-4 md:w-[45%] w-full max-sm:mx-5 bg-[#0A0419] border-[3px] border-[#1D1634] mt-10 flex flex-col items-center justify-center gap-3 px-8 md:px-20 py-10 rounded-md md:mx-auto">
+        class="my-4 md:w-[70%] lg:w-[45%] w-full max-sm:mx-5 bg-[#0A0419] border-[3px] border-[#1D1634] mt-10 flex flex-col items-center justify-center gap-3 px-8 md:px-20 py-10 rounded-md md:mx-auto">
         <h2 class="text-xl font-medium text-center py-4 my-5 text-slate-100">
           Generate Token
         </h2>
@@ -141,7 +143,7 @@
         </div>
         <div class="text-gray-300/90">
           <div class="flex flex-col  md:flex-row mt-10">
-            <div class="gap-8 flex flex-wrap">
+            <div class="gap-8 md:gap-4 lg:gap-8 flex flex-wrap">
               <!-- Step 1 -->
               <div
                 class="bg-[#0A0419] border-[3px] border-[#1D1634] rounded-xl p-5 relative transition-all w-full md:w-[48%]">
@@ -210,11 +212,8 @@
                       d="M9.367 2.25h5.266c1.092 0 1.958 0 2.655.057c.714.058 1.317.18 1.869.46a4.75 4.75 0 0 1 2.075 2.077c.281.55.403 1.154.461 1.868c.057.697.057 1.563.057 2.655v5.266c0 1.092 0 1.958-.057 2.655c-.058.714-.18 1.317-.46 1.869a4.75 4.75 0 0 1-2.076 2.075c-.552.281-1.155.403-1.869.461c-.697.057-1.563.057-2.655.057H9.367c-1.092 0-1.958 0-2.655-.057c-.714-.058-1.317-.18-1.868-.46a4.75 4.75 0 0 1-2.076-2.076c-.281-.552-.403-1.155-.461-1.869c-.057-.697-.057-1.563-.057-2.655V9.367c0-1.092 0-1.958.057-2.655c.058-.714.18-1.317.46-1.868a4.75 4.75 0 0 1 2.077-2.076c.55-.281 1.154-.403 1.868-.461c.697-.057 1.563-.057 2.655-.057m3.939 5.95a.75.75 0 1 0-1.445-.4c-.383 1.377-1.16 2.668-1.863 3.633a16 16 0 0 1-1.185 1.44l-.072.075l-.018.018l-.004.004a.75.75 0 0 0 .531 1.28h3V16a.75.75 0 0 0 1.5 0v-1.75h.5a.75.75 0 0 0 0-1.5h-.5V12a.75.75 0 0 0-1.5 0v.75h-1.366q.159-.203.326-.433c.755-1.035 1.645-2.494 2.096-4.116" />
                   </svg>
                 </div>
-                <div class="flex items-start gap-4">
-                  <div class="flex flex-col justify-center items-center">
-                    <p class="text-md text-white">You'll receive a unique code valid for 10 minutes</p>
-                    <p class="text-[#938FAA]"></p>
-                  </div>
+                <div class="flex items-start w-[80%]">
+                    <p class="text-md text-white ">You'll receive a unique code valid for 10 minutes</p>
                 </div>
               </div>
               <!-- Step 5 -->
@@ -250,11 +249,8 @@
                     </g>
                   </svg>
                 </div>
-                <div class="flex items-start gap-4">
-                  <div class="flex flex-col justify-center items-center">
+                <div class="flex items-start w-[80%]">
                     <p class="text-md text-white">Open your MT Auto Clicker software or extension</p>
-                    <p class="text-[#938FAA]"></p>
-                  </div>
                 </div>
               </div>
               <!-- Step 7 -->
@@ -268,11 +264,8 @@
                       d="M9.367 2.25h5.266c1.092 0 1.958 0 2.655.057c.714.058 1.317.18 1.869.46a4.75 4.75 0 0 1 2.075 2.077c.281.55.403 1.154.461 1.868c.057.697.057 1.563.057 2.655v5.266c0 1.092 0 1.958-.057 2.655c-.058.714-.18 1.317-.46 1.869a4.75 4.75 0 0 1-2.076 2.075c-.552.281-1.155.403-1.869.461c-.697.057-1.563.057-2.655.057H9.367c-1.092 0-1.958 0-2.655-.057c-.714-.058-1.317-.18-1.868-.46a4.75 4.75 0 0 1-2.076-2.076c-.281-.552-.403-1.155-.461-1.869c-.057-.697-.057-1.563-.057-2.655V9.367c0-1.092 0-1.958.057-2.655c.058-.714.18-1.317.46-1.868a4.75 4.75 0 0 1 2.077-2.076c.55-.281 1.154-.403 1.868-.461c.697-.057 1.563-.057 2.655-.057m.565 5.022a.75.75 0 0 0-.364 1.456c1.116.279 2.46.272 3.479.208l.084-.005c-.311.445-.665.975-1.02 1.55c-.511.832-1.032 1.774-1.427 2.712c-.39.926-.684 1.91-.684 2.807a.75.75 0 1 0 1.5 0c0-.603.206-1.37.566-2.225c.355-.843.834-1.713 1.323-2.507a32 32 0 0 1 1.906-2.748l.031-.04l.008-.01l.002-.002a.75.75 0 0 0-.71-1.208l-.005.001l-.022.004l-.091.014q-.123.018-.351.047c-.3.038-.723.083-1.204.113c-.981.061-2.137.054-3.021-.167" />
                   </svg>
                 </div>
-                <div class="flex items-start gap-4">
-                  <div class="flex flex-col justify-center items-center">
+                <div class="flex items-start w-[80%]">
                     <p class="text-md text-white">Go to the Token page in the software/extension</p>
-                    <p class="text-[#938FAA]"></p>
-                  </div>
                 </div>
               </div>
               <!-- Step 8 -->
@@ -312,11 +305,8 @@
                     </g>
                   </svg>
                 </div>
-                <div class="flex items-start gap-4">
-                  <div class="flex flex-col justify-center items-center">
+                <div class="flex items-start w-[80%]">
                     <p class="text-md text-white">50 tokens will be added to your account</p>
-                    <p class="text-[#938FAA]"></p>
-                  </div>
                 </div>
               </div>
 
@@ -350,7 +340,7 @@
         </div>
         <div class="text-gray-300/90">
           <div class="flex flex-col md:flex-row mt-10">
-            <div class="gap-8 flex flex-wrap">
+            <div class="gap-8 md:gap-4 lg:gap-8 flex flex-wrap">
               <!-- Step 1 -->
               <div
                 class="bg-[#0A0419] border-[3px] border-[#1D1634] rounded-xl p-5 relative transition-all w-full md:w-[48%]">
@@ -362,11 +352,8 @@
                       d="M9.367 2.25h5.266c1.092 0 1.958 0 2.655.057c.714.058 1.317.18 1.869.46a4.75 4.75 0 0 1 2.075 2.077c.281.55.403 1.154.461 1.868c.057.697.057 1.563.057 2.655v5.266c0 1.092 0 1.958-.057 2.655c-.058.714-.18 1.317-.46 1.869a4.75 4.75 0 0 1-2.076 2.075c-.552.281-1.155.403-1.869.461c-.697.057-1.563.057-2.655.057H9.367c-1.092 0-1.958 0-2.655-.057c-.714-.058-1.317-.18-1.868-.46a4.75 4.75 0 0 1-2.076-2.076c-.281-.552-.403-1.155-.461-1.869c-.057-.697-.057-1.563-.057-2.655V9.367c0-1.092 0-1.958.057-2.655c.058-.714.18-1.317.46-1.868a4.75 4.75 0 0 1 2.077-2.076c.55-.281 1.154-.403 1.868-.461c.697-.057 1.563-.057 2.655-.057M13.5 8a.75.75 0 0 0-1.191-.607l-2.75 2a.75.75 0 1 0 .882 1.214l1.56-1.134V16a.75.75 0 1 0 1.5 0z" />
                   </svg>
                 </div>
-                <div class="flex items-start gap-4">
-                  <div class="flex flex-col justify-center items-center">
+                <div class="flex items-start w-[80%]">
                     <p class="text-md text-white">Open your MT Auto Clicker application or extension.</p>
-                    <p class="text-[#938FAA]"></p>
-                  </div>
                 </div>
               </div>
 
@@ -381,11 +368,8 @@
                       d="M9.367 2.25h5.266c1.092 0 1.958 0 2.655.057c.714.058 1.317.18 1.869.46a4.75 4.75 0 0 1 2.075 2.077c.281.55.403 1.154.461 1.868c.057.697.057 1.563.057 2.655v5.266c0 1.092 0 1.958-.057 2.655c-.058.714-.18 1.317-.46 1.869a4.75 4.75 0 0 1-2.076 2.075c-.552.281-1.155.403-1.869.461c-.697.057-1.563.057-2.655.057H9.367c-1.092 0-1.958 0-2.655-.057c-.714-.058-1.317-.18-1.868-.46a4.75 4.75 0 0 1-2.076-2.076c-.281-.552-.403-1.155-.461-1.869c-.057-.697-.057-1.563-.057-2.655V9.367c0-1.092 0-1.958.057-2.655c.058-.714.18-1.317.46-1.868a4.75 4.75 0 0 1 2.077-2.076c.55-.281 1.154-.403 1.868-.461c.697-.057 1.563-.057 2.655-.057m.883 8.087c0-.579.207-.956.473-1.195c.279-.251.67-.392 1.085-.392s.806.14 1.085.392c.265.239.472.616.472 1.195c0 .862-.564 1.771-1.49 2.704c-.692.698-1.484 1.313-2.195 1.864q-.34.264-.65.51a.75.75 0 0 0 .47 1.335h5a.75.75 0 1 0 0-1.5h-2.84c.433-.357.876-.745 1.28-1.153c.982-.99 1.925-2.271 1.925-3.76c0-.98-.37-1.77-.969-2.31c-.587-.528-1.349-.777-2.088-.777s-1.502.249-2.089.777c-.6.54-.969 1.33-.969 2.31a.75.75 0 0 0 1.5 0" />
                   </svg>
                 </div>
-                <div class="flex items-start gap-4">
-                  <div class="flex flex-col justify-center items-center">
+                <div class="flex items-start w-[80%]">
                     <p class="text-md text-white">Sign in with your registered email.</p>
-                    <p class="text-[#938FAA]"></p>
-                  </div>
                 </div>
               </div>
 
@@ -401,12 +385,9 @@
                       d="M9.367 2.25h5.266c1.092 0 1.958 0 2.655.057c.714.058 1.317.18 1.869.46a4.75 4.75 0 0 1 2.075 2.077c.281.55.403 1.154.461 1.868c.057.697.057 1.563.057 2.655v5.266c0 1.092 0 1.958-.057 2.655c-.058.714-.18 1.317-.46 1.869a4.75 4.75 0 0 1-2.076 2.075c-.552.281-1.155.403-1.869.461c-.697.057-1.563.057-2.655.057H9.367c-1.092 0-1.958 0-2.655-.057c-.714-.058-1.317-.18-1.868-.46a4.75 4.75 0 0 1-2.076-2.076c-.281-.552-.403-1.155-.461-1.869c-.057-.697-.057-1.563-.057-2.655V9.367c0-1.092 0-1.958.057-2.655c.058-.714.18-1.317.46-1.868a4.75 4.75 0 0 1 2.077-2.076c.55-.281 1.154-.403 1.868-.461c.697-.057 1.563-.057 2.655-.057m5.883 7.744c0-.935-.453-1.65-1.097-2.107c-.622-.441-1.408-.637-2.153-.637s-1.531.196-2.153.637c-.643.456-1.097 1.172-1.097 2.107a.75.75 0 1 0 1.5 0c0-.394.172-.675.465-.884c.316-.224.78-.36 1.285-.36s.969.136 1.285.36c.292.207.463.486.465.877l-.002.027c-.003.03-.008.08-.021.141a1.4 1.4 0 0 1-.176.445c-.166.267-.542.65-1.551.65a.75.75 0 0 0 0 1.5c1.01 0 1.385.383 1.551.65a1.4 1.4 0 0 1 .199.613c-.002.39-.173.67-.465.877c-.316.224-.78.36-1.285.36s-.969-.136-1.285-.36c-.293-.209-.465-.49-.465-.884a.75.75 0 1 0-1.5 0c0 .935.454 1.65 1.097 2.107c.622.441 1.408.637 2.153.637s1.531-.196 2.153-.637c.643-.456 1.097-1.172 1.097-2.107v-.002a2.9 2.9 0 0 0-.426-1.398a2.7 2.7 0 0 0-.517-.606c.211-.184.382-.39.517-.606a2.9 2.9 0 0 0 .426-1.398z" />
                   </svg>
                 </div>
-                <div class="flex items-start gap-4">
-                  <div class="flex flex-col justify-center items-center">
+                <div class="flex items-start w-[80%]">
                     <p class="text-md text-white">Your tokens will automatically sync across all platforms (Windows,
                       Mac, browser extensions) when using the same email.</p>
-                    <p class="text-[#938FAA]"></p>
-                  </div>
                 </div>
               </div>
               <!-- Step 4 -->
@@ -420,11 +401,8 @@
                       d="M9.367 2.25h5.266c1.092 0 1.958 0 2.655.057c.714.058 1.317.18 1.869.46a4.75 4.75 0 0 1 2.075 2.077c.281.55.403 1.154.461 1.868c.057.697.057 1.563.057 2.655v5.266c0 1.092 0 1.958-.057 2.655c-.058.714-.18 1.317-.46 1.869a4.75 4.75 0 0 1-2.076 2.075c-.552.281-1.155.403-1.869.461c-.697.057-1.563.057-2.655.057H9.367c-1.092 0-1.958 0-2.655-.057c-.714-.058-1.317-.18-1.868-.46a4.75 4.75 0 0 1-2.076-2.076c-.281-.552-.403-1.155-.461-1.869c-.057-.697-.057-1.563-.057-2.655V9.367c0-1.092 0-1.958.057-2.655c.058-.714.18-1.317.46-1.868a4.75 4.75 0 0 1 2.077-2.076c.55-.281 1.154-.403 1.868-.461c.697-.057 1.563-.057 2.655-.057m3.939 5.95a.75.75 0 1 0-1.445-.4c-.383 1.377-1.16 2.668-1.863 3.633a16 16 0 0 1-1.185 1.44l-.072.075l-.018.018l-.004.004a.75.75 0 0 0 .531 1.28h3V16a.75.75 0 0 0 1.5 0v-1.75h.5a.75.75 0 0 0 0-1.5h-.5V12a.75.75 0 0 0-1.5 0v.75h-1.366q.159-.203.326-.433c.755-1.035 1.645-2.494 2.096-4.116" />
                   </svg>
                 </div>
-                <div class="flex items-start gap-4">
-                  <div class="flex flex-col justify-center items-center">
+                <div class="flex items-start w-[80%]">
                     <p class="text-md text-white">Each token provides 10 minutes of service access.</p>
-                    <p class="text-[#938FAA]"></p>
-                  </div>
                 </div>
               </div>
               <!-- Step 5 -->
@@ -438,11 +416,8 @@
                       d="M6.712 2.307c.697-.057 1.563-.057 2.655-.057h5.266c1.092 0 1.958 0 2.655.057c.714.058 1.317.18 1.869.46a4.75 4.75 0 0 1 2.075 2.077c.281.55.403 1.154.461 1.868c.057.697.057 1.563.057 2.655v5.266c0 1.092 0 1.958-.057 2.655c-.058.714-.18 1.317-.46 1.869a4.75 4.75 0 0 1-2.076 2.075c-.552.281-1.155.403-1.869.461c-.697.057-1.563.057-2.655.057H9.367c-1.092 0-1.958 0-2.655-.057c-.714-.058-1.317-.18-1.868-.46a4.75 4.75 0 0 1-2.076-2.076c-.281-.552-.403-1.155-.461-1.869c-.057-.697-.057-1.563-.057-2.655V9.367c0-1.092 0-1.958.057-2.655c.058-.714.18-1.317.46-1.868a4.75 4.75 0 0 1 2.077-2.076c.55-.281 1.154-.403 1.868-.461M9.025 7.42A.75.75 0 0 0 8.75 8v2.852a.75.75 0 0 0 .75.75h2.778c.927 0 1.472.621 1.472 1.152v1.12c0 .453-.19.768-.484.992c-.316.239-.774.382-1.269.384s-.95-.139-1.264-.375c-.292-.22-.483-.537-.483-1.001a.75.75 0 0 0-1.5 0c0 .961.434 1.71 1.08 2.198c.624.471 1.417.68 2.173.678c.755-.003 1.547-.218 2.169-.689a2.67 2.67 0 0 0 1.078-2.187v-1.12c0-1.57-1.444-2.652-2.972-2.652H10.25V8.87c.206.024.441.047.697.066c.906.064 2.123.07 3.235-.208a.75.75 0 0 0-.364-1.456c-.749.188-1.601.22-2.356.19a13 13 0 0 1-1.431-.134a11 11 0 0 1-.364-.06a.77.77 0 0 0-.642.152" />
                   </svg>
                 </div>
-                <div class="flex items-start gap-4">
-                  <div class="flex flex-col justify-center items-center">
+                <div class="flex items-start w-[80%]">
                     <p class="text-md text-white">Tokens are automatically deducted as you use the service.</p>
-                    <p class="text-[#938FAA]"></p>
-                  </div>
                 </div>
               </div>
               <!-- Step 6 -->
@@ -460,11 +435,8 @@
                     </g>
                   </svg>
                 </div>
-                <div class="flex items-start gap-4">
-                  <div class="flex flex-col justify-center items-center">
+                <div class="flex items-start w-[80%]">
                     <p class="text-md text-white">Monitor your token balance in the application.</p>
-                    <p class="text-[#938FAA]"></p>
-                  </div>
                 </div>
               </div>
             </div>
@@ -532,7 +504,7 @@
         </div>
       </div>
     </section>
-    <section class="flex flex-col md:mx-32 mt-20" id="faq" x-data="{ openFaq: 1 }">
+    <section class="flex flex-col lg:mx-44 mt-20" id="faq" x-data="{ openFaq: 1 }">
       <h2 class="text-2xl md:text-4xl text-center font-bold mb-10">Frequently Asked Questions</h2>
       <div class="space-y-4 select-none">
           <!-- FAQ Item 1 -->

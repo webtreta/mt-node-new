@@ -161,7 +161,7 @@
         </p>
       </div>
 
-      <div class="grid  grid-cols-1 sm:grid-cols-3 gap-5 sm:w-[95%]">
+      <div class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:w-[95%]">
         <div class="flex bg-[#0A0419]  rounded-xl  gap-4 p-4">
           <img src="/images/features-images/Single-Target-Clicking.webp" class="w-20 h-20"
             alt="Single-Target-Clicking-image" aria-label="Single-Target-Clicking-image">
@@ -264,74 +264,77 @@
   </section>
 
   {# Special Features Sections #}
-  <section id="what-makes-us-special-section" class="what-makes-us-special">
-  <h2 class="text-[36px] text-white mb-16 mt-16 leading-[40px] text-center font-[600]">
-    What Makes Us Special?
-  </h2>
+  <section id="what-makes-us-special-section" class="what-makes-us-special mx-5">
+    <h2 class="text-[36px] text-white mb-16 mt-16 leading-[40px] text-center font-[600]">
+      What Makes Us Special?
+    </h2>
 
-  {# Cross Platform Section #}
-  <div id="what-makes-us-special-section"
-    class="bg-[#0A0419] border-[3px] rounded-xl border-[#1D1634] md:ml-36 md:mr-24 flex flex-col items-center p-6 text-white">
-    <div id="Cross-Platform" class="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-      <div>
-        <h3 class="text-2xl leading-[40px] font-bold mb-4">
-          Cross Platform Compatibility
-        </h3>
-        <p class="text-wrap text-[#938FAA] leading-6 font-semibold text-[16px] text-left mt-2">
-          Access MT Auto Clicker on Windows, macOS, Android, iOS, and web browsers like Chrome and Edge. MT Tokens let
-          you sync usage across platforms, ensuring flexibility and ease of use.
-        </p>
-      </div>
+    {# Cross Platform Section #}
+    <div id="what-makes-us-special-section"
+      class="bg-[#0A0419] border-[3px] rounded-xl border-[#1D1634] lg:ml-36 lg:mr-24 flex flex-col items-center p-6 text-white">
+      <div id="Cross-Platform" class="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div>
+          <h3 class="text-2xl leading-[40px] font-bold mb-4">
+            Cross Platform Compatibility
+          </h3>
+          <p class="text-wrap text-[#938FAA] leading-6 font-semibold text-[16px] text-left mt-2">
+            Access MT Auto Clicker on Windows, macOS, Android, iOS, and web browsers like Chrome and Edge. MT Tokens let
+            you sync usage across platforms, ensuring flexibility and ease of use.
+          </p>
+        </div>
 
-      <div class="flex justify-center bg-[#16162E]">
-        <video x-ref="video" src="/images/cross.mp4" loop muted autoplay playsinline class="w-full h-auto"
-          x-init="$nextTick(() => $refs.video.play())" alt="cross-platform-video" aria-label="cross-platform-video"></video>
+        <div class="flex justify-center bg-[#16162E]">
+          <video x-ref="video" src="/images/cross.mp4" loop muted autoplay playsinline class="w-full h-auto"
+            x-init="$nextTick(() => $refs.video.play())" alt="cross-platform-video"
+            aria-label="cross-platform-video"></video>
+        </div>
       </div>
     </div>
-  </div>
 
-  {# Community Section #}
-  <div id="community-section"
-    class="mt-10 bg-[#0A0419] border-[3px] rounded-xl border-[#1D1634] md:ml-36 md:mr-24 p-6 flex flex-col items-center text-white">
-    <div class="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2">
-      <div class="bg-[#0A0419] rounded-lg shadow-lg">
-        <img src="/images/MT-Community.svg" class="w-72 md:ml-[30px] mx-auto" alt="Mt community logo" aria-label="Mt Community image" loading="lazy">
-      </div>
-      <div class="mt-24 max-sm:px-3">
-        <h3 class="text-2xl leading-[30px] text-right md:leading-[40px] font-bold mb-4">
-          MT Community
-        </h3>
-        <p class="text-[#938FAA] text-wrap leading-6 font-semibold text-[16px] text-right mt-2">
-          Join the MT Community forum to ask questions, troubleshoot issues, and get quick support from MT Staff. A
-          future update will enable users to share presets.
-        </p>
+    {# Community Section #}
+    <div id="community-section"
+      class="mt-10 bg-[#0A0419] border-[3px] rounded-xl border-[#1D1634] lg:ml-36 lg:mr-24 p-6 flex flex-col items-center text-white">
+      <div class="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2">
+        <div class="bg-[#0A0419] rounded-lg shadow-lg">
+          <img src="/images/MT-Community.svg" class="w-72 md:ml-[30px] mx-auto" alt="Mt community logo"
+            aria-label="Mt Community image" loading="lazy">
+        </div>
+        <div class="mt-24 max-sm:px-3">
+          <h3 class="text-2xl leading-[30px] text-right md:leading-[40px] font-bold mb-4">
+            MT Community
+          </h3>
+          <p class="text-[#938FAA] text-wrap leading-6 font-semibold text-[16px] text-right mt-2">
+            Join the MT Community forum to ask questions, troubleshoot issues, and get quick support from MT Staff. A
+            future update will enable users to share presets.
+          </p>
+        </div>
       </div>
     </div>
-  </div>
 
-  {# Token Management Section #}
-  <div id="token-management-section"
-    class="mt-10 border-[3px] p-6 rounded-xl border-[#1D1634] bg-[#0A0419] md:ml-36 md:mr-24 flex flex-col items-center text-white">
-    <div class="w-full max-w-7xl gap-28 grid grid-cols-1 lg:grid-cols-2">
-      <div class="mt-16 max-sm:px-3">
-        <h3 class="text-2xl leading-[30px] md:leading-[40px] font-bold mb-4">
-          Token Management
-        </h3>
-        <p class="text-[#938FAA] leading-6 font-semibold text-[16px] text-left mt-2">
-          MT Tokens are your digital keys for MT Auto Clicker. Each generation adds 50 tokens, with a limit of 200
-          tokens per account. Use them across Windows, Mac, and browser extensions for easy access. Invite friends to
-          earn more tokens!
-        </p>
-      </div>
-      <div class="bg-[#0A0419] p-6 rounded-lg shadow-lg">
-        <img src="./images/Token-Management.svg" class="w-72 md:ml-[30px] mx-auto" alt="Mt Token Management Logo" aria-label="Mt Token Management Logo"
-          loading="lazy">
+    {# Token Management Section #}
+    <div id="token-management-section"
+      class="mt-10 border-[3px] p-6 rounded-xl border-[#1D1634] bg-[#0A0419] lg:ml-36 lg:mr-24 flex flex-col items-center text-white">
+      <div class="w-full max-w-7xl gap-28 grid grid-cols-1 lg:grid-cols-2">
+        <div class="mt-16 max-sm:px-3">
+          <h3 class="text-2xl leading-[30px] md:leading-[40px] font-bold mb-4">
+            Token Management
+          </h3>
+          <p class="text-[#938FAA] leading-6 font-semibold text-[16px] text-left mt-2">
+            MT Tokens are your digital keys for MT Auto Clicker. Each generation adds 50 tokens, with a limit of 200
+            tokens per account. Use them across Windows, Mac, and browser extensions for easy access. Invite friends to
+            earn more tokens!
+          </p>
+        </div>
+        <div class="bg-[#0A0419] p-6 rounded-lg shadow-lg">
+          <img src="./images/Token-Management.svg" class="w-72 md:ml-[30px] mx-auto" alt="Mt Token Management Logo"
+            aria-label="Mt Token Management Logo" loading="lazy">
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
   {# Testimonials Section #}
-  <section id="testimonial-section" class="testimonial-section bg-[#05030e] text-white py-12 px-4 lg:ml-20 sm:px-8 lg:px-16"
+  <section id="testimonial-section"
+    class="testimonial-section bg-[#05030e] text-white py-12 px-4 lg:ml-20 sm:px-8 lg:px-16"
     x-data="{ isPaused: false }">
     <h2 class="text-[36px] text-white mb-16 mt-10 leading-[40px] text-left font-[600]">
       Why we Work?
@@ -349,8 +352,8 @@
                 {{ card.description }}
               </p>
               <div class="flex items-center">
-                <img src="{{ card.image }}" alt="Testomonials user image" aria-label="Testomonials user image" class="h-10 w-10 rounded-full object-cover"
-                  loading="lazy">
+                <img src="{{ card.image }}" alt="Testomonials user image" aria-label="Testomonials user image"
+                  class="h-10 w-10 rounded-full object-cover" loading="lazy">
                 <span class="text-gray-200 text-[18px] leading-[20px] font-medium ml-4">
                   {{ card.author }}
                 </span>
@@ -364,7 +367,8 @@
   </section>
 
   {# Download Section #}
-  <section id="download-links-section" class="download-links-section bg-[#05030E] text-white flex flex-col max-sm:mt-20 items-center">
+  <section id="download-links-section"
+    class="download-links-section bg-[#05030E] text-white flex flex-col max-sm:mt-20 items-center">
     <h2 class="text-[24px] leading-[24px] font-[600] mb-9">
       AVAILABLE ON
     </h2>
@@ -373,7 +377,8 @@
       <div
         class="bg-card p-4 border border-[#71EE9E] rounded-lg flex justify-center items-center w-20 h-20 hover:scale-105 transition-transform">
         <a href="/download/{{ platform.name }}">
-          <img src="{{ platform.icon }}" alt="{{ platform.name }}" aria-label="{{ platform.name }}" class="w-10 h-10" loading="lazy">
+          <img src="{{ platform.icon }}" alt="{{ platform.name }}" aria-label="{{ platform.name }}" class="w-10 h-10"
+            loading="lazy">
         </a>
       </div>
       {% endfor %}
