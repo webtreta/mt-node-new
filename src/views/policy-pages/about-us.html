@@ -29,30 +29,27 @@
 
 {% block body %}
 
-<div class="max-w-screen-lg mx-auto md:space-y-10 text-white">
+<main class="max-w-screen-lg mx-auto md:space-y-10 text-white">
 
-    <div class="grid md:grid-cols-1 gap-5  p-5 ">
+    <section class="grid md:grid-cols-1 gap-5 p-5">
         <div class="mx-auto max-w-screen-xl relative">
-            <h1 class="pb-6  mb-5 border-b-2 border-[#256EFF] text-2xl md:text-4xl text-center font-bold">About us</h1>
+            <h1 class="pb-6 mb-5 border-b-2 border-[#256EFF] text-2xl md:text-4xl text-center font-bold" itemprop="headline">
+                About MT Auto Clicker
+            </h1>
             <div class="space-y-8 pt-5">
-                <p>MT Auto Clicker is a powerful and user-friendly automation tool developed by Web Treta, a company
+                <p itemprop="description">
+                    MT Auto Clicker is a powerful and user-friendly automation tool developed by Web Treta, a company
                     dedicated to creating innovative software solutions to streamline repetitive tasks and boost
                     productivity. Focusing on reliability, efficiency, and user satisfaction, we have designed MT Auto
-                    Clicker to cater to the needs of individuals and businesses alike.</p>
+                    Clicker to cater to the needs of individuals and businesses alike.
+                </p>
             </div>
         </div>
-        <div class="flex justify-center items-center">
-            <span class="relative ">
+    </section>
 
-                <div class="">
-                    <img src="/img/social.png" alt="">
-                </div>
-            </span>
-        </div>
-    </div>
-
-    <div class="pb-10 p-5 space-y-8">
-        <h2 class="font-bold text-xl sm:text-3xl">The Reason behind MT Auto Clicker</h2>
+    <section class="pb-10 p-5 space-y-8">
+        <article>
+        <h2 class="font-bold text-xl sm:text-3xl mb-4">The Reason behind MT Auto Clicker</h2>
         <p>At MT Auto Clicker, our mission is simple: to empower users with a reliable and efficient tool that
             streamlines their digital tasks. We understand the challenges of repetitive actions and the valuable time
             they consume. That's why we've dedicated ourselves to developing a best-in-class auto clicker that goes
@@ -69,8 +66,10 @@
         <p>At MT Auto Clicker, we're not just providing a tool; we're offering a solution that simplifies your digital
             life. Join us on this journey and discover how our certified and best-in-class auto clicker can
             revolutionize how you work and interact with technology.</p>
+        </article>
 
-        <h2 class="font-bold text-xl sm:text-3xl">Our Values</h2>
+        <article>
+        <h2 class="font-bold text-xl sm:text-3xl mb-4">Our Values</h2>
         <ul class="list-decimal space-y-2">
             <li> <strong>User-centric approach:</strong> We put our users at the heart of everything. Your feedback and
                 satisfaction drive us to continually enhance MT Auto Clicker.</li>
@@ -83,8 +82,9 @@
             <li> <strong>Excellence:</strong> We strive for excellence in every aspect of our work, from software
                 development to customer support.</li>
         </ul>
-
-        <h2 class="font-bold text-xl sm:text-3xl">Excellence:</h2>
+    </article>
+    <article>
+        <h2 class="font-bold text-xl sm:text-3xl mb-4">Excellence:</h2>
         <p>At Web Treta, we are committed to delivering an exceptional user experience. We value your trust and work
             hard to maintain it by providing a reliable, secure, and feature-rich automation tool. Our dedicated
             customer support team is always ready to assist you with any questions or concerns.</p>
@@ -92,16 +92,33 @@
             to your feedback, innovate, and push the boundaries of what is possible with automation technology.</p>
         <p>Thank you for choosing MT Auto Clicker and participating in our journey. Together, let's automate the world,
             one click at a time.</p>
+        </article>
+        <!-- Contact Section -->
+        <section class="mt-8" itemscope itemtype="https://schema.org/ContactPoint">
+            <h2 class="font-bold text-xl sm:text-3xl">Contact Us</h2>
+            <div class="mt-4">
+                <p>If you have any questions, suggestions, or feedback, please don't hesitate to contact us. You can reach our
+                    friendly customer support team through:</p>
+                <ul class="mt-2 space-y-2">
+                    <li>
+                        <a href="https://www.webtreta.com/#contact" 
+                           class="text-blue-600 hover:text-blue-700 transition-colors"
+                           itemprop="url">
+                            Web Treta's Contact Page
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/" 
+                           class="text-blue-600 hover:text-blue-700 transition-colors"
+                           itemprop="url">
+                            MT Auto Clicker Website
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </section>
 
-        <h2 class="font-bold text-xl sm:text-3xl">Contact Us:</h2>
-        <p>If you have any questions, suggestions, or feedback, please don't hesitate to contact us. You can reach our
-            friendly customer support team through the contact page on our website: MT Auto Clicker's Contact Page or
-            Web Treta's Contact Page <a href="https://www.webtreta.com/#contact" class="no-underline text-blue-600">
-                (https://webtreta.com/contact). </a> </p>
-        <p>We look forward to hearing from you and assisting you on your automation journey with <a href="/"
-                class="no-underline text-blue-600"> MT Auto Clicker </a>.</p>
-    </div>
-
-</div>
+</main>
 
 {% endblock body %}
