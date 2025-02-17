@@ -55,9 +55,21 @@ nunjucks.configure('src/views', {
 app.set('view engine', 'html');
 
 
-// Middleware to check authentication
 
 
+app.use((req, res, next) => {
+  if (
+    req.method === "GET" && // Only apply to GET requests
+    !req.path.endsWith("/") && // If no trailing slash
+    !req.path.includes(".") && // Ignore static files (CSS, JS, etc.)
+    !req.path.startsWith("/auth") && // Ignore API routes
+    !req.path.startsWith("/api") &&
+    !req.path.startsWith("/public") 
+  ) {
+    return res.redirect(301, req.path + "/");
+  }
+  next();
+});
 
 
 app.post('/generate-token', async (req, res) => {
@@ -88,7 +100,7 @@ app.post('/generate-token', async (req, res) => {
       console.log(data)
       throw new Error(`${data.message}`);
     }
-    return res.redirect(`/generate-token?token=${token}`);
+    return res.redirect(`/generate-token/?token=${token}`);
 
   } catch (error) {
     console.error('Error generating token:', error.message);
