@@ -249,6 +249,7 @@ module.exports  = [
       tempPrice: 19.99,
       discount: '60% OFF',
       buttonText: 'Upgrade',
+      isBestValue: true,
       features: [
         {
           title: 'Preset Saving',
@@ -519,7 +520,7 @@ module.exports  = [
       tempPrice: 3.99,
       discount: '60% OFF',
       buttonText: 'Upgrade',
-      isBestValue: true,
+      
       features: [
         {
           title: 'Preset Saving',

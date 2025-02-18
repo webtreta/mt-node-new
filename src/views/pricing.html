@@ -53,9 +53,9 @@
             <div class="swiper-wrapper">
                 {% for plan in plans %}
                 <div class="swiper-slide">
-                    <div class="relative rounded-2xl bg-[#0A0419] p-6 flex flex-col h-full {% if plan.isBestValue %}border-2 border-green-400{% else %}border border-white{% endif %}">
+                    <div class="relative rounded-2xl bg-[#0A0419] p-6  flex flex-col h-full {% if plan.isBestValue %}border-2 border-green-400{% else %}border border-white{% endif %}">
                         {% if plan.isBestValue %}
-                        <span class="absolute top-0 -right-0.5 bg-[#05030E] text-green-400 text-sm px-3 py-1 rounded-2xl border-2 border-green-400">
+                        <span class="absolute top-0 -right-0.5 bg-[#05030E] text-green-400 text-sm px-2 md:px-3 py-1 rounded-2xl border-2 border-green-400">
                             Best Value
                         </span>
                         {% endif %}
@@ -149,6 +149,9 @@ function pricingData() {
         error: null,
         userId: null,
         isToken: false,
+        firstname:null,
+        lastname:null,
+        email:null,
 
         init() {
             this.loadRazorpay();
@@ -175,6 +178,9 @@ function pricingData() {
               const parsedData = JSON.parse(userData);
               this.isToken = true;
               this.userId = parsedData.user_id;
+              this.email = parsedData.email;
+              this.firstname = parsedData.firstname;
+              this.lastname = parsedData.lastname;
           }
             
         },
@@ -189,52 +195,56 @@ function pricingData() {
             // Initialize Swiper with specific configurations
             new Swiper('.swiper-container', {
                 initialSlide: lifetimeIndex !== -1 ? lifetimeIndex : 0,
-                slidesPerView: 1.1,
-                spaceBetween: 20,
-                centeredSlides: false,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
+                slidesPerView: 1,
+                centeredSlides: true,
+                loop: false,
                 breakpoints: {
                     320: {
-                        slidesPerView: 1.1,
-                        spaceBetween: 20,
-                        initialSlide: lifetimeIndex !== -1 ? lifetimeIndex : 0
+                        slidesPerView: 1.2,
+                        spaceBetween: 5,
+                        initialSlide: lifetimeIndex !== -1 ? lifetimeIndex : 0,
+                        centeredSlides: true,
                     },
                     768: {
-                        slidesPerView: 2.2,
-                        spaceBetween: 20,
-                        initialSlide: 0
+                        slidesPerView: 2.5,
+                        spaceBetween: 5,
+                        centeredSlides: true,
                     },
                     1024: {
                         slidesPerView: 3,
-                        spaceBetween: 30,
-                        initialSlide: 0
+                        spaceBetween: 5,
+                        centeredSlides: false,
+                        loop: false
                     }
                 }
             });
         
-            // Add some styles to show part of next slide
+            // Add styles for slide visibility
             const style = document.createElement('style');
             style.textContent = `
-                @media (max-width: 767px) {
+                .swiper-container {
+                    padding: 10px 0 20px !important;
+                }
+                
+                @media (max-width: 1023px) {
                     .swiper-container {
-                        overflow: visible !important;
-                        padding-right: 20px !important;
+                        overflow: hidden !important;
                     }
                     .swiper-slide {
-                        opacity: 1;
-                        transition: opacity 0.3s ease;
+                        opacity: 0.5;
+                        transition: all 0.3s ease;
                     }
-                    .swiper-slide-next {
-                        opacity: 0.6;
+                    .swiper-slide-active {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
+                    .swiper-slide-prev, .swiper-slide-next {
+                        opacity: 0.7;
                     }
                 }
             `;
             document.head.appendChild(style);
         },
-
         handleDownload() {
             // Implement download logic for free version
             console.log('Downloading free version...');
@@ -282,8 +292,8 @@ function pricingData() {
                         }
                     },
                     prefill: {
-                        name: 'Customer Name',
-                        email: 'customer@example.com',
+                        name: this.firstname+this.lastname,
+                        email: this.email,
                         contact: '1234567890'
                     },
                     theme: {

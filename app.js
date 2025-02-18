@@ -130,7 +130,7 @@ app.post("/auth/signin", async (req, res) => {
       });
 
       const data = await response.json();
-
+      console.log(data)
       if (data.statusCode === 200) {
           res.json({
               token: data.token,
@@ -141,8 +141,10 @@ app.post("/auth/signin", async (req, res) => {
               picture: data.ourUsers?.picture || "",
               user_id: data.ourUsers?.id || "",
           });
-      } else {
-          res.status(401).json({ message: "Invalid credentials" });
+      } else if(data.error==="Account not verified. Please verify your email before signing in."){
+          res.status(403).json({ message: "Account not verified. Please verify your email before signing in." });
+      }else{
+        res.status(401).json({ message: "Invalid Crendentials" });
       }
   } catch (error) {
       res.status(500).json({ message: "Server error" });
